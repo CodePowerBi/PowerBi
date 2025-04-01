@@ -34,3 +34,16 @@ IF(
     BLANK()
 )
 
+______________
+
+PARA SACAR GROUP Y PARENT
+
+
+NuevaUnidad =
+SWITCH(
+    TRUE(),
+    'tabla_trading'[unidad] = "MATRIZ", "Parent",
+    'tabla_trading'[unidad] = "CORP", "Group",
+    BLANK()
+)
+
