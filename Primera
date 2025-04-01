@@ -21,3 +21,16 @@ IF(
 
 
 __
+
+PARA ORDEN
+OrdenMesAño_UltimoMesTrimestre =
+IF(
+    YEAR('tabla_trading'[fecha]) >= YEAR(TODAY()) - 5,
+    IF(
+        MONTH('tabla_trading'[fecha]) IN {3,6,9,12},
+        YEAR('tabla_trading'[fecha]) * 100 + MONTH('tabla_trading'[fecha]),
+        999999
+    ),
+    BLANK()
+)
+
