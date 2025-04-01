@@ -44,3 +44,49 @@ VAR FechaUltimoMes = DATE(AñoTrimestreAnterior, UltimoMes, 1)
 RETURN
     "Valor metrica de " & FORMAT(FechaUltimoMes, "mmm yy")
 
+
+
+
+________________________________
+
+Valor Ultimo Mes Ultimo Trimestre_mve_Fallback =
+VAR FechaActual = MAX('salida_df_mve'[fecha])
+VAR MesActual = MONTH(FechaActual)
+VAR AñoActual = YEAR(FechaActual)
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
+// Si estamos en Q1 o Q2, consideramos que el último trimestre completo es el Q4 del año anterior;
+// de lo contrario, es el trimestre inmediatamente anterior.
+VAR UltimoTrimestreCompleto = IF(TrimestreActual <= 2, 4, TrimestreActual - 1)
+VAR AñoUltimoTrimestre = IF(TrimestreActual <= 2, AñoActual - 1, AñoActual)
+VAR UltimoMes =
+    SWITCH(
+        UltimoTrimestreCompleto,
+        1, 3,    // Q1: último mes es marzo
+        2, 6,    // Q2: último mes es junio
+        3, 9,    // Q3: último mes es septiembre
+        4, 12    // Q4: último mes es diciembre
+    )
+// Fecha calculada según la lógica original.
+VAR FechaComp = DATE(AñoUltimoTrimestre, UltimoMes, 1)
+VAR ValorComp =
+    CALCULATE(
+        MAX('salida_df_mve'[valor metrica]),
+        'salida_df_mve'[fecha] = FechaComp
+    )
+// Definimos la fecha de diciembre (fallback 1) en el mismo año del último trimestre.
+VAR FechaDic = DATE(AñoUltimoTrimestre, 12, 1)
+VAR ValorDic =
+    CALCULATE(
+        MAX('salida_df_mve'[valor metrica]),
+        'salida_df_mve'[fecha] = FechaDic
+    )
+// Definimos la fecha de septiembre (fallback 2) en el mismo año.
+VAR FechaSep = DATE(AñoUltimoTrimestre, 9, 1)
+VAR ValorSep =
+    CALCULATE(
+        MAX('salida_df_mve'[valor metrica]),
+        'salida_df_mve'[fecha] = FechaSep
+    )
+RETURN
+    COALESCE(ValorComp, ValorDic, ValorSep)
+
