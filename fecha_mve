@@ -19,3 +19,28 @@ RETURN
         MAX('salida_df_mve'[valor metrica]),
         'salida_df_mve'[fecha] = FechaUltimoMes
     )
+
+
+
+____
+
+
+Título Ultimo Mes Ultimo Trimestre_mve =
+VAR FechaActual = MAX('salida_df_mve'[fecha])
+VAR MesActual = MONTH(FechaActual)
+VAR AñoActual = YEAR(FechaActual)
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
+VAR AñoTrimestreAnterior = IF(TrimestreActual = 1, AñoActual - 1, AñoActual)
+VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
+VAR UltimoMes =
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,    // Para Q1: último mes es marzo
+        2, 6,    // Para Q2: último mes es junio
+        3, 9,    // Para Q3: último mes es septiembre
+        4, 12    // Para Q4: último mes es diciembre
+    )
+VAR FechaUltimoMes = DATE(AñoTrimestreAnterior, UltimoMes, 1)
+RETURN
+    "Valor metrica de " & FORMAT(FechaUltimoMes, "mmm yy")
+
