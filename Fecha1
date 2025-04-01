@@ -20,3 +20,26 @@ RETURN
         'tabla_trading'[fecha] = FechaUltimoMes,
         'tabla_trading'[tipo] = "Value"
     )
+
+
+
+
+Título Ultimo Mes Último Trimestre =
+VAR FechaActual = MAX('tabla_trading'[fecha])
+VAR MesActual = MONTH(FechaActual)
+VAR AñoActual = YEAR(FechaActual)
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
+VAR AñoTrimestreAnterior = IF(TrimestreActual = 1, AñoActual - 1, AñoActual)
+VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
+VAR UltimoMes =
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,
+        2, 6,
+        3, 9,
+        4, 12
+    )
+VAR FechaUltimoMes = DATE(AñoTrimestreAnterior, UltimoMes, 1)
+RETURN
+    "Valor de " & FORMAT(FechaUltimoMes, "mmmm yyyy")
+
