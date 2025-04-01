@@ -4,3 +4,19 @@ MesAño_UltimoMesTrimestre =
         FORMAT('tabla_trading'[fecha], "mmmm yyyy"),
         BLANK()
     )
+
+__
+
+MesAño_UltimoMesTrimestre =
+IF(
+    YEAR('tabla_trading'[fecha]) >= YEAR(TODAY()) - 5,
+    IF(
+        MONTH('tabla_trading'[fecha]) IN {3,6,9,12},
+        FORMAT('tabla_trading'[fecha], "mmmm yyyy"),
+        "-"
+    ),
+    BLANK()
+)
+
+
+__
