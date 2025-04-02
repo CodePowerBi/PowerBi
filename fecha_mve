@@ -27,5 +27,29 @@ RETURN
         'salida_df_mve'[fecha] = SelectedDate
     )
 
+_____
+
+Título Ultimo Mes Trimestre_NoActual_Fallback =
+VAR CurrentDate = MAX('salida_df_mve'[fecha])
+VAR CurrentYear = YEAR(CurrentDate)
+VAR CurrentQuarter = INT((MONTH(CurrentDate) - 1) / 3) + 1
+VAR CandidateTable =
+    FILTER(
+        ALL('salida_df_mve'),
+        MONTH('salida_df_mve'[fecha]) IN {3,6,9,12} &&
+        (
+            YEAR('salida_df_mve'[fecha]) < CurrentYear ||
+            (YEAR('salida_df_mve'[fecha]) = CurrentYear &&
+             INT((MONTH('salida_df_mve'[fecha]) - 1) / 3) + 1 < CurrentQuarter)
+        ) &&
+        NOT(ISBLANK('salida_df_mve'[valor metrica]))
+    )
+VAR TopCandidate =
+    TOPN(1, CandidateTable, 'salida_df_mve'[fecha], DESC)
+VAR SelectedDate =
+    MAXX(TopCandidate, 'salida_df_mve'[fecha])
+RETURN
+    "Valor metrica de " & FORMAT(SelectedDate, "mmm yy")
+
 
 
