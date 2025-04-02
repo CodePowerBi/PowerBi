@@ -1,0 +1,30 @@
+ESCENARIO 
+
+Escenario Ultimo Mes Trimestre_NoActual_Fallback =
+VAR RefDate = TODAY()
+VAR CurrentYear = YEAR(RefDate)
+VAR CurrentQuarter = INT((MONTH(RefDate) - 1) / 3) + 1
+VAR CandidateTable =
+    FILTER(
+        ALL('salida_df_mve'),
+        -- Solo consideramos fechas que sean el último mes de un trimestre
+        MONTH('salida_df_mve'[fecha]) IN {3,6,9,12} &&
+        (
+            -- Se incluyen todas las fechas de años anteriores
+            YEAR('salida_df_mve'[fecha]) < CurrentYear ||
+            -- Para el año actual, solo se consideran trimestres ya concluidos
+            (YEAR('salida_df_mve'[fecha]) = CurrentYear &&
+             INT((MONTH('salida_df_mve'[fecha]) - 1) / 3) + 1 < CurrentQuarter)
+        ) &&
+        -- Se excluyen filas sin datos en "valor metrica" (o puedes usar otro criterio para asegurarte de que haya datos)
+        NOT(ISBLANK('salida_df_mve'[valor metrica]))
+    )
+VAR TopCandidate =
+    TOPN(1, CandidateTable, 'salida_df_mve'[fecha], DESC)
+VAR SelectedDate =
+    MAXX(TopCandidate, 'salida_df_mve'[fecha])
+RETURN
+    CALCULATE(
+        MAX('escenario_mve'[escenario]),
+        'salida_df_mve'[fecha] = SelectedDate
+    )
