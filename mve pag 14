@@ -1,31 +1,28 @@
-ESCENARIO
-
-Escenario Ultimo Mes Trimestre_NoActual_Fallback =
+Escenario Último Mes Trimestre_NoActual =
 VAR RefDate = TODAY()
 VAR CurrentYear = YEAR(RefDate)
 VAR CurrentQuarter = INT((MONTH(RefDate) - 1) / 3) + 1
 VAR CandidateTable =
     FILTER(
-        ALL('salida_df_mve'),
-        MONTH('salida_df_mve'[fecha]) IN {3,6,9,12} &&
+        ALL('salida_fd'),
+        MONTH('salida_fd'[fecha]) IN {3,6,9,12} &&
         (
-            YEAR('salida_df_mve'[fecha]) < CurrentYear ||
-            (YEAR('salida_df_mve'[fecha]) = CurrentYear &&
-             INT((MONTH('salida_df_mve'[fecha]) - 1) / 3) + 1 < CurrentQuarter)
-        ) &&
-        NOT(ISBLANK('salida_df_mve'[valor metrica]))
+            YEAR('salida_fd'[fecha]) < CurrentYear ||
+            (YEAR('salida_fd'[fecha]) = CurrentYear &&
+             INT((MONTH('salida_fd'[fecha]) - 1) / 3) + 1 < CurrentQuarter)
+        )
     )
 VAR TopCandidate =
-    TOPN(1, CandidateTable, 'salida_df_mve'[fecha], DESC)
+    TOPN(1, CandidateTable, 'salida_fd'[fecha], DESC)
 VAR SelectedDate =
-    MAXX(TopCandidate, 'salida_df_mve'[fecha])
+    MAXX(TopCandidate, 'salida_fd'[fecha])
 VAR SelectedID =
     CALCULATE(
-        MAX('salida_df_mve'[escenario_id]),
-        'salida_df_mve'[fecha] = SelectedDate
+        MAX('salida_fd'[escenario_id]),
+        'salida_fd'[fecha] = SelectedDate
     )
 RETURN
     CALCULATE(
-        MAX('escenario_mve'[escenario]),
-        'escenario_mve'[escenario_id] = SelectedID
+        MAX('escenario'[escenario]),
+        'escenario'[escenario_id] = SelectedID
     )
