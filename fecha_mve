@@ -1,129 +1,31 @@
-Valor Ultimo Mes Ultimo Trimestre_mve =
-VAR FechaActual = MAX('salida_df_mve'[fecha])
-VAR MesActual = MONTH(FechaActual)
-VAR AñoActual = YEAR(FechaActual)
-VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
-VAR AñoTrimestreAnterior = IF(TrimestreActual = 1, AñoActual - 1, AñoActual)
-VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
-VAR UltimoMes =
-    SWITCH(
-        TrimestreAnterior,
-        1, 3,    // Para el Q1, el último mes es marzo
-        2, 6,    // Para el Q2, el último mes es junio
-        3, 9,    // Para el Q3, el último mes es septiembre
-        4, 12    // Para el Q4, el último mes es diciembre
-    )
-VAR FechaUltimoMes = DATE(AñoTrimestreAnterior, UltimoMes, 1)
-RETURN
-    CALCULATE(
-        MAX('salida_df_mve'[valor metrica]),
-        'salida_df_mve'[fecha] = FechaUltimoMes
-    )
-
-
-
-____
-
-
-Título Ultimo Mes Ultimo Trimestre_mve =
-VAR FechaActual = MAX('salida_df_mve'[fecha])
-VAR MesActual = MONTH(FechaActual)
-VAR AñoActual = YEAR(FechaActual)
-VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
-VAR AñoTrimestreAnterior = IF(TrimestreActual = 1, AñoActual - 1, AñoActual)
-VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
-VAR UltimoMes =
-    SWITCH(
-        TrimestreAnterior,
-        1, 3,    // Para Q1: último mes es marzo
-        2, 6,    // Para Q2: último mes es junio
-        3, 9,    // Para Q3: último mes es septiembre
-        4, 12    // Para Q4: último mes es diciembre
-    )
-VAR FechaUltimoMes = DATE(AñoTrimestreAnterior, UltimoMes, 1)
-RETURN
-    "Valor metrica de " & FORMAT(FechaUltimoMes, "mmm yy")
-
-
-
-
-________________________________
-
-Valor Ultimo Mes Ultimo Trimestre_mve_Fallback =
-VAR FechaActual = MAX('salida_df_mve'[fecha])
-VAR MesActual = MONTH(FechaActual)
-VAR AñoActual = YEAR(FechaActual)
-VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
-// Si estamos en Q1 o Q2, consideramos que el último trimestre completo es el Q4 del año anterior;
-// de lo contrario, es el trimestre inmediatamente anterior.
-VAR UltimoTrimestreCompleto = IF(TrimestreActual <= 2, 4, TrimestreActual - 1)
-VAR AñoUltimoTrimestre = IF(TrimestreActual <= 2, AñoActual - 1, AñoActual)
-VAR UltimoMes =
-    SWITCH(
-        UltimoTrimestreCompleto,
-        1, 3,    // Q1: último mes es marzo
-        2, 6,    // Q2: último mes es junio
-        3, 9,    // Q3: último mes es septiembre
-        4, 12    // Q4: último mes es diciembre
-    )
-// Fecha calculada según la lógica original.
-VAR FechaComp = DATE(AñoUltimoTrimestre, UltimoMes, 1)
-VAR ValorComp =
-    CALCULATE(
-        MAX('salida_df_mve'[valor metrica]),
-        'salida_df_mve'[fecha] = FechaComp
-    )
-// Definimos la fecha de diciembre (fallback 1) en el mismo año del último trimestre.
-VAR FechaDic = DATE(AñoUltimoTrimestre, 12, 1)
-VAR ValorDic =
-    CALCULATE(
-        MAX('salida_df_mve'[valor metrica]),
-        'salida_df_mve'[fecha] = FechaDic
-    )
-// Definimos la fecha de septiembre (fallback 2) en el mismo año.
-VAR FechaSep = DATE(AñoUltimoTrimestre, 9, 1)
-VAR ValorSep =
-    CALCULATE(
-        MAX('salida_df_mve'[valor metrica]),
-        'salida_df_mve'[fecha] = FechaSep
-    )
-RETURN
-    COALESCE(ValorComp, ValorDic, ValorSep)
-____________________
-
 Valor Ultimo Mes Trimestre_NoActual_Fallback =
 VAR CurrentDate = MAX('salida_df_mve'[fecha])
 VAR CurrentYear = YEAR(CurrentDate)
 VAR CurrentQuarter = INT((MONTH(CurrentDate) - 1) / 3) + 1
--- Filtramos todas las filas con mes en {3,6,9,12} que pertenezcan a años anteriores o a trimestres completos (previos al actual) en el año actual
-VAR FilteredTable =
+VAR CandidateTable =
     FILTER(
         ALL('salida_df_mve'),
+        -- Consideramos solo fechas que sean el último mes de un trimestre:
         MONTH('salida_df_mve'[fecha]) IN {3,6,9,12} &&
         (
+            -- Todas las fechas de años anteriores
             YEAR('salida_df_mve'[fecha]) < CurrentYear ||
+            -- En el año actual, solo se consideran trimestres completos (anteriores al actual)
             (YEAR('salida_df_mve'[fecha]) = CurrentYear &&
              INT((MONTH('salida_df_mve'[fecha]) - 1) / 3) + 1 < CurrentQuarter)
-        )
+        ) &&
+        -- Solo se incluyen filas con datos en valor metrica
+        NOT(ISBLANK('salida_df_mve'[valor metrica]))
     )
--- Fecha candidata: la más reciente entre las filas filtradas
-VAR LastDate = MAXX(FilteredTable, 'salida_df_mve'[fecha])
--- Valor para la fecha candidata
-VAR ValorLastDate =
-    CALCULATE(
-        MAX('salida_df_mve'[valor metrica]),
-        'salida_df_mve'[fecha] = LastDate
-    )
--- Si no hay datos en LastDate, buscamos la siguiente fecha más reciente (excluyendo LastDate)
-VAR FilteredTableFallback =
-    FILTER(FilteredTable, 'salida_df_mve'[fecha] < LastDate)
-VAR PrevDate = MAXX(FilteredTableFallback, 'salida_df_mve'[fecha])
-VAR ValorPrevDate =
-    CALCULATE(
-        MAX('salida_df_mve'[valor metrica]),
-        'salida_df_mve'[fecha] = PrevDate
-    )
+VAR TopCandidate =
+    TOPN(1, CandidateTable, 'salida_df_mve'[fecha], DESC)
+VAR SelectedDate =
+    MAXX(TopCandidate, 'salida_df_mve'[fecha])
 RETURN
-    COALESCE(ValorLastDate, ValorPrevDate)
+    CALCULATE(
+        MAX('salida_df_mve'[valor metrica]),
+        'salida_df_mve'[fecha] = SelectedDate
+    )
+
 
 
