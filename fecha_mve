@@ -103,3 +103,10 @@ VAR NewDate = EDATE(SelectedDate, -1)
 RETURN
     "Valor metrica de " & FORMAT(NewDate, "mmm yy")
 
+________________
+
+Diferencia_Metricas =
+VAR ValorActual = [Valor Ultimo Mes Trimestre_NoActual_Fallback]
+VAR ValorAnterior = [Valor Ultimo Mes Trimestre_NoActual_Menos1]
+RETURN
+    ValorActual - ValorAnterior
