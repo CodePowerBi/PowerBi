@@ -41,3 +41,31 @@ SWITCH(
     "Colombia", 13,
     99  // Por si hay alguno fuera de esa lista
 )
+
+
+
+
+
+MiTabla = 
+ADDCOLUMNS(
+    VALUES('TuTabla'[Country]),
+    "OrdenPersonalizado",
+        SWITCH(
+            'TuTabla'[Country],
+            "Group", 1,
+            "Parent", 2,
+            "Brazil", 3,
+            "Chile", 4,
+            "Mexico", 5,
+            "USA", 6,
+            "UK", 7,
+            "Portugal", 8,
+            "Poland", 9,
+            "Argentina", 10,
+            "Uruguay", 11,
+            "Peru", 12,
+            "Colombia", 13,
+            BLANK()
+        )
+)
+
