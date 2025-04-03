@@ -6,3 +6,18 @@ SWITCH(
     ISBLANK('tabla_trading'[apetito]) || 'tabla_trading'[apetito] = 0, "0",
     'tabla_trading'[apetito]
 )
+
+
+_-
+
+
+Country =
+SWITCH(
+    TRUE(),
+    'tablones_des_tabla_trading'[unidad] = "MATRIZ", "Parent",
+    'tablones_des_tabla_trading'[unidad] = "CORP",   "Group",
+    ISBLANK('tablones_des_tabla_trading'[apetito]) 
+        || 'tablones_des_tabla_trading'[apetito] = 0, 
+        "0",
+    'tablones_des_tabla_trading'[apetito]
+)
