@@ -1,0 +1,8 @@
+Unidad_Nuevo =
+SWITCH(
+    TRUE(),
+    'tabla_trading'[unidad] = "MATRIZ", "Parent",
+    'tabla_trading'[unidad] = "CORP", "Group",
+    ISBLANK('tabla_trading'[apetito]) || 'tabla_trading'[apetito] = 0, "0",
+    'tabla_trading'[apetito]
+)
