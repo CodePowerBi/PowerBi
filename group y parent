@@ -69,3 +69,26 @@ ADDCOLUMNS(
         )
 )
 
+
+
+________________________________________________
+
+
+Country_Ordenado = 
+SWITCH(
+    'Country_Trading'[Country],
+    "Group", "01 - Group",
+    "Parent", "02 - Parent",
+    "Brazil", "03 - Brazil",
+    "Chile", "04 - Chile",
+    "Mexico", "05 - Mexico",
+    "USA", "06 - USA",
+    "UK", "07 - UK",
+    "Portugal", "08 - Portugal",
+    "Poland", "09 - Poland",
+    "Argentina", "10 - Argentina",
+    "Uruguay", "11 - Uruguay",
+    "Peru", "12 - Peru",
+    "Colombia", "13 - Colombia"
+)
+
