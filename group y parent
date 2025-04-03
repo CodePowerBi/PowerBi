@@ -92,3 +92,25 @@ SWITCH(
     "Colombia", "13 - Colombia"
 )
 
+__________________________
+
+OrdenNombre = 
+SWITCH(
+    'Country_Trading'[Country],
+    "Group", "01",
+    "Parent", "02",
+    "Brazil", "03",
+    "Chile", "04",
+    "Mexico", "05",
+    "USA", "06",
+    "UK", "07",
+    "Portugal", "08",
+    "Poland", "09",
+    "Argentina", "10",
+    "Uruguay", "11",
+    "Peru", "12",
+    "Colombia", "13",
+    "99"
+)
+
+
