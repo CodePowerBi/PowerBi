@@ -15,9 +15,7 @@ Country =
 SWITCH(
     TRUE(),
     'tablones_des_tabla_trading'[unidad] = "MATRIZ", "Parent",
-    'tablones_des_tabla_trading'[unidad] = "CORP",   "Group",
-    ISBLANK('tablones_des_tabla_trading'[apetito]) 
-        || 'tablones_des_tabla_trading'[apetito] = 0, 
-        "0",
+    'tablones_des_tabla_trading'[unidad] = "CORP", "Group",
+    ISBLANK('tablones_des_tabla_trading'[valor]) || 'tablones_des_tabla_trading'[valor] = 0, "0",
     'tablones_des_tabla_trading'[apetito]
 )
