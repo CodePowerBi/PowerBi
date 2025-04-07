@@ -1,34 +1,24 @@
-Calendario_Salida_Intragrupo =
-VAR FechaMin = CALCULATE(MIN('tablones_des_salida_intragrupo_2'[process_date]))
-VAR FechaMax = CALCULATE(MAX('tablones_des_salida_intragrupo_2'[process_date]))
-RETURN
-    ADDCOLUMNS(
-        CALENDAR(FechaMin, FechaMax),
-        "Year", YEAR([Date]),
-        "Month", MONTH([Date]),
-        "MonthName", FORMAT([Date], "MMMM"),
-        "Cuatrimestre", INT((MONTH([Date]) - 1) / 4) + 1,
-        "Year-Cuatrimestre", YEAR([Date]) & " - C" & INT((MONTH([Date]) - 1) / 4) + 1
+Month = 
+-- Para obtener el valor del primer mes del último cuatrimestre completo que tenga datos
+VAR FechaActual = MAX('tables_des_salida_intragrupo_2'[process_date])
+VAR MesActual = MONTH(FechaActual)
+VAR AnioActual = YEAR(FechaActual)
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
+VAR AnioTrimestreAnterior = IF(TrimestreActual = 1, AnioActual - 1, AnioActual)
+VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
+VAR UltimoMes =
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,   -- Para Q1: el último mes es marzo
+        2, 6,   -- Para Q2: el último mes es junio
+        3, 9,   -- Para Q3: el último mes es septiembre
+        4, 12   -- Para Q4: el último mes es diciembre
     )
-
-_____________
-
-Fechas_Last_Cuatrimestre =
-VAR FechaMax = CALCULATE(MAX('tablones_des_salida_intragrupo_2'[process_date]))
-VAR YearMax = YEAR(FechaMax)
-VAR Cuatrimestre = INT((MONTH(FechaMax) - 1) / 4) + 1
-RETURN
-    FILTER(
-        Calendario_Salida_Intragrupo,
-        Calendario_Salida_Intragrupo[Year] = YearMax &&
-        Calendario_Salida_Intragrupo[Cuatrimestre] = Cuatrimestre
+VAR FechaUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
+VAR Resultado =
+    CALCULATE(
+        MAX('tables_des_salida_intragrupo_2'[perc_exposure]),
+        'tables_des_salida_intragrupo_2'[process_date] = FechaUltimoMes
     )
-
-_______________
-
-Titulo_Ultimo_Cuatrimestre =
-VAR FechaMax = CALCULATE(MAX('tablones_des_salida_intragrupo_2'[process_date]))
-VAR YearMax = YEAR(FechaMax)
-VAR CuatrimestreMax = INT((MONTH(FechaMax) - 1) / 4) + 1
 RETURN
-    "Last cuatrimester with data: " & YearMax & " - C" & CuatrimestreMax
+    IF(ISBLANK(Resultado), 0, ABS(Resultado))
