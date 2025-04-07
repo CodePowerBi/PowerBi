@@ -10,3 +10,25 @@ RETURN
         "Cuatrimestre", INT((MONTH([Date]) - 1) / 4) + 1,
         "Year-Cuatrimestre", YEAR([Date]) & " - C" & INT((MONTH([Date]) - 1) / 4) + 1
     )
+
+_____________
+
+Fechas_Last_Cuatrimestre =
+VAR FechaMax = CALCULATE(MAX('tablones_des_salida_intragrupo_2'[process_date]))
+VAR YearMax = YEAR(FechaMax)
+VAR Cuatrimestre = INT((MONTH(FechaMax) - 1) / 4) + 1
+RETURN
+    FILTER(
+        Calendario_Salida_Intragrupo,
+        Calendario_Salida_Intragrupo[Year] = YearMax &&
+        Calendario_Salida_Intragrupo[Cuatrimestre] = Cuatrimestre
+    )
+
+_______________
+
+Titulo_Ultimo_Cuatrimestre =
+VAR FechaMax = CALCULATE(MAX('tablones_des_salida_intragrupo_2'[process_date]))
+VAR YearMax = YEAR(FechaMax)
+VAR CuatrimestreMax = INT((MONTH(FechaMax) - 1) / 4) + 1
+RETURN
+    "Last cuatrimester with data: " & YearMax & " - C" & CuatrimestreMax
