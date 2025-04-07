@@ -1,0 +1,12 @@
+VAR ValorReferencia =
+    CALCULATE(
+        MAX('tablones_des_tabla_trading'[valor]),
+        'tablones_des_tabla_trading'[fecha] = FechaUltimoMes,
+        'tablones_des_tabla_trading'[tipo] = "Alert"
+    )
+
+VAR Resultado =
+    CALCULATE(
+        ValorReferencia,
+        'tablones_des_tabla_trading'[tipo] = "Alert"
+    )
