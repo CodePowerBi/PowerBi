@@ -1,0 +1,12 @@
+Calendario_Salida_Intragrupo =
+VAR FechaMin = CALCULATE(MIN('tablones_des_salida_intragrupo_2'[process_date]))
+VAR FechaMax = CALCULATE(MAX('tablones_des_salida_intragrupo_2'[process_date]))
+RETURN
+    ADDCOLUMNS(
+        CALENDAR(FechaMin, FechaMax),
+        "Year", YEAR([Date]),
+        "Month", MONTH([Date]),
+        "MonthName", FORMAT([Date], "MMMM"),
+        "Cuatrimestre", INT((MONTH([Date]) - 1) / 4) + 1,
+        "Year-Cuatrimestre", YEAR([Date]) & " - C" & INT((MONTH([Date]) - 1) / 4) + 1
+    )
