@@ -1,8 +1,8 @@
-Month_ALERT_Por_Pais :=
+Month_ALERT_GrupoConstante :=
 VAR FechaMax =
     CALCULATE(
         MAX('tablon_des_tabla_trading'[fecha]),
-        ALLEXCEPT('tablon_des_tabla_trading', 'Country_Trading'[Country_Limpio])
+        FILTER('tablon_des_tabla_trading', 'Country_Trading'[Country_Limpio] = "Group")
     )
 VAR MesActual = MONTH(FechaMax)
 VAR AnioActual = YEAR(FechaMax)
@@ -17,15 +17,20 @@ VAR UltimoMes =
         3, 9,
         4, 12
     )
-VAR FechaUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
+VAR FechaReferencia = DATE(AnioTrimestreAnterior, UltimoMes, 1)
 
-VAR Resultado =
+VAR ValorGrupo =
     CALCULATE(
-        MAX('tablon_des_tabla_trading'[valor]),
-        'tablon_des_tabla_trading'[fecha] = FechaUltimoMes,
-        'tablon_des_tabla_trading'[tipo] = "Alert",
-        ALLEXCEPT('tablon_des_tabla_trading', 'Country_Trading'[Country_Limpio])
+        MAXX(
+            FILTER(
+                'tablon_des_tabla_trading',
+                'tablon_des_tabla_trading'[fecha] = FechaReferencia &&
+                'tablon_des_tabla_trading'[tipo] = "Alert"
+            ),
+            'tablon_des_tabla_trading'[valor]
+        ),
+        FILTER(ALL('tablon_des_tabla_trading'), 'Country_Trading'[Country_Limpio] = "Group")
     )
 
 RETURN
-    IF(ISBLANK(Resultado), 0, ABS(Resultado))
+    IF(ISBLANK(ValorGrupo), 0.0, ValorGrupo)
