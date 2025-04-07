@@ -1,5 +1,9 @@
-Month_ALERT_Constante :=
-VAR FechaMax = CALCULATE(MAX('tablon_des_tabla_trading'[fecha]), ALL('tablon_des_tabla_trading'))
+Month_ALERT_Por_Pais :=
+VAR FechaMax =
+    CALCULATE(
+        MAX('tablon_des_tabla_trading'[fecha]),
+        ALLEXCEPT('tablon_des_tabla_trading', 'Country_Trading'[Country_Limpio])
+    )
 VAR MesActual = MONTH(FechaMax)
 VAR AnioActual = YEAR(FechaMax)
 VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
@@ -20,7 +24,7 @@ VAR Resultado =
         MAX('tablon_des_tabla_trading'[valor]),
         'tablon_des_tabla_trading'[fecha] = FechaUltimoMes,
         'tablon_des_tabla_trading'[tipo] = "Alert",
-        ALL('tablon_des_tabla_trading') // <-- esto asegura que el cálculo se hace sin filtros de fecha
+        ALLEXCEPT('tablon_des_tabla_trading', 'Country_Trading'[Country_Limpio])
     )
 
 RETURN
