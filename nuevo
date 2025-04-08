@@ -16,4 +16,7 @@ CALCULATE(
     FILTER(
         'tablones_des tabla_trading',
         MONTH('tablones_des tabla_trading'[fecha]) = UltimaMes &&
-        YEAR('tablones_des tabla_trading'[fecha]) = Ultimo
+        YEAR('tablones_des tabla_trading'[fecha]) = UltimoAño &&
+        'tablones_des tabla_trading'[tipo] = "Alert"
+    )
+)
