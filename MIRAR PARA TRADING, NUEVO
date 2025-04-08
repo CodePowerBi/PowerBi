@@ -99,5 +99,31 @@ VAR SumaValor =
 RETURN
 SumaValor
 
+_____________________--
+
+Value_Month= 
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des tabla_trading'[fecha]),
+        FILTER(
+            ALL('tablones_des tabla_trading'),
+            MONTH('tablones_des tabla_trading'[fecha]) IN {3,6,9,12} &&
+            'tablones_des tabla_trading'[tipo] = "Value"  
+        )
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAño = YEAR(UltimaFechaCompleta)
+VAR SumaValor =
+    CALCULATE(
+        SUM('tablones_des tabla_trading'[valor]),
+        FILTER(
+            ALL('tablones_des tabla_trading'),
+            MONTH('tablones_des tabla_trading'[fecha]) = UltimaMes &&
+            YEAR('tablones_des tabla_trading'[fecha]) = UltimoAño &&
+            'tablones_des tabla_trading'[tipo] = "Value"  
+        )
+    )
+RETURN
+SumaValor
 
 
