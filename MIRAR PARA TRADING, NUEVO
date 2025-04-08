@@ -126,4 +126,19 @@ VAR SumaValor =
 RETURN
 SumaValor
 
+___________
+
+Value_Month_Title = 
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des tabla_trading'[fecha]),
+        FILTER(
+            ALL('tablones_des tabla_trading'),
+            MONTH('tablones_des tabla_trading'[fecha]) IN {3,6,9,12} &&
+            'tablones_des tabla_trading'[tipo] = "Value"  
+        )
+    )
+RETURN
+    "Value as of " & FORMAT(UltimaFechaCompleta, "mmmm yyyy")
+
 
