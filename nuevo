@@ -1,22 +1,19 @@
 SumaUltimoMesTrimestreCompleto_Alert =
 VAR UltimaFechaCompleta =
     CALCULATE(
-        MAX('tablones_des salida_intragrupo_1'[process_date]),
+        MAX('tablones_des tabla_trading'[fecha]),
         FILTER(
-            'tablones_des salida_intragrupo_1',
-            MONTH('tablones_des salida_intragrupo_1'[process_date]) IN {3,6,9,12} &&
-            'tablones_des salida_intragrupo_1'[tipo] = "Alert"
+            'tablones_des tabla_trading',
+            MONTH('tablones_des tabla_trading'[fecha]) IN {3,6,9,12} &&
+            'tablones_des tabla_trading'[tipo] = "Alert"
         )
     )
 VAR UltimaMes = MONTH(UltimaFechaCompleta)
 VAR UltimoAño = YEAR(UltimaFechaCompleta)
 RETURN
 CALCULATE(
-    SUM('tablones_des salida_intragrupo_1'[valor]),
+    SUM('tablones_des tabla_trading'[valor]),
     FILTER(
-        'tablones_des salida_intragrupo_1',
-        MONTH('tablones_des salida_intragrupo_1'[process_date]) = UltimaMes &&
-        YEAR('tablones_des salida_intragrupo_1'[process_date]) = UltimoAño &&
-        'tablones_des salida_intragrupo_1'[tipo] = "Alert"
-    )
-)
+        'tablones_des tabla_trading',
+        MONTH('tablones_des tabla_trading'[fecha]) = UltimaMes &&
+        YEAR('tablones_des tabla_trading'[fecha]) = Ultimo
