@@ -33,3 +33,29 @@ VAR UltimaFechaCompleta =
 VAR MesTexto = FORMAT(UltimaFechaCompleta, "MMMM")
 RETURN
 "Mes del Último Trimestre Completo: " & MesTexto
+
+
+
+______________________
+
+SumaUltimoMesTrimestreCompleto_EUR =
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX(tablones_desc_salida_intragrupo_2[process_date]),
+        FILTER(
+            ALL(tablones_desc_salida_intragrupo_2),
+            MONTH(tablones_desc_salida_intragrupo_2[process_date]) IN {3, 6, 9, 12}
+        )
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAño = YEAR(UltimaFechaCompleta)
+RETURN
+CALCULATE(
+    SUM(tablones_desc_salida_intragrupo_2[recop_max_eur]),
+    FILTER(
+        tablones_desc_salida_intragrupo_2,
+        MONTH(tablones_desc_salida_intragrupo_2[process_date]) = UltimaMes &&
+        YEAR(tablones_desc_salida_intragrupo_2[process_date]) = UltimoAño
+    )
+)
+
