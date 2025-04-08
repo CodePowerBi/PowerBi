@@ -1,0 +1,52 @@
+SumaUltimoMesTrimestreCompleto_Alert =
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des salida_intragrupo_1'[process_date]),
+        FILTER(
+            ALL('tablones_des salida_intragrupo_1'),
+            MONTH('tablones_des salida_intragrupo_1'[process_date]) IN {3,6,9,12} &&
+            'tablones_des salida_intragrupo_1'[tipo] = "Alert"
+        )
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAño = YEAR(UltimaFechaCompleta)
+RETURN
+CALCULATE(
+    SUM('tablones_des salida_intragrupo_1'[valor]),
+    FILTER(
+        'tablones_des salida_intragrupo_1',
+        MONTH('tablones_des salida_intragrupo_1'[process_date]) = UltimaMes &&
+        YEAR('tablones_des salida_intragrupo_1'[process_date]) = UltimoAño &&
+        'tablones_des salida_intragrupo_1'[tipo] = "Alert"
+    )
+)
+
+
+___________________________________
+
+
+
+ValorUltimoMesTrimestre_Col =
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des salida_intragrupo_1'[process_date]),
+        FILTER(
+            ALL('tablones_des salida_intragrupo_1'),
+            MONTH('tablones_des salida_intragrupo_1'[process_date]) IN {3,6,9,12} &&
+            'tablones_des salida_intragrupo_1'[tipo] = "Alert"
+        )
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAño = YEAR(UltimaFechaCompleta)
+VAR SumaValor =
+    CALCULATE(
+        SUM('tablones_des salida_intragrupo_1'[valor]),
+        FILTER(
+            ALL('tablones_des salida_intragrupo_1'),
+            MONTH('tablones_des salida_intragrupo_1'[process_date]) = UltimaMes &&
+            YEAR('tablones_des salida_intragrupo_1'[process_date]) = UltimoAño &&
+            'tablones_des salida_intragrupo_1'[tipo] = "Alert"
+        )
+    )
+RETURN
+SumaValor
