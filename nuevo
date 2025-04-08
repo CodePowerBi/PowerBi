@@ -20,3 +20,19 @@ CALCULATE(
         'tablones_des tabla_trading'[tipo] = "Alert"
     )
 )
+
+__________
+
+TituloUltimoMesTrimestreCompleto_Value =
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des tabla_trading'[fecha]),
+        FILTER(
+            'tablones_des tabla_trading',
+            MONTH('tablones_des tabla_trading'[fecha]) IN {3,6,9,12} &&
+            'tablones_des tabla_trading'[tipo] = "Value"
+        )
+    )
+RETURN
+    "Value as of " & FORMAT(UltimaFechaCompleta, "mmmm yyyy")
+
