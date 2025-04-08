@@ -70,3 +70,32 @@ IF(
     FORMAT(UltimaFechaCompleta, "MMMM yyyy", "en-US")
 )
 
+__________________________
+
+ValorUltimoMesTrimestre_Col =
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des tabla_trading'[fecha]),
+        FILTER(
+            ALL('tablones_des tabla_trading'),
+            MONTH('tablones_des tabla_trading'[fecha]) IN {3,6,9,12} &&
+            'tablones_des tabla_trading'[tipo] = "Alert" &&
+            'tablones_des tabla_trading'[unidad] = "CORP"
+        )
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAño = YEAR(UltimaFechaCompleta)
+VAR SumaValor =
+    CALCULATE(
+        SUM('tablones_des tabla_trading'[valor]),
+        FILTER(
+            ALL('tablones_des tabla_trading'),
+            MONTH('tablones_des tabla_trading'[fecha]) = UltimaMes &&
+            YEAR('tablones_des tabla_trading'[fecha]) = UltimoAño &&
+            'tablones_des tabla_trading'[tipo] = "Alert" &&
+            'tablones_des tabla_trading'[unidad] = "CORP"
+        )
+    )
+RETURN
+SumaValor
+
