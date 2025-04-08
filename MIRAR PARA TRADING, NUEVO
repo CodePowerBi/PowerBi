@@ -99,3 +99,43 @@ VAR SumaValor =
 RETURN
 SumaValor
 
+
+_____________________
+
+Esta sección permite visualizar la información relacionada con las exposiciones intragrupo desde dos perspectivas: exposición y límites por país, y distribución de riesgos por país, ambas correspondientes al último periodo del trimestre más reciente con datos disponibles (diciembre 2024).
+
+Hoja: Risk Exposure and Limits by Country
+Esta vista muestra el detalle de la exposición de riesgo y los límites establecidos por país, con los siguientes campos:
+
+Exposición actual
+
+Exposición máxima permitida
+
+Porcentaje de exposición utilizada
+
+Nivel de alerta
+
+Límite
+
+Balance
+
+TAV
+
+Se presenta también un resumen total consolidado.
+
+En la parte superior derecha se incluyen dos botones de navegación:
+
+Botón 1 (flecha/play): Redirecciona al apartado de RDC (Risk Data Control).
+
+Botón 2 (icono de casa): Redirecciona al Menú Principal.
+
+Hoja: Risk Distribution by Country
+En esta hoja se visualiza la distribución de riesgo por país, cruzando el país de la contraparte de resolución con el país de booking. Se destaca que el mayor monto de exposición se encuentra en España.
+
+El análisis también corresponde al último trimestre con datos disponibles (diciembre 2024).
+
+En la parte superior derecha se incluyen los siguientes botones:
+
+Botón 1 (flecha/play): Redirecciona al apartado de RELC (Risk Exposure Limit Control).
+
+Botón 2 (icono de casa): Redirecciona al Menú Principal.
