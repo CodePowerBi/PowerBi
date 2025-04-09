@@ -1,23 +1,27 @@
 SumaUltimoMesTrimestreCompleto_EUR =
 VAR UltimaFechaCompleta =
     CALCULATE(
-        MAX('tablones_des salida_intragrupo_1'[process_date]),
-        -- Filtros o condiciones adicionales, si es necesario
-    )
-VAR UltimaMes = MONTH(UltimaFechaCompleta)
-VAR UltimoAnio = YEAR(UltimaFechaCompleta)
-VAR SumaValor =
-    CALCULATE(
-        SUM('tablones_des salida_intragrupo_1'[recoop_prec]),
+        MAX('tablones_des_salida_intragrupo_1'[process_date]),
         FILTER(
-            'tablones_des salida_intragrupo_1',
-            MONTH('tablones_des salida_intragrupo_1'[process_date]) = UltimaMes &&
-            YEAR('tablones_des salida_intragrupo_1'[process_date]) = UltimoAnio
+            'tablones_des_salida_intragrupo_1',
+            MONTH('tablones_des_salida_intragrupo_1'[process_date]) IN {3, 6, 9, 12}
         )
     )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAño = YEAR(UltimaFechaCompleta)
+VAR FilasCoincidentes =
+    FILTER(
+        'tablones_des_salida_intragrupo_1',
+        MONTH('tablones_des_salida_intragrupo_1'[process_date]) = UltimaMes &&
+        YEAR('tablones_des_salida_intragrupo_1'[process_date]) = UltimoAño
+    )
+VAR ConteoFilas = CALCULATE( COUNTROWS('tablones_des_salida_intragrupo_1'), FilasCoincidentes )
 RETURN
     IF(
-        ISBLANK(SumaValor),
-        "-",   // Se mostrará un guion en vez de BLANK()
-        SumaValor
+        ConteoFilas = 0,
+        BLANK(),
+        CALCULATE(
+            SUM('tablones_des_salida_intragrupo_1'[reop_prec_mens]),
+            FilasCoincidentes
+        )
     )
