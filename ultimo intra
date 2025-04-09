@@ -1,0 +1,23 @@
+SumaUltimoMesTrimestreCompleto_EUR =
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des salida_intragrupo_1'[process_date]),
+        -- Filtros o condiciones adicionales, si es necesario
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAnio = YEAR(UltimaFechaCompleta)
+VAR SumaValor =
+    CALCULATE(
+        SUM('tablones_des salida_intragrupo_1'[recoop_prec]),
+        FILTER(
+            'tablones_des salida_intragrupo_1',
+            MONTH('tablones_des salida_intragrupo_1'[process_date]) = UltimaMes &&
+            YEAR('tablones_des salida_intragrupo_1'[process_date]) = UltimoAnio
+        )
+    )
+RETURN
+    IF(
+        ISBLANK(SumaValor),
+        "-",   // Se mostrará un guion en vez de BLANK()
+        SumaValor
+    )
