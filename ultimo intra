@@ -1,4 +1,4 @@
-SumaUltimoMesTrimestreCompleto_EUR_mod =
+SumaUltimoMesTrimestreCompleto_EUR =
 VAR UltimaFechaCompleta =
     CALCULATE(
         MAX('tablones_des_salida_intragrupo_1'[process_date]),
@@ -18,15 +18,9 @@ VAR SumaValor =
             YEAR('tablones_des_salida_intragrupo_1'[process_date]) = UltimoAño
         )
     )
-VAR NombreCpty =
-    SELECTEDVALUE('tablones_des_salida_intragrupo_1'[AA_Nombre_Cpyty])
-VAR NombreFolder =
-    SELECTEDVALUE('tablones_des_salida_intragrupo_1'[AA_Nombre_Folder])
 RETURN
     IF(
-        ISBLANK(SumaValor) || SumaValor = 0 ||
-        ISBLANK(NombreCpty) || NombreCpty = "" ||
-        ISBLANK(NombreFolder) || NombreFolder = "",
+        ISBLANK(SumaValor) || SumaValor = 0,
         "-",
-        FORMAT(SumaValor, "#,0")
+        SumaValor
     )
