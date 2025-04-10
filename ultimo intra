@@ -1,29 +1,8 @@
 Medida Recop = 
-VAR valor =
-    SUM('tablones_des salida_intragrupo_1'[recop_max_eur])
+VAR valor = SUM('tablones_des salida_intragrupo_1'[recop_max_eur])
 RETURN
     IF(
         ISBLANK(valor),
-        "-",            -- Texto en caso de que no haya datos
-        valor           -- Suma real cuando sí hay datos
+        "-",
+        FORMAT(valor, "#,##0.00") 
     )
-
-___________________
-
-Medida Recop = 
-COALESCE(
-    SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
-    "-"
-)
-
-_____________
-
-Medida Recop = 
-COALESCE(
-    FORMAT(
-        SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
-        "#,##0.00"
-    ),
-    "-"
-)
-_________________
