@@ -1,32 +1,29 @@
-AA_PRUEBAAA =
-VAR UltimaFechaCompleta =
-    CALCULATE(
-        MAX('tablones_des salida_intragrupo_1'[process_date]),
-        FILTER(
-            'tablones_des salida_intragrupo_1',
-            MONTH('tablones_des salida_intragrupo_1'[process_date]) IN {3, 6, 9, 12}
-        )
-    )
-VAR UltimaMes = MONTH(UltimaFechaCompleta)
-VAR UltimoAño = YEAR(UltimaFechaCompleta)
-VAR SumaValor =
-    CALCULATE(
-        SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
-        FILTER(
-            'tablones_des salida_intragrupo_1',
-            MONTH('tablones_des salida_intragrupo_1'[process_date]) = UltimaMes &&
-            YEAR('tablones_des salida_intragrupo_1'[process_date]) = UltimoAño
-        )
-    )
-VAR NombreCpty =
-    SELECTEDVALUE('tablones_des salida_intragrupo_1'[AA_Nombre_Cpyty])
-VAR NombreFolder =
-    SELECTEDVALUE('tablones_des salida_intragrupo_1'[AA_Nombre_Folder])
+Medida Recop = 
+VAR valor =
+    SUM('tablones_des salida_intragrupo_1'[recop_max_eur])
 RETURN
     IF(
-        ISBLANK(SumaValor) || SumaValor = "" ||
-        ISBLANK(NombreCpty) || NombreCpty = "" ||
-        ISBLANK(NombreFolder) || NombreFolder = "",
-        "-",
-        FORMAT(SumaValor, "#,0")
+        ISBLANK(valor),
+        "-",            -- Texto en caso de que no haya datos
+        valor           -- Suma real cuando sí hay datos
     )
+
+___________________
+
+Medida Recop = 
+COALESCE(
+    SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
+    "-"
+)
+
+_____________
+
+Medida Recop = 
+COALESCE(
+    FORMAT(
+        SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
+        "#,##0.00"
+    ),
+    "-"
+)
+_________________
