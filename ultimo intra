@@ -1,8 +1,5 @@
 Medida Recop = 
-VAR valor = SUM('tablones_des salida_intragrupo_1'[recop_max_eur])
-RETURN
-    IF(
-        ISBLANK(valor),
-        "-",
-        FORMAT(valor, "#,##0.00") 
-    )
+COALESCE(
+  SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
+  "-"
+)
