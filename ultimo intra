@@ -1,5 +1,45 @@
-Medida Recop = 
-COALESCE(
-  SUM('tablones_des salida_intragrupo_1'[recop_max_eur]),
-  "-"
-)
+Hoja: Portada “Intragroup Risk – Risk Appetite Monitoring”
+Esta es la pantalla de presentación del módulo Intragroup Risk. Incluye:
+
+Nombre de la sección: Intragroup Risk – Risk Appetite Monitoring
+
+Ubicación: Boadilla del Monte, Madrid
+
+Periodo: Diciembre 2024
+
+Branding corporativo (Santander)
+
+Botones de navegación hacia las distintas secciones de análisis
+
+En la parte superior derecha se incluyen los siguientes botones:
+
+Botón RA1: Redirecciona a la hoja de Executive Summary.
+
+Botón RA2: Redirecciona a la hoja de Risk Exposure and Limits by Country.
+
+Botón RA3: Redirecciona a la hoja de Risk Distribution by Country.
+
+Botón RA4: Redirecciona a otra sección específica del módulo (a definir).
+
+Botón Casa: Redirecciona al Menú Principal.
+
+Hoja: Executive Summary
+Esta vista presenta un resumen ejecutivo con los objetivos, contexto y resultados clave del monitoreo del riesgo intragrupo:
+
+Objetivo: Presentar el monitoreo trimestral del Risk Appetite Statement (RAS) para riesgo intragrupo.
+
+Contexto: Monitoreo estructurado de las exposiciones en línea con las políticas de RAS.
+
+Resultados: Todas las unidades de gestión (Management Units) se encuentran dentro de los límites establecidos.
+
+En la parte superior derecha se mantienen los botones de navegación mencionados anteriormente:
+
+RA1: Executive Summary (pantalla actual)
+
+RA2: Risk Exposure and Limits
+
+RA3: Risk Distribution
+
+RA4: (otra sección del módulo)
+
+Casa: Menú Principal
