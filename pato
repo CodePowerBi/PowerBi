@@ -1,131 +1,3 @@
-Fecha_UltimoViernes_MesTrimestreAnterior = 
-VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
-VAR MesActual = MONTH(FechaActual)
-VAR AnioActual = YEAR(FechaActual)
-VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
-
-VAR AnioTrimestreAnterior = IF(TrimestreActual = 1, AnioActual - 1, AnioActual)
-VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
-
-VAR UltimoMes = 
-    SWITCH(
-        TrimestreAnterior,
-        1, 3,   // Q1: marzo
-        2, 6,   // Q2: junio
-        3, 9,   // Q3: septiembre
-        4, 12   // Q4: diciembre
-    )
-
-VAR FechaInicioUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
-VAR FechaFinUltimoMes = EOMONTH(FechaInicioUltimoMes, 0)
-
-VAR FechaFila = 'tablones_des_vista_salida_daily_lcr_ddbb'[date]
-VAR EsViernes = WEEKDAY(FechaFila, 2) = 5  // WEEKDAY con tipo 2: lunes=1, viernes=5
-
-RETURN
-IF(
-    FechaFila >= FechaInicioUltimoMes &&
-    FechaFila <= FechaFinUltimoMes &&
-    EsViernes,
-    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)), // Devuelve solo fecha sin hora
-    BLANK()
-)
-
-
-_________________________
-
-Fecha_UltimoViernes_PenultimoTrimestre = 
-VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
-VAR MesActual = MONTH(FechaActual)
-VAR AnioActual = YEAR(FechaActual)
-VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
-
--- Retrocedemos 2 trimestres
-VAR TotalTrimestresPasados = (AnioActual * 4 + TrimestreActual) - 2
-VAR AnioObjetivo = INT(TotalTrimestresPasados / 4)
-VAR TrimestreObjetivo = MOD(TotalTrimestresPasados, 4)
-VAR TrimestreFinal = IF(TrimestreObjetivo = 0, 4, TrimestreObjetivo)
-VAR AnioFinal = IF(TrimestreObjetivo = 0, AnioObjetivo - 1, AnioObjetivo)
-
-VAR UltimoMes = 
-    SWITCH(
-        TrimestreFinal,
-        1, 3,
-        2, 6,
-        3, 9,
-        4, 12
-    )
-
-VAR FechaInicioUltimoMes = DATE(AnioFinal, UltimoMes, 1)
-VAR FechaFinUltimoMes = EOMONTH(FechaInicioUltimoMes, 0)
-
-VAR FechaFila = 'tablones_des_vista_salida_daily_lcr_ddbb'[date]
-VAR EsViernes = WEEKDAY(FechaFila, 2) = 5
-
-RETURN
-IF(
-    FechaFila >= FechaInicioUltimoMes &&
-    FechaFila <= FechaFinUltimoMes &&
-    EsViernes,
-    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
-    BLANK()
-)
-
-_____________________
-
-Fecha_Ultimos12MesesDisponibles = 
-VAR FechaMaxDisponible = CALCULATE(
-    MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
-    ALL('tablones_des_vista_salida_diario_mensual')
-)
-VAR UltimoMesDisponible = EOMONTH(FechaMaxDisponible, 0)
-VAR PrimerDia12MesesAtras = EOMONTH(UltimoMesDisponible, -12) + 1
-
-VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
-
-RETURN
-IF(
-    FechaFila >= PrimerDia12MesesAtras &&
-    FechaFila <= UltimoMesDisponible,
-    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
-    BLANK()
-)
-
-______________
-
-Fecha_Ultimos12MesesConDatos = 
-VAR TablaFiltrada =
-    FILTER(
-        ADDCOLUMNS(
-            SUMMARIZE('tablones_des_vista_salida_diario_mensual', 
-                      YEAR('tablones_des_vista_salida_diario_mensual'[fecha]), 
-                      MONTH('tablones_des_vista_salida_diario_mensual'[fecha])),
-            "ValorMes", CALCULATE(SUM('tablones_des_vista_salida_diario_mensual'[valor]))
-        ),
-        [ValorMes] <> 0
-    )
-
-VAR MaxFechaConDatos = 
-    CALCULATE(
-        MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
-        FILTER('tablones_des_vista_salida_diario_mensual', 'tablones_des_vista_salida_diario_mensual'[valor] <> 0)
-    )
-
-VAR FechaFin = EOMONTH(MaxFechaConDatos, 0)
-VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
-VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
-
-RETURN
-IF(
-    FechaFila >= FechaInicio &&
-    FechaFila <= FechaFin &&
-    'tablones_des_vista_salida_diario_mensual'[valor] <> 0,
-    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
-    BLANK()
-)
-
-_____________
-
 Fecha_Ultimos12MesesConDatosValidos = 
 VAR MaxFechaConDatos = 
     CALCULATE(
@@ -139,7 +11,8 @@ VAR MaxFechaConDatos =
     )
 
 VAR FechaFin = EOMONTH(MaxFechaConDatos, 0)
-VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
+VAR FechaInicio = EOMONTH(FechaFin, -12) + 1  -- Comienza desde el primer día 12 meses atrás
+
 VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
 
 VAR TieneDatosValidos = 
@@ -155,6 +28,3 @@ IF(
     DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
     BLANK()
 )
-
-
-
