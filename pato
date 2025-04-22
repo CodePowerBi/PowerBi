@@ -1,4 +1,4 @@
-Fecha_Ultimos12MesesConDatosValidos = 
+Calendario_LCR_12MesesValidos = 
 VAR MaxFechaConDatos = 
     CALCULATE(
         MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
@@ -11,20 +11,13 @@ VAR MaxFechaConDatos =
     )
 
 VAR FechaFin = EOMONTH(MaxFechaConDatos, 0)
-VAR FechaInicio = EOMONTH(FechaFin, -12) + 1  -- Comienza desde el primer día 12 meses atrás
-
-VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
-
-VAR TieneDatosValidos = 
-    'tablones_des_vista_salida_diario_mensual'[daily_lcr] <> 0 ||
-    'tablones_des_vista_salida_diario_mensual'[daily_surplus] <> 0 ||
-    'tablones_des_vista_salida_diario_mensual'[net_outflows] <> 0
+VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
 
 RETURN
-IF(
-    FechaFila >= FechaInicio &&
-    FechaFila <= FechaFin &&
-    TieneDatosValidos,
-    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
-    BLANK()
+ADDCOLUMNS(
+    CALENDAR(FechaInicio, FechaFin),
+    "Año", YEAR([Date]),
+    "Mes", MONTH([Date]),
+    "NombreMes", FORMAT([Date], "MMMM"),
+    "AñoMes", FORMAT([Date], "YYYY-MM")
 )
