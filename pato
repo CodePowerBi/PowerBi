@@ -71,3 +71,24 @@ IF(
     BLANK()
 )
 
+_____________________
+
+Fecha_Ultimos12MesesDisponibles = 
+VAR FechaMaxDisponible = CALCULATE(
+    MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
+    ALL('tablones_des_vista_salida_diario_mensual')
+)
+VAR UltimoMesDisponible = EOMONTH(FechaMaxDisponible, 0)
+VAR PrimerDia12MesesAtras = EOMONTH(UltimoMesDisponible, -12) + 1
+
+VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
+
+RETURN
+IF(
+    FechaFila >= PrimerDia12MesesAtras &&
+    FechaFila <= UltimoMesDisponible,
+    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
+    BLANK()
+)
+
+
