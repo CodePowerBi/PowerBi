@@ -1,4 +1,4 @@
-EsUltimoTrimestreCompleto = 
+Fecha_UltimoMes_TrimestreAnterior = 
 VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
 VAR MesActual = MONTH(FechaActual)
 VAR AnioActual = YEAR(FechaActual)
@@ -7,16 +7,22 @@ VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
 VAR AnioTrimestreAnterior = IF(TrimestreActual = 1, AnioActual - 1, AnioActual)
 VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
 
-VAR FechaInicioTrimestreAnterior = 
-    DATE(AnioTrimestreAnterior, (TrimestreAnterior - 1) * 3 + 1, 1)
+VAR UltimoMes = 
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,   // Q1: marzo
+        2, 6,   // Q2: junio
+        3, 9,   // Q3: septiembre
+        4, 12   // Q4: diciembre
+    )
 
-VAR FechaFinTrimestreAnterior = 
-    EOMONTH(DATE(AnioTrimestreAnterior, TrimestreAnterior * 3, 1), 0)
+VAR FechaInicioUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
+VAR FechaFinUltimoMes = EOMONTH(FechaInicioUltimoMes, 0)
 
 RETURN
 IF(
-    'tablones_des_vista_salida_daily_lcr_ddbb'[date] >= FechaInicioTrimestreAnterior &&
-    'tablones_des_vista_salida_daily_lcr_ddbb'[date] <= FechaFinTrimestreAnterior,
-    1,
-    0
+    'tablones_des_vista_salida_daily_lcr_ddbb'[date] >= FechaInicioUltimoMes &&
+    'tablones_des_vista_salida_daily_lcr_ddbb'[date] <= FechaFinUltimoMes,
+    'tablones_des_vista_salida_daily_lcr_ddbb'[date],
+    BLANK()
 )
