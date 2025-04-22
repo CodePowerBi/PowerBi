@@ -1,4 +1,4 @@
-Fecha_UltimoMes_TrimestreAnterior = 
+Fecha_UltimoViernes_MesTrimestreAnterior = 
 VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
 VAR MesActual = MONTH(FechaActual)
 VAR AnioActual = YEAR(FechaActual)
@@ -19,10 +19,14 @@ VAR UltimoMes =
 VAR FechaInicioUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
 VAR FechaFinUltimoMes = EOMONTH(FechaInicioUltimoMes, 0)
 
+VAR FechaFila = 'tablones_des_vista_salida_daily_lcr_ddbb'[date]
+VAR EsViernes = WEEKDAY(FechaFila, 2) = 5  // WEEKDAY con tipo 2: lunes=1, viernes=5
+
 RETURN
 IF(
-    'tablones_des_vista_salida_daily_lcr_ddbb'[date] >= FechaInicioUltimoMes &&
-    'tablones_des_vista_salida_daily_lcr_ddbb'[date] <= FechaFinUltimoMes,
-    'tablones_des_vista_salida_daily_lcr_ddbb'[date],
+    FechaFila >= FechaInicioUltimoMes &&
+    FechaFila <= FechaFinUltimoMes &&
+    EsViernes,
+    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)), // Devuelve solo fecha sin hora
     BLANK()
 )
