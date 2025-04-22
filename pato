@@ -91,4 +91,37 @@ IF(
     BLANK()
 )
 
+______________
+
+Fecha_Ultimos12MesesConDatos = 
+VAR TablaFiltrada =
+    FILTER(
+        ADDCOLUMNS(
+            SUMMARIZE('tablones_des_vista_salida_diario_mensual', 
+                      YEAR('tablones_des_vista_salida_diario_mensual'[fecha]), 
+                      MONTH('tablones_des_vista_salida_diario_mensual'[fecha])),
+            "ValorMes", CALCULATE(SUM('tablones_des_vista_salida_diario_mensual'[valor]))
+        ),
+        [ValorMes] <> 0
+    )
+
+VAR MaxFechaConDatos = 
+    CALCULATE(
+        MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
+        FILTER('tablones_des_vista_salida_diario_mensual', 'tablones_des_vista_salida_diario_mensual'[valor] <> 0)
+    )
+
+VAR FechaFin = EOMONTH(MaxFechaConDatos, 0)
+VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
+VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
+
+RETURN
+IF(
+    FechaFila >= FechaInicio &&
+    FechaFila <= FechaFin &&
+    'tablones_des_vista_salida_diario_mensual'[valor] <> 0,
+    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
+    BLANK()
+)
+
 
