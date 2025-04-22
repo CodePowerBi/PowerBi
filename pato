@@ -124,4 +124,37 @@ IF(
     BLANK()
 )
 
+_____________
+
+Fecha_Ultimos12MesesConDatosValidos = 
+VAR MaxFechaConDatos = 
+    CALCULATE(
+        MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
+        FILTER(
+            'tablones_des_vista_salida_diario_mensual',
+            'tablones_des_vista_salida_diario_mensual'[daily_lcr] <> 0 ||
+            'tablones_des_vista_salida_diario_mensual'[daily_surplus] <> 0 ||
+            'tablones_des_vista_salida_diario_mensual'[net_outflows] <> 0
+        )
+    )
+
+VAR FechaFin = EOMONTH(MaxFechaConDatos, 0)
+VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
+VAR FechaFila = 'tablones_des_vista_salida_diario_mensual'[fecha]
+
+VAR TieneDatosValidos = 
+    'tablones_des_vista_salida_diario_mensual'[daily_lcr] <> 0 ||
+    'tablones_des_vista_salida_diario_mensual'[daily_surplus] <> 0 ||
+    'tablones_des_vista_salida_diario_mensual'[net_outflows] <> 0
+
+RETURN
+IF(
+    FechaFila >= FechaInicio &&
+    FechaFila <= FechaFin &&
+    TieneDatosValidos,
+    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
+    BLANK()
+)
+
+
 
