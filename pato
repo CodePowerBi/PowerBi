@@ -1,4 +1,4 @@
-Fecha_UltimoViernes_PrimerMesTrimestreActual = 
+Fecha_UltimoViernes_MesAnteriorPrimerMesTrimestreActual = 
 VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
 VAR MesActual = MONTH(FechaActual)
 VAR AnioActual = YEAR(FechaActual)
@@ -14,7 +14,11 @@ VAR PrimerMesTrimestreActual =
         4, 10   // Q4 → octubre
     )
 
-VAR FechaInicioMes = DATE(AnioActual, PrimerMesTrimestreActual, 1)
+-- Mes anterior al primer mes del trimestre actual
+VAR MesAnterior = IF(PrimerMesTrimestreActual = 1, 12, PrimerMesTrimestreActual - 1)
+VAR AnioMesAnterior = IF(PrimerMesTrimestreActual = 1, AnioActual - 1, AnioActual)
+
+VAR FechaInicioMes = DATE(AnioMesAnterior, MesAnterior, 1)
 VAR FechaFinMes = EOMONTH(FechaInicioMes, 0)
 
 VAR FechaFila = 'tablones_des_vista_salida_daily_lcr_ddbb'[date]
