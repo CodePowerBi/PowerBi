@@ -1,34 +1,22 @@
-Fecha_UltimoViernes_MesAnteriorPrimerMesTrimestreActual = 
+Titulo_MesAnterior_PrimerMesTrimestreActual = 
 VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
 VAR MesActual = MONTH(FechaActual)
 VAR AnioActual = YEAR(FechaActual)
 VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
 
--- Primer mes del trimestre actual
 VAR PrimerMesTrimestreActual = 
     SWITCH(
         TrimestreActual,
-        1, 1,   // Q1 → enero
-        2, 4,   // Q2 → abril
-        3, 7,   // Q3 → julio
-        4, 10   // Q4 → octubre
+        1, 1,
+        2, 4,
+        3, 7,
+        4, 10
     )
 
--- Mes anterior al primer mes del trimestre actual
 VAR MesAnterior = IF(PrimerMesTrimestreActual = 1, 12, PrimerMesTrimestreActual - 1)
 VAR AnioMesAnterior = IF(PrimerMesTrimestreActual = 1, AnioActual - 1, AnioActual)
 
-VAR FechaInicioMes = DATE(AnioMesAnterior, MesAnterior, 1)
-VAR FechaFinMes = EOMONTH(FechaInicioMes, 0)
+-- Fecha como texto: "Octubre 2024"
+VAR Titulo = FORMAT(DATE(AnioMesAnterior, MesAnterior, 1), "MMMM YYYY")
 
-VAR FechaFila = 'tablones_des_vista_salida_daily_lcr_ddbb'[date]
-VAR EsViernes = WEEKDAY(FechaFila, 2) = 5  -- Lunes=1, Viernes=5
-
-RETURN
-IF(
-    FechaFila >= FechaInicioMes &&
-    FechaFila <= FechaFinMes &&
-    EsViernes,
-    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
-    BLANK()
-)
+RETURN Titulo
