@@ -1,24 +1,10 @@
-ValorBase_MesAnterior = 
-VAR FechaActual = CALCULATE(
-    MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date]),
-    ALL('tablones_des_vista_salida_daily_lcr_ddbb')
+LCR_Mensual = SUM('tablones_des_vista_salida_diario_mensual'[lcr_mensual])
+
+______________
+
+LCR_Mensual_Marcador = 
+IF(
+    [LCR_Mensual] <> 0,
+    [LCR_Mensual],
+    BLANK()
 )
-VAR ... -- (repetís el mismo bloque que ya tenés para definir el mes objetivo)
-
--- Solo viernes
-VAR RatioViernes = 
-    CALCULATE(
-        MAX('tablones_des_vista_salida_daily_lcr_ddbb'[Ratio]),
-        FILTER(
-            'tablones_des_vista_salida_daily_lcr_ddbb',
-            'tablones_des_vista_salida_daily_lcr_ddbb'[date] >= FechaInicioMes &&
-            'tablones_des_vista_salida_daily_lcr_ddbb'[date] <= FechaFinMes &&
-            WEEKDAY('tablones_des_vista_salida_daily_lcr_ddbb'[date], 2) = 5
-        )
-    )
-
-RETURN RatioViernes
-
-_______________
-
-RatioRelativo = 'tablones_des_vista_salida_daily_lcr_ddbb'[Ratio] / [ValorBase_MesAnterior]
