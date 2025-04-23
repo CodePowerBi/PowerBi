@@ -16,7 +16,7 @@ VAR PrimerMesTrimestreActual =
 VAR MesAnterior = IF(PrimerMesTrimestreActual = 1, 12, PrimerMesTrimestreActual - 1)
 VAR AnioMesAnterior = IF(PrimerMesTrimestreActual = 1, AnioActual - 1, AnioActual)
 
--- Fecha como texto: "Octubre 2024"
-VAR Titulo = FORMAT(DATE(AnioMesAnterior, MesAnterior, 1), "MMMM YYYY")
+VAR Culture = "en-US"
 
-RETURN Titulo
+RETURN
+FORMAT(DATE(AnioMesAnterior, MesAnterior, 1), "MMM YY", Culture)
