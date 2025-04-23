@@ -1,23 +1,30 @@
-Calendario_LCR_12MesesValidos = 
-VAR MaxFechaConDatos = 
-    CALCULATE(
-        MAX('tablones_des_vista_salida_diario_mensual'[fecha]),
-        FILTER(
-            'tablones_des_vista_salida_diario_mensual',
-            'tablones_des_vista_salida_diario_mensual'[daily_lcr] <> 0 ||
-            'tablones_des_vista_salida_diario_mensual'[daily_surplus] <> 0 ||
-            'tablones_des_vista_salida_diario_mensual'[net_outflows] <> 0
-        )
+Fecha_UltimoViernes_PrimerMesTrimestreActual = 
+VAR FechaActual = MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date])
+VAR MesActual = MONTH(FechaActual)
+VAR AnioActual = YEAR(FechaActual)
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
+
+-- Primer mes del trimestre actual
+VAR PrimerMesTrimestreActual = 
+    SWITCH(
+        TrimestreActual,
+        1, 1,   // Q1 → enero
+        2, 4,   // Q2 → abril
+        3, 7,   // Q3 → julio
+        4, 10   // Q4 → octubre
     )
 
-VAR FechaFin = EOMONTH(MaxFechaConDatos, 0)
-VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
+VAR FechaInicioMes = DATE(AnioActual, PrimerMesTrimestreActual, 1)
+VAR FechaFinMes = EOMONTH(FechaInicioMes, 0)
+
+VAR FechaFila = 'tablones_des_vista_salida_daily_lcr_ddbb'[date]
+VAR EsViernes = WEEKDAY(FechaFila, 2) = 5  -- Lunes=1, Viernes=5
 
 RETURN
-ADDCOLUMNS(
-    CALENDAR(FechaInicio, FechaFin),
-    "Año", YEAR([Date]),
-    "Mes", MONTH([Date]),
-    "NombreMes", FORMAT([Date], "MMMM"),
-    "AñoMes", FORMAT([Date], "YYYY-MM")
+IF(
+    FechaFila >= FechaInicioMes &&
+    FechaFila <= FechaFinMes &&
+    EsViernes,
+    DATE(YEAR(FechaFila), MONTH(FechaFila), DAY(FechaFila)),
+    BLANK()
 )
