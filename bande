@@ -1,6 +1,18 @@
-PaisConBandera = 
-VAR Nombre = SELECTEDVALUE(BanderasConTotal[Country_Limpio])
-VAR URL = SELECTEDVALUE(BanderasConTotal[URL])
+BanderasConTotal = 
+VAR UrlSpain = 
+    CALCULATE(
+        MAX(Banderas[URL]),
+        Banderas[Country_Limpio] = "Spain (*)"
+    )
 
-RETURN 
-"<img src='https://" & URL & "' style='height:18px;margin-right:6px;vertical-align:middle;'/>" & Nombre
+RETURN
+UNION(
+    Banderas,
+    ROW(
+        "Country", "Total",
+        "URL", UrlSpain,
+        "Codigo Pais", "TOTAL",
+        "Country_Limpio", "Total",
+        "OrdenNombre", 1
+    )
+)
