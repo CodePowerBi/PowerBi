@@ -1,10 +1,6 @@
-VAR EsTotal = MAX(BanderasConTotal[Country_Limpio]) = "Total"
-RETURN
-IF(
-    EsTotal,
-    CALCULATE(
-        [Exposure],  -- o la medida base
-        REMOVEFILTERS(BanderasConTotal[Country_Limpio])
-    ),
-    [Exposure]
+ID_GrupoResolutor = 
+LOOKUPVALUE(
+    'tablones_des_dicc_grupo_resolutor_cpty'[ID],                    -- Lo que querés traer
+    'tablones_des_dicc_grupo_resolutor_cpty'[grupo_resolutor_cpty], -- Columna a comparar
+    BanderasConTotal[Codigo Pais]                                    -- Valor a buscar
 )
