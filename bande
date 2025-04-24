@@ -1,11 +1,6 @@
 PaisConBandera = 
-VAR URL = SELECTEDVALUE(BanderasConTotal[URL])
 VAR Nombre = SELECTEDVALUE(BanderasConTotal[Country_Limpio])
-VAR URLFinal = 
-    IF(
-        ISBLANK(URL),
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Globe_icon.svg/2048px-Globe_icon.svg.png",  -- imagen genérica
-        URL
-    )
+VAR URL = SELECTEDVALUE(BanderasConTotal[URL])
+
 RETURN 
-"<img src='" & URLFinal & "' style='height:18px;margin-right:6px;vertical-align:middle;'/>" & Nombre
+"<img src='https://" & URL & "' style='height:18px;margin-right:6px;vertical-align:middle;'/>" & Nombre
