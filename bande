@@ -1,6 +1,35 @@
-ID_GrupoResolutor = 
-LOOKUPVALUE(
-    'tablones_des_dicc_grupo_resolutor_cpty'[ID],                    -- Lo que querés traer
-    'tablones_des_dicc_grupo_resolutor_cpty'[grupo_resolutor_cpty], -- Columna a comparar
-    BanderasConTotal[Codigo Pais]                                    -- Valor a buscar
-)
+Exposure % = 
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des salida_intragruo_2'[process_date]),
+        FILTER(
+            ALL('tablones_des salida_intragruo_2'),
+            MONTH('tablones_des salida_intragruo_2'[process_date]) IN {3, 6, 9, 12}
+        )
+    )
+
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAnio = YEAR(UltimaFechaCompleta)
+
+VAR Numerador =
+    CALCULATE(
+        SUM('tablones_des salida_intragruo_2'[recop_max_usd]),
+        FILTER(
+            'tablones_des salida_intragruo_2',
+            MONTH('tablones_des salida_intragruo_2'[process_date]) = UltimaMes &&
+            YEAR('tablones_des salida_intragruo_2'[process_date]) = UltimoAnio
+        )
+    )
+
+VAR Denominador =
+    CALCULATE(
+        SUM('tablones_des salida_intragruo_2'[max_exp_permanente]),  -- Cambiá el nombre si es distinto
+        FILTER(
+            'tablones_des salida_intragruo_2',
+            MONTH('tablones_des salida_intragruo_2'[process_date]) = UltimaMes &&
+            YEAR('tablones_des salida_intragruo_2'[process_date]) = UltimoAnio
+        )
+    )
+
+RETURN
+DIVIDE(Numerador, Denominador)
