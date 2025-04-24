@@ -1,11 +1,11 @@
-BanderasConTotal = 
-UNION(
-    Banderas,
-    ROW(
-        "Country", "Total",
-        "URL", BLANK(),
-        "Codigo Pais", BLANK(),
-        "Country_Limpio", BLANK(),
-        "OrdenNombre", BLANK()
-    )
+Exposure Ajustado = 
+VAR EsTotal = SELECTEDVALUE(BanderasConTotal[Country_Limpio]) = "Total"
+RETURN
+IF(
+    EsTotal,
+    CALCULATE(
+        SUM('tablones_des dicc_grupo_resolutor_cpty'[exposure_column]),  -- reemplazá el nombre real
+        REMOVEFILTERS(BanderasConTotal[Country_Limpio])
+    ),
+    SUM('tablones_des dicc_grupo_resolutor_cpty'[exposure_column])
 )
