@@ -1,10 +1,10 @@
-LCR_Mensual = SUM('tablones_des_vista_salida_diario_mensual'[lcr_mensual])
-
-______________
-
-LCR_Mensual_Marcador = 
-IF(
-    [LCR_Mensual] <> 0,
-    [LCR_Mensual],
-    BLANK()
+BanderasConTotal = 
+UNION(
+    Banderas,
+    ROW(
+        "Country", "Total",
+        "URL", BLANK(),        -- O una imagen de bandera genérica si tenés
+        "Region", BLANK(),     -- U otras columnas según tu modelo
+        "OtraColumna", BLANK()
+    )
 )
