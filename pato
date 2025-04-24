@@ -1,11 +1,33 @@
-Exposure Ajustado = 
+Exposure = 
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('tablones_des salida_intragruo_2'[process_date]),
+        FILTER(
+            ALL('tablones_des salida_intragruo_2'),
+            MONTH('tablones_des salida_intragruo_2'[process_date]) IN {3, 6, 9, 12}
+        )
+    )
+
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAnio = YEAR(UltimaFechaCompleta)
+
 VAR EsTotal = SELECTEDVALUE(BanderasConTotal[Country_Limpio]) = "Total"
+
 RETURN
 IF(
     EsTotal,
     CALCULATE(
-        SUM('tablones_des dicc_grupo_resolutor_cpty'[exposure_column]),  -- reemplazá el nombre real
-        REMOVEFILTERS(BanderasConTotal[Country_Limpio])
+        SUM('tablones_des salida_intragruo_2'[perc_exposure]),
+        'tablones_des salida_intragruo_2',
+        MONTH('tablones_des salida_intragruo_2'[process_date]) = UltimaMes &&
+        YEAR('tablones_des salida_intragruo_2'[process_date]) = UltimoAnio
     ),
-    SUM('tablones_des dicc_grupo_resolutor_cpty'[exposure_column])
+    CALCULATE(
+        SUM('tablones_des salida_intragruo_2'[perc_exposure]),
+        FILTER(
+            'tablones_des salida_intragruo_2',
+            MONTH('tablones_des salida_intragruo_2'[process_date]) = UltimaMes &&
+            YEAR('tablones_des salida_intragruo_2'[process_date]) = UltimoAnio
+        )
+    )
 )
