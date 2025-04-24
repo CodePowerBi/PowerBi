@@ -3,8 +3,9 @@ UNION(
     Banderas,
     ROW(
         "Country", "Total",
-        "URL", BLANK(),        -- O una imagen de bandera genérica si tenés
-        "Region", BLANK(),     -- U otras columnas según tu modelo
-        "OtraColumna", BLANK()
+        "URL", BLANK(),
+        "Codigo Pais", BLANK(),
+        "Country_Limpio", BLANK(),
+        "OrdenNombre", BLANK()
     )
 )
