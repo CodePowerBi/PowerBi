@@ -1,18 +1,10 @@
-BanderasConTotal = 
-VAR UrlSpain = 
-    CALCULATE(
-        MAX(Banderas[URL]),
-        Banderas[Country_Limpio] = "Spain (*)"
-    )
-
+VAR EsTotal = MAX(BanderasConTotal[Country_Limpio]) = "Total"
 RETURN
-UNION(
-    Banderas,
-    ROW(
-        "Country", "Total",
-        "URL", UrlSpain,
-        "Codigo Pais", "TOTAL",
-        "Country_Limpio", "Total",
-        "OrdenNombre", 1
-    )
+IF(
+    EsTotal,
+    CALCULATE(
+        [Exposure],  -- o la medida base
+        REMOVEFILTERS(BanderasConTotal[Country_Limpio])
+    ),
+    [Exposure]
 )
