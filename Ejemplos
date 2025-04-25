@@ -1,10 +1,12 @@
 Categoria_Grafico = 
+VAR texto = UPPER(dicc_metrica[cat_3])
+RETURN
 SWITCH(
     TRUE(),
-    dicc_metrica[cat_3] = "ACTIVOS FINANCIEROS MANTENIDOS PARA NEGOCIAR", "Held for trading",
-    dicc_metrica[cat_3] = "ACTIVOS FINANCIEROS DESIGNADOS A VR CON CAMBIO EN RESULTADO", "FV through P&L",
-    dicc_metrica[cat_3] = "ACTIVOS FINANCIEROS A VR CON CAMBIO EN OTRO RESULTADO GLOBAL", "FV through OCI",
-    dicc_metrica[cat_3] = "DERIVADOS - CONTABILIDAD DE COBERTURAS", "Hedging derivatives",
-    dicc_metrica[cat_3] = "PASIVOS AMPARADOS POR CONTRATOS DE SEGUROS Y REASEGUROS", "Liabilities under insurance contracts",
+    CONTAINSSTRING(texto, "MANTENIDOS PARA NEGOCIAR"), "Held for trading",
+    CONTAINSSTRING(texto, "DESIGNADOS A VR CON CAMBIO EN RESULTADOS"), "FV through P&L",
+    CONTAINSSTRING(texto, "A VR CON CAMBIO EN OTRO RESULTADO GLOBAL"), "FV through OCI",
+    CONTAINSSTRING(texto, "CONTABILIDAD DE COBERTURAS"), "Hedging derivatives",
+    CONTAINSSTRING(texto, "SEGUROS Y REASEGUROS"), "Liabilities under insurance contracts",
     "Otros"
 )
