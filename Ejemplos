@@ -1,4 +1,5 @@
 Categoria_Grafico = 
+
 VAR texto = UPPER(dicc_metrica[cat_3])
 RETURN
 SWITCH(
