@@ -1,24 +1,31 @@
-ValorMaxHistorico_Lvl123 = 
+ValorTopMesNivel123 = 
 VAR TablaFiltrada =
     FILTER(
-        ALL(vrif_vw),                      -- ignoramos filtros activos
+        ALL(vrif_vw),
         vrif_vw[level] IN {1, 2, 3}
     )
 
-VAR SumaPorFecha =
+VAR SumaPorMes =
     SUMMARIZE(
         TablaFiltrada,
-        vrif_vw[fecha],
+        "Anio", YEAR(vrif_vw[fecha]),
+        "Mes", MONTH(vrif_vw[fecha]),
         "TotalMes", SUM(vrif_vw[valor])
     )
 
-VAR MaxFecha =
-    CALCULATETABLE(
-        TOPN(1, SumaPorFecha, [TotalMes], DESC)
+VAR TopMes =
+    TOPN(1, SumaPorMes, [TotalMes], DESC)
+
+VAR AnioTop = SELECTCOLUMNS(TopMes, "Anio")
+VAR MesTop  = SELECTCOLUMNS(TopMes, "Mes")
+
+VAR ValorDelTopMes =
+    CALCULATE(
+        SUM(vrif_vw[valor]),
+        vrif_vw[level] IN {1, 2, 3},
+        YEAR(vrif_vw[fecha]) = AnioTop,
+        MONTH(vrif_vw[fecha]) = MesTop
     )
 
-VAR ValorMaximo =
-    MAXX(MaxFecha, [TotalMes])
-
 RETURN
-DIVIDE(ValorMaximo, 1000000)
+ValorDelTopMes
