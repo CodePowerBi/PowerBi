@@ -1,66 +1,51 @@
-TrimAdaptado = 
-VAR FechaCal     = 'DIM calendario'[Date]
-VAR AnoCal       = YEAR( FechaCal )
-VAR MesCal       = MONTH( FechaCal )
+ValorMaxTrimNivel123 = 
+VAR FechaRow = vrif_vw[Fecha]
+VAR Ano = YEAR(FechaRow)
+VAR Mes = MONTH(FechaRow)
+VAR yy = FORMAT(FechaRow, "yy")
+VAR AnioHoy = YEAR(TODAY())
 
-VAR FechaMaxMes =
-    CALCULATE(
-        MAX( vrif_vw[Fecha] ),
-        FILTER(
-            ALL( vrif_vw ),
-            YEAR( vrif_vw[Fecha] ) = AnoCal &&
-            MONTH( vrif_vw[Fecha] ) = MesCal
-        )
-    )
-
-VAR IsLastOfMonth = FechaCal = FechaMaxMes
-VAR AnoHoy = YEAR( TODAY() )
-VAR IsRecent2Y = AnoCal >= AnoHoy - 1
-VAR IsSemMonth = MesCal = 6 || MesCal = 12
-
-VAR yy = FORMAT( FechaCal, "yy" )
-VAR Label =
+// Etiqueta tipo TrimAdaptado
+VAR EtiquetaTrim = 
     IF(
-        IsRecent2Y,
+        Ano >= AnioHoy - 1,
         SWITCH(
             TRUE(),
-            MesCal <= 3, "mar-" & yy,
-            MesCal <= 6, "jun-" & yy,
-            MesCal <= 9, "sep-" & yy,
-            MesCal > 9,  "dic-" & yy
+            Mes <= 3, "mar-" & yy,
+            Mes <= 6, "jun-" & yy,
+            Mes <= 9, "sep-" & yy,
+            "dic-" & yy
         ),
-        SWITCH(
-            TRUE(),
-            MesCal <= 6, "jun-" & yy,
-            MesCal > 6,  "dic-" & yy
+        IF(Mes <= 6, "jun-" & yy, "dic-" & yy)
+    )
+
+// Tabla de totales por etiqueta
+VAR TablaPorTrim = 
+    ADDCOLUMNS(
+        SUMMARIZE(
+            vrif_vw,
+            "EtiquetaTrim",
+            IF(
+                YEAR(vrif_vw[Fecha]) >= AnioHoy - 1,
+                SWITCH(
+                    TRUE(),
+                    MONTH(vrif_vw[Fecha]) <= 3, "mar-" & FORMAT(vrif_vw[Fecha], "yy"),
+                    MONTH(vrif_vw[Fecha]) <= 6, "jun-" & FORMAT(vrif_vw[Fecha], "yy"),
+                    MONTH(vrif_vw[Fecha]) <= 9, "sep-" & FORMAT(vrif_vw[Fecha], "yy"),
+                    "dic-" & FORMAT(vrif_vw[Fecha], "yy")
+                ),
+                IF(MONTH(vrif_vw[Fecha]) <= 6, "jun-" & FORMAT(vrif_vw[Fecha], "yy"), "dic-" & FORMAT(vrif_vw[Fecha], "yy"))
+            )
+        ),
+        "TotalValorTrim",
+        CALCULATE(
+            SUM(vrif_vw[valor]),
+            vrif_vw[level] IN {1,2,3}
         )
     )
 
-RETURN
-    IF (
-        IsLastOfMonth
-        && ( IsRecent2Y || IsSemMonth ),
-        Label,
-        BLANK()
-    )
-
-
----------------
-
-ValorMaxPorTrim_Lvl123 = 
-VAR TablaResumen =
-    SUMMARIZE(
-        'DIM calendario',
-        'DIM calendario'[TrimAdaptado],
-        "TotalTrim", 
-            CALCULATE(
-                SUM(vrif_vw[valor]),
-                vrif_vw[level] IN {1, 2, 3}
-            )
-    )
-
-VAR MaxValor =
-    MAXX(TablaResumen, [TotalTrim])
+// Encontrar el valor más alto
+VAR ValorMax = MAXX(TablaPorTrim, [TotalValorTrim])
 
 RETURN
-DIVIDE(MaxValor, 1000000)
+DIVIDE(ValorMax, 1000000)
