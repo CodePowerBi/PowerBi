@@ -1,4 +1,4 @@
-Estado Alerta con Valor = 
+Estado Alerta = 
 VAR FechaActual = MAX('tablones_des tabla_trading'[fecha])
 VAR MesActual = MONTH(FechaActual)
 VAR AnioActual = YEAR(FechaActual)
@@ -32,14 +32,16 @@ VAR ValorAlert =
         'tablones_des tabla_trading'[tipo] = "Alert"
     )
 
-VAR TieneValores = 
-    NOT ISBLANK(ValorMonth) && NOT ISBLANK(ValorAlert)
-
 VAR Diferencia = ValorMonth - ValorAlert
+VAR DiferenciaPorcentaje = Diferencia * 100  -- convertimos a porcentaje
 
 RETURN
 IF(
-    TieneValores,
-    FORMAT(Diferencia, "0.00") & " - " & IF(Diferencia >= 0, "OK", "KO"),
-    BLANK()
+    ISBLANK(ValorMonth) || ISBLANK(ValorAlert),
+    BLANK(),
+    IF(
+        Diferencia >= 0,
+        "OK (" & FORMAT(DiferenciaPorcentaje, "0.0") & "%)",
+        "KO (" & FORMAT(DiferenciaPorcentaje, "0.0") & "%)"
+    )
 )
