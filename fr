@@ -1,8 +1,24 @@
-Total FV Niveles 1 a 3 (mill) =
-COALESCE(
-    CALCULATE(
-        SUM(vrif_vw[valor]),
+ValorMaxHistorico_Lvl123 = 
+VAR TablaFiltrada =
+    FILTER(
+        ALL(vrif_vw),                      -- ignoramos filtros activos
         vrif_vw[level] IN {1, 2, 3}
-    ) / 1000000,
-"0"
-)
+    )
+
+VAR SumaPorFecha =
+    SUMMARIZE(
+        TablaFiltrada,
+        vrif_vw[fecha],
+        "TotalMes", SUM(vrif_vw[valor])
+    )
+
+VAR MaxFecha =
+    CALCULATETABLE(
+        TOPN(1, SumaPorFecha, [TotalMes], DESC)
+    )
+
+VAR ValorMaximo =
+    MAXX(MaxFecha, [TotalMes])
+
+RETURN
+DIVIDE(ValorMaximo, 1000000)
