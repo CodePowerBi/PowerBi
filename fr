@@ -18,7 +18,7 @@ VAR UltimoMes =
 
 VAR FechaUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
 
--- Extraer valores y transformarlos a porcentaje
+-- Extraer los valores
 VAR ValorMonth =
     CALCULATE(
         MAX('tablones_des tabla_trading'[valor]),
@@ -33,8 +33,8 @@ VAR ValorAlert =
         'tablones_des tabla_trading'[tipo] = "Alert"
     )
 
--- La diferencia en porcentaje real
-VAR Diferencia = (ValorAlert - ValorMonth)
+-- OJO: primero Alert y luego Month
+VAR Diferencia = ValorAlert - ValorMonth
 
 RETURN
 IF(
