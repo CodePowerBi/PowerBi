@@ -1,31 +1,66 @@
-ValorTopMesNivel123 = 
-VAR TablaFiltrada =
-    FILTER(
-        ALL(vrif_vw),
-        vrif_vw[level] IN {1, 2, 3}
-    )
+TrimAdaptado = 
+VAR FechaCal     = 'DIM calendario'[Date]
+VAR AnoCal       = YEAR( FechaCal )
+VAR MesCal       = MONTH( FechaCal )
 
-VAR SumaPorMes =
-    SUMMARIZE(
-        TablaFiltrada,
-        "Anio", YEAR(vrif_vw[fecha]),
-        "Mes", MONTH(vrif_vw[fecha]),
-        "TotalMes", SUM(vrif_vw[valor])
-    )
-
-VAR TopMes =
-    TOPN(1, SumaPorMes, [TotalMes], DESC)
-
-VAR AnioTop = SELECTCOLUMNS(TopMes, "Anio")
-VAR MesTop  = SELECTCOLUMNS(TopMes, "Mes")
-
-VAR ValorDelTopMes =
+VAR FechaMaxMes =
     CALCULATE(
-        SUM(vrif_vw[valor]),
-        vrif_vw[level] IN {1, 2, 3},
-        YEAR(vrif_vw[fecha]) = AnioTop,
-        MONTH(vrif_vw[fecha]) = MesTop
+        MAX( vrif_vw[Fecha] ),
+        FILTER(
+            ALL( vrif_vw ),
+            YEAR( vrif_vw[Fecha] ) = AnoCal &&
+            MONTH( vrif_vw[Fecha] ) = MesCal
+        )
+    )
+
+VAR IsLastOfMonth = FechaCal = FechaMaxMes
+VAR AnoHoy = YEAR( TODAY() )
+VAR IsRecent2Y = AnoCal >= AnoHoy - 1
+VAR IsSemMonth = MesCal = 6 || MesCal = 12
+
+VAR yy = FORMAT( FechaCal, "yy" )
+VAR Label =
+    IF(
+        IsRecent2Y,
+        SWITCH(
+            TRUE(),
+            MesCal <= 3, "mar-" & yy,
+            MesCal <= 6, "jun-" & yy,
+            MesCal <= 9, "sep-" & yy,
+            MesCal > 9,  "dic-" & yy
+        ),
+        SWITCH(
+            TRUE(),
+            MesCal <= 6, "jun-" & yy,
+            MesCal > 6,  "dic-" & yy
+        )
     )
 
 RETURN
-ValorDelTopMes
+    IF (
+        IsLastOfMonth
+        && ( IsRecent2Y || IsSemMonth ),
+        Label,
+        BLANK()
+    )
+
+
+---------------
+
+ValorMaxPorTrim_Lvl123 = 
+VAR TablaResumen =
+    SUMMARIZE(
+        'DIM calendario',
+        'DIM calendario'[TrimAdaptado],
+        "TotalTrim", 
+            CALCULATE(
+                SUM(vrif_vw[valor]),
+                vrif_vw[level] IN {1, 2, 3}
+            )
+    )
+
+VAR MaxValor =
+    MAXX(TablaResumen, [TotalTrim])
+
+RETURN
+DIVIDE(MaxValor, 1000000)
