@@ -18,22 +18,23 @@ VAR UltimoMes =
 
 VAR FechaUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
 
+-- Ahora extraemos Month y Alert y los transformamos en porcentaje
 VAR ValorMonth =
     CALCULATE(
         MAX('tablones_des tabla_trading'[valor]),
         'tablones_des tabla_trading'[fecha] = FechaUltimoMes,
         'tablones_des tabla_trading'[tipo] = "Value"
-    )
+    ) * 100  -- transformación a porcentaje
 
 VAR ValorAlert =
     CALCULATE(
         MAX('tablones_des tabla_trading'[valor]),
         'tablones_des tabla_trading'[fecha] = FechaUltimoMes,
         'tablones_des tabla_trading'[tipo] = "Alert"
-    )
+    ) * 100  -- transformación a porcentaje
 
-VAR Diferencia = ValorMonth - ValorAlert
-VAR DiferenciaPorcentaje = Diferencia * 100  -- convertimos a porcentaje
+-- Ahora cambiamos el orden: Alert - Month
+VAR Diferencia = ValorAlert - ValorMonth
 
 RETURN
 IF(
@@ -41,7 +42,7 @@ IF(
     BLANK(),
     IF(
         Diferencia >= 0,
-        "OK (" & FORMAT(DiferenciaPorcentaje, "0.0") & "%)",
-        "KO (" & FORMAT(DiferenciaPorcentaje, "0.0") & "%)"
+        "OK (" & FORMAT(Diferencia, "0.0") & "%)",
+        "KO (" & FORMAT(Diferencia, "0.0") & "%)"
     )
 )
