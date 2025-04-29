@@ -32,11 +32,14 @@ VAR ValorAlert =
         'tablones_des tabla_trading'[tipo] = "Alert"
     )
 
+VAR TieneValores = 
+    NOT ISBLANK(ValorMonth) && NOT ISBLANK(ValorAlert)
+
 VAR Diferencia = ValorMonth - ValorAlert
 
 RETURN
 IF(
-    ISBLANK(ValorMonth) || ISBLANK(ValorAlert),
-    BLANK(),
-    FORMAT(Diferencia, "0.00") & " - " & IF(Diferencia >= 0, "OK", "KO")
+    TieneValores,
+    FORMAT(Diferencia, "0.00") & " - " & IF(Diferencia >= 0, "OK", "KO"),
+    BLANK()
 )
