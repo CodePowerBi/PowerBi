@@ -38,3 +38,54 @@ RETURN
 IF(ISBLANK(ValorMonth) || ISBLANK(ValorAlert), BLANK(),
     IF(Diferencia >= 0, "OK", "KO")
 )
+
+
+
+___________________
+
+
+
+
+Estado Alerta con Valor = 
+VAR FechaActual = MAX('tablones_des tabla_trading'[fecha])
+VAR MesActual = MONTH(FechaActual)
+VAR AnioActual = YEAR(FechaActual)
+
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
+VAR AnioTrimestreAnterior = IF(TrimestreActual = 1, AnioActual - 1, AnioActual)
+VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
+
+VAR UltimoMes =
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,
+        2, 6,
+        3, 9,
+        4, 12
+    )
+
+VAR FechaUltimoMes = DATE(AnioTrimestreAnterior, UltimoMes, 1)
+
+VAR ValorMonth =
+    CALCULATE(
+        MAX('tablones_des tabla_trading'[valor]),
+        'tablones_des tabla_trading'[fecha] = FechaUltimoMes,
+        'tablones_des tabla_trading'[tipo] = "Value"
+    )
+
+VAR ValorAlert =
+    CALCULATE(
+        MAX('tablones_des tabla_trading'[valor]),
+        'tablones_des tabla_trading'[fecha] = FechaUltimoMes,
+        'tablones_des tabla_trading'[tipo] = "Alert"
+    )
+
+VAR Diferencia = ValorMonth - ValorAlert
+
+RETURN
+IF(
+    ISBLANK(ValorMonth) || ISBLANK(ValorAlert),
+    BLANK(),
+    FORMAT(Diferencia, "0.00") & " - " & IF(Diferencia >= 0, "OK", "KO")
+)
+
