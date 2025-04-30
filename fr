@@ -1,8 +1,17 @@
-Indice_Fecha =
-RANKX (
-    ALL ( 'Calendario_Trading' ),
-    'Calendario_Trading'[Date],
-    ,
-    ASC,
-    DENSE
+Calendario_Trading =
+VAR MinFecha =
+    CALCULATE(
+        MIN( 'tablones_des tabla_trading'[Fecha] ),
+        ALL( 'tablones_des tabla_trading' )
+    )
+VAR MaxFecha =
+    CALCULATE(
+        MAX( 'tablones_des tabla_trading'[Fecha] ),
+        ALL( 'tablones_des tabla_trading' )
+    )
+RETURN
+SELECTCOLUMNS(
+    CALENDAR( MinFecha, MaxFecha ),
+    "Date",    [Date],
+    "Mes-Año", FORMAT( [Date], "MMM-yy", "es-ES" )
 )
