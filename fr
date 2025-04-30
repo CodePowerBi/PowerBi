@@ -1,50 +1,23 @@
-ValorMaxPorTrim_Lvl123 = 
-VAR FechaCal = 'DIM Calendario'[Date]
-VAR AnoCal = YEAR(FechaCal)
-VAR MesCal = MONTH(FechaCal)
-VAR AnioHoy = YEAR(TODAY())
-VAR yy = FORMAT(FechaCal, "yy")
+MostrarTrimMax = 
+VAR TrimActual = 'DIM Calendario'[TrimAdaptado]
 
-// Generar etiqueta TrimAdaptado
-VAR EtiquetaTrim =
-    IF(
-        AnoCal >= AnioHoy - 1,
-        SWITCH(
-            TRUE(),
-            MesCal <= 3, "mar-" & yy,
-            MesCal <= 6, "jun-" & yy,
-            MesCal <= 9, "sep-" & yy,
-            "dic-" & yy
-        ),
-        IF(MesCal <= 6, "jun-" & yy, "dic-" & yy)
-    )
-
-// Tabla de totales por etiqueta
 VAR TablaTotales =
     ADDCOLUMNS(
         SUMMARIZE(
             'DIM Calendario',
-            "EtiquetaTrim",
-            IF(
-                YEAR('DIM Calendario'[Date]) >= AnioHoy - 1,
-                SWITCH(
-                    TRUE(),
-                    MONTH('DIM Calendario'[Date]) <= 3, "mar-" & FORMAT('DIM Calendario'[Date], "yy"),
-                    MONTH('DIM Calendario'[Date]) <= 6, "jun-" & FORMAT('DIM Calendario'[Date], "yy"),
-                    MONTH('DIM Calendario'[Date]) <= 9, "sep-" & FORMAT('DIM Calendario'[Date], "yy"),
-                    "dic-" & FORMAT('DIM Calendario'[Date], "yy")
-                ),
-                IF(MONTH('DIM Calendario'[Date]) <= 6, "jun-" & FORMAT('DIM Calendario'[Date], "yy"), "dic-" & FORMAT('DIM Calendario'[Date], "yy"))
-            )
+            'DIM Calendario'[TrimAdaptado]
         ),
-        "TotalValorTrim",
+        "TotalTrim",
         CALCULATE(
             SUM(vrif_vw[valor]),
             vrif_vw[level] IN {1, 2, 3}
         )
     )
 
-VAR ValorMax = MAXX(TablaTotales, [TotalValorTrim])
+VAR MaxFila =
+    TOPN(1, TablaTotales, [TotalTrim], DESC)
+
+VAR TrimPico = MAXX(MaxFila, 'DIM Calendario'[TrimAdaptado])
 
 RETURN
-DIVIDE(ValorMax, 1000000)
+IF(TrimActual = TrimPico, "Mostrar", BLANK())
