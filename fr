@@ -1,27 +1,8 @@
-Indice_Ordinal =
-VAR TablaFiltrada =
-    FILTER (
-        ADDCOLUMNS (
-            'Calendario_Trading',
-            "MesAño", 'Calendario_Trading'[MesAño_UltimoMesTrimestre]
-        ),
-        NOT ISBLANK ( [MesAño] )
-    )
-VAR TablaOrdenada =
-    ADDCOLUMNS (
-        TablaFiltrada,
-        "Orden",
-        RANKX (
-            TablaFiltrada,
-            'Calendario_Trading'[Date],
-            ,
-            ASC,
-            DENSE
-        )
-    )
-RETURN
-    LOOKUPVALUE (
-        TablaOrdenada[Orden],
-        TablaOrdenada[Date],
-        'Calendario_Trading'[Date]
-    )
+Indice_Fecha =
+RANKX (
+    ALL ( 'Calendario_Trading' ),
+    'Calendario_Trading'[Date],
+    ,
+    ASC,
+    DENSE
+)
