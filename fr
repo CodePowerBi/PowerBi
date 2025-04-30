@@ -6,3 +6,9 @@ CALCULATE (
         'tablones_des tabla_trading'[Fecha] = 'Calendario_Trading'[Date]
     )
 )
+
+
+__________-
+
+
+Indice_MesAnio = YEAR ( 'Calendario_Trading'[Date] ) * 100 + MONTH ( 'Calendario_Trading'[Date] )
