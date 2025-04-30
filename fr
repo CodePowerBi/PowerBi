@@ -6,14 +6,16 @@ VAR FechaMax =
         FILTER(
             ALL ( 'tablones_des tabla_trading' ),
             'tablones_des tabla_trading'[fecha] >= DATE(2020,9,1)
-            && MONTH ( 'tablones_des tabla_trading'[fecha] ) IN { 3, 6, 9, 12 }
+            && MONTH( 'tablones_des tabla_trading'[fecha] ) IN { 3, 6, 9, 12 }
             && FORMAT( 'tablones_des tabla_trading'[fecha], "MMM-yy", "es-ES" ) = MiEtiqueta
         )
     )
+VAR Cadena = FORMAT( FechaMax, "MMM-yy", "es-ES" )  // p.ej. "dic-20"
 RETURN
-IF (
-    NOT ( ISBLANK ( FechaMax ) ),
-    /* Formatea la fecha como “Dic-20” */
-    PROPER( FORMAT( FechaMax, "MMM-yy", "es-ES" ) ),
+IF(
+    NOT ISBLANK( FechaMax ),
+    // primera letra en mayúscula + resto igual
+    UPPER( LEFT( Cadena, 1 ) )
+    & MID( Cadena, 2, LEN( Cadena ) - 1 ),
     BLANK()
 )
