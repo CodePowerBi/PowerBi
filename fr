@@ -1,23 +1,9 @@
-MostrarTrimMax = 
+ValorPorTrim_Lvl123 = 
 VAR TrimActual = 'DIM Calendario'[TrimAdaptado]
 
-VAR TablaTotales =
-    ADDCOLUMNS(
-        SUMMARIZE(
-            'DIM Calendario',
-            'DIM Calendario'[TrimAdaptado]
-        ),
-        "TotalTrim",
-        CALCULATE(
-            SUM(vrif_vw[valor]),
-            vrif_vw[level] IN {1, 2, 3}
-        )
-    )
-
-VAR MaxFila =
-    TOPN(1, TablaTotales, [TotalTrim], DESC)
-
-VAR TrimPico = MAXX(MaxFila, 'DIM Calendario'[TrimAdaptado])
-
 RETURN
-IF(TrimActual = TrimPico, "Mostrar", BLANK())
+CALCULATE(
+    SUM(vrif_vw[valor]),
+    vrif_vw[level] IN {1, 2, 3},
+    'DIM Calendario'[TrimAdaptado] = TrimActual
+)
