@@ -1,21 +1,7 @@
-Fecha_UltimoMesTrimestre =
-VAR MiEtiqueta = 'Calendario_Trading'[Mes-Año]
-VAR FechaMax =
-    CALCULATE(
-        MAX ( 'tablones_des tabla_trading'[fecha] ),
-        FILTER(
-            ALL ( 'tablones_des tabla_trading' ),
-            'tablones_des tabla_trading'[fecha] >= DATE(2020,9,1)
-            && MONTH( 'tablones_des tabla_trading'[fecha] ) IN { 3, 6, 9, 12 }
-            && FORMAT( 'tablones_des tabla_trading'[fecha], "MMM-yy", "es-ES" ) = MiEtiqueta
-        )
-    )
-VAR Cadena = FORMAT( FechaMax, "MMM-yy", "es-ES" )  // p.ej. "dic-20"
+Division_Var17_18_por_19 = 
+VAR Valor17 = CALCULATE(SUM(Memorias_vw[valor]), Memorias_vw[id_variable] = 17)
+VAR Valor18 = CALCULATE(SUM(Memorias_vw[valor]), Memorias_vw[id_variable] = 18)
+VAR Valor19 = CALCULATE(SUM(Memorias_vw[valor]), Memorias_vw[id_variable] = 19)
+
 RETURN
-IF(
-    NOT ISBLANK( FechaMax ),
-    // primera letra en mayúscula + resto igual
-    UPPER( LEFT( Cadena, 1 ) )
-    & MID( Cadena, 2, LEN( Cadena ) - 1 ),
-    BLANK()
-)
+DIVIDE(Valor17 + Valor18, Valor19)
