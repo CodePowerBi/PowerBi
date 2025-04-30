@@ -1,9 +1,14 @@
-Fecha_UltimoCierreMesTrimestre =
+Fecha_UltimoMesTrimestre =
+VAR MiEtiqueta = 'Calendario_Trading'[Mes-Año]  
+RETURN
 CALCULATE(
-    MAX ( 'tablones_des tabla_trading'[Fecha] ),
+    MAX ( 'tablones_des tabla_trading'[fecha] ),
     FILTER(
         ALL ( 'tablones_des tabla_trading' ),
-        YEAR ( 'tablones_des tabla_trading'[Fecha] ) = YEAR  ( 'Calendario_Trading'[Date] ) &&
-        MONTH( 'tablones_des tabla_trading'[Fecha] ) = MONTH ( 'Calendario_Trading'[Date] )
+        -- filtramos solo los cierres de trimestre desde 2020-09-01
+        'tablones_des tabla_trading'[fecha] >= DATE(2020,9,1)
+        && MONTH ( 'tablones_des tabla_trading'[fecha] ) IN { 3, 6, 9, 12 }
+        -- y que coincidan en etiqueta mes-año
+        && FORMAT( 'tablones_des tabla_trading'[fecha], "MMM-yy", "es-ES" ) = MiEtiqueta
     )
 )
