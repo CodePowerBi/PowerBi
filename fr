@@ -1,14 +1,19 @@
 Fecha_UltimoMesTrimestre =
-VAR MiEtiqueta = 'Calendario_Trading'[Mes-Año]  
-RETURN
-CALCULATE(
-    MAX ( 'tablones_des tabla_trading'[fecha] ),
-    FILTER(
-        ALL ( 'tablones_des tabla_trading' ),
-        -- filtramos solo los cierres de trimestre desde 2020-09-01
-        'tablones_des tabla_trading'[fecha] >= DATE(2020,9,1)
-        && MONTH ( 'tablones_des tabla_trading'[fecha] ) IN { 3, 6, 9, 12 }
-        -- y que coincidan en etiqueta mes-año
-        && FORMAT( 'tablones_des tabla_trading'[fecha], "MMM-yy", "es-ES" ) = MiEtiqueta
+VAR MiEtiqueta = 'Calendario_Trading'[Mes-Año]
+VAR FechaMax =
+    CALCULATE(
+        MAX ( 'tablones_des tabla_trading'[fecha] ),
+        FILTER(
+            ALL ( 'tablones_des tabla_trading' ),
+            'tablones_des tabla_trading'[fecha] >= DATE(2020,9,1)
+            && MONTH ( 'tablones_des tabla_trading'[fecha] ) IN { 3, 6, 9, 12 }
+            && FORMAT( 'tablones_des tabla_trading'[fecha], "MMM-yy", "es-ES" ) = MiEtiqueta
+        )
     )
+RETURN
+IF (
+    NOT ( ISBLANK ( FechaMax ) ),
+    /* Formatea la fecha como “Dic-20” */
+    PROPER( FORMAT( FechaMax, "MMM-yy", "es-ES" ) ),
+    BLANK()
 )
