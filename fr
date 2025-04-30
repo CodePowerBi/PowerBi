@@ -1,9 +1,12 @@
 ValorPorTrim_Lvl123 = 
-VAR TrimActual = 'DIM Calendario'[TrimAdaptado]
+VAR Trim = 'DIM Calendario'[TrimAdaptado]
 
 RETURN
-CALCULATE(
-    SUM(vrif_vw[valor]),
-    vrif_vw[level] IN {1, 2, 3},
-    'DIM Calendario'[TrimAdaptado] = TrimActual
+IF(
+    NOT ISBLANK(Trim),
+    CALCULATE(
+        SUM(vrif_vw[valor]),
+        vrif_vw[level] IN {1, 2, 3},
+        RELATED('DIM Calendario'[TrimAdaptado]) = Trim
+    )
 )
