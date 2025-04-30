@@ -1,8 +1,9 @@
-MesAño_UltimoMesTrimestre =
+Fecha_UltimoCierreMesTrimestre =
 CALCULATE(
-    MAX( 'tablones_des tabla_trading'[MesAño_UltimoMesTrimestre] ),
+    MAX ( 'tablones_des tabla_trading'[Fecha] ),
     FILTER(
-        'tablones_des tabla_trading',
-        'tablones_des tabla_trading'[Fecha] = 'Calendario_Trading'[Date]
+        ALL ( 'tablones_des tabla_trading' ),
+        YEAR ( 'tablones_des tabla_trading'[Fecha] ) = YEAR  ( 'Calendario_Trading'[Date] ) &&
+        MONTH( 'tablones_des tabla_trading'[Fecha] ) = MONTH ( 'Calendario_Trading'[Date] )
     )
 )
