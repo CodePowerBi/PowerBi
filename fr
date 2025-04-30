@@ -1,8 +1,8 @@
-ValorMaximoTrim_Lvl123_MAS500 = 
-VAR MaxValor = 
-    CALCULATE(
-        MAX('DIM Calendario'[ValorPorTrim_Lvl123]),
-        REMOVEFILTERS('DIM Calendario')
+MesAño_UltimoMesTrimestre =
+CALCULATE (
+    MAX ( 'tablones_des tabla_trading'[MesAño_UltimoMesTrimestre] ),
+    FILTER (
+        'tablones_des tabla_trading',
+        'tablones_des tabla_trading'[Fecha] = 'Calendario_Trading'[Date]
     )
-RETURN
-MaxValor + 500
+)
