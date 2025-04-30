@@ -1,17 +1,8 @@
-Calendario_Trading =
-VAR MinFecha =
-    CALCULATE(
-        MIN( 'tablones_des tabla_trading'[Fecha] ),
-        ALL( 'tablones_des tabla_trading' )
+MesAño_UltimoMesTrimestre =
+CALCULATE(
+    MAX( 'tablones_des tabla_trading'[MesAño_UltimoMesTrimestre] ),
+    FILTER(
+        'tablones_des tabla_trading',
+        'tablones_des tabla_trading'[Fecha] = 'Calendario_Trading'[Date]
     )
-VAR MaxFecha =
-    CALCULATE(
-        MAX( 'tablones_des tabla_trading'[Fecha] ),
-        ALL( 'tablones_des tabla_trading' )
-    )
-RETURN
-SELECTCOLUMNS(
-    CALENDAR( MinFecha, MaxFecha ),
-    "Date",    [Date],
-    "Mes-Año", FORMAT( [Date], "MMM-yy", "es-ES" )
 )
