@@ -1,14 +1,27 @@
-MesAño_UltimoMesTrimestre =
-CALCULATE (
-    MAX ( 'tablones_des tabla_trading'[MesAño_UltimoMesTrimestre] ),
+Indice_Ordinal =
+VAR TablaFiltrada =
     FILTER (
-        'tablones_des tabla_trading',
-        'tablones_des tabla_trading'[Fecha] = 'Calendario_Trading'[Date]
+        ADDCOLUMNS (
+            'Calendario_Trading',
+            "MesAño", 'Calendario_Trading'[MesAño_UltimoMesTrimestre]
+        ),
+        NOT ISBLANK ( [MesAño] )
     )
-)
-
-
-__________-
-
-
-Indice_MesAnio = YEAR ( 'Calendario_Trading'[Date] ) * 100 + MONTH ( 'Calendario_Trading'[Date] )
+VAR TablaOrdenada =
+    ADDCOLUMNS (
+        TablaFiltrada,
+        "Orden",
+        RANKX (
+            TablaFiltrada,
+            'Calendario_Trading'[Date],
+            ,
+            ASC,
+            DENSE
+        )
+    )
+RETURN
+    LOOKUPVALUE (
+        TablaOrdenada[Orden],
+        TablaOrdenada[Date],
+        'Calendario_Trading'[Date]
+    )
