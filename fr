@@ -1,51 +1,10 @@
 ValorMaxTrimNivel123 = 
-VAR FechaRow = vrif_vw[Fecha]
-VAR Ano = YEAR(FechaRow)
-VAR Mes = MONTH(FechaRow)
-VAR yy = FORMAT(FechaRow, "yy")
-VAR AnioHoy = YEAR(TODAY())
 
-// Etiqueta tipo TrimAdaptado
-VAR EtiquetaTrim = 
-    IF(
-        Ano >= AnioHoy - 1,
-        SWITCH(
-            TRUE(),
-            Mes <= 3, "mar-" & yy,
-            Mes <= 6, "jun-" & yy,
-            Mes <= 9, "sep-" & yy,
-            "dic-" & yy
-        ),
-        IF(Mes <= 6, "jun-" & yy, "dic-" & yy)
-    )
-
-// Tabla de totales por etiqueta
-VAR TablaPorTrim = 
-    ADDCOLUMNS(
-        SUMMARIZE(
-            vrif_vw,
-            "EtiquetaTrim",
-            IF(
-                YEAR(vrif_vw[Fecha]) >= AnioHoy - 1,
-                SWITCH(
-                    TRUE(),
-                    MONTH(vrif_vw[Fecha]) <= 3, "mar-" & FORMAT(vrif_vw[Fecha], "yy"),
-                    MONTH(vrif_vw[Fecha]) <= 6, "jun-" & FORMAT(vrif_vw[Fecha], "yy"),
-                    MONTH(vrif_vw[Fecha]) <= 9, "sep-" & FORMAT(vrif_vw[Fecha], "yy"),
-                    "dic-" & FORMAT(vrif_vw[Fecha], "yy")
-                ),
-                IF(MONTH(vrif_vw[Fecha]) <= 6, "jun-" & FORMAT(vrif_vw[Fecha], "yy"), "dic-" & FORMAT(vrif_vw[Fecha], "yy"))
-            )
-        ),
-        "TotalValorTrim",
-        CALCULATE(
-            SUM(vrif_vw[valor]),
-            vrif_vw[level] IN {1,2,3}
-        )
-    )
-
-// Encontrar el valor más alto
-VAR ValorMax = MAXX(TablaPorTrim, [TotalValorTrim])
-
-RETURN
-DIVIDE(ValorMax, 1000000)
+Total FV Niveles 1 a 3 (mill) =
+COALESCE(
+    CALCULATE(
+        SUM(vrif_vw[valor]),
+        vrif_vw[level] IN {1, 2, 3}
+    ) / 1000000,
+"0"
+)
