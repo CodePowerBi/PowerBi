@@ -1,15 +1,8 @@
-ValorPorTrim_Lvl123 = 
-VAR FechaCal = 'DIM Calendario'[Date]
-VAR Mes = MONTH(FechaCal)
-VAR Trim = 'DIM Calendario'[TrimAdaptado]
-
-RETURN
-IF(
-    NOT ISBLANK(Trim) &&
-    (Mes = 6 || Mes = 12),  // solo junio y diciembre
+ValorMaximoTrim_Lvl123 = 
+VAR MaxValor = 
     CALCULATE(
-        SUM(vrif_vw[valor]),
-        vrif_vw[level] IN {1, 2, 3},
-        TREATAS({Trim}, 'DIM Calendario'[TrimAdaptado])
+        MAX('DIM Calendario'[ValorPorTrim_Lvl123]),
+        REMOVEFILTERS('DIM Calendario')
     )
-)
+RETURN
+MaxValor
