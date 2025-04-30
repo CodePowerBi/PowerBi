@@ -1,8 +1,8 @@
-ValorMaximoTrim_Lvl123 = 
+ValorMaximoTrim_Lvl123_MAS500 = 
 VAR MaxValor = 
     CALCULATE(
         MAX('DIM Calendario'[ValorPorTrim_Lvl123]),
         REMOVEFILTERS('DIM Calendario')
     )
 RETURN
-MaxValor
+MaxValor + 500
