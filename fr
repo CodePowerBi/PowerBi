@@ -1,12 +1,15 @@
 ValorPorTrim_Lvl123 = 
+VAR FechaCal = 'DIM Calendario'[Date]
+VAR Mes = MONTH(FechaCal)
 VAR Trim = 'DIM Calendario'[TrimAdaptado]
 
 RETURN
 IF(
-    NOT ISBLANK(Trim),
+    NOT ISBLANK(Trim) &&
+    (Mes = 6 || Mes = 12),  // solo junio y diciembre
     CALCULATE(
         SUM(vrif_vw[valor]),
         vrif_vw[level] IN {1, 2, 3},
-        RELATED('DIM Calendario'[TrimAdaptado]) = Trim
+        TREATAS({Trim}, 'DIM Calendario'[TrimAdaptado])
     )
 )
