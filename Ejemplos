@@ -1,13 +1,15 @@
-Categoria_Grafico = 
+ColorGrafico = 
+VAR PeerName =
+    RELATED(Dicc_peers[peer])
+VAR Tipo =
+    RELATED(Dicc_variable[Assets&Liabilities])
 
-VAR texto = UPPER(dicc_metrica[cat_3])
 RETURN
 SWITCH(
     TRUE(),
-    CONTAINSSTRING(texto, "MANTENIDOS PARA NEGOCIAR"), "Held for trading",
-    CONTAINSSTRING(texto, "DESIGNADOS A VR CON CAMBIO EN RESULTADOS"), "FV through P&L",
-    CONTAINSSTRING(texto, "A VR CON CAMBIO EN OTRO RESULTADO GLOBAL"), "FV through OCI",
-    CONTAINSSTRING(texto, "CONTABILIDAD DE COBERTURAS"), "Hedging derivatives",
-    CONTAINSSTRING(texto, "SEGUROS Y REASEGUROS"), "Liabilities under insurance contracts",
-    "Otros"
+    PeerName = "Santander" && Tipo = "Assets", "#E74C3C",       // rojo claro
+    PeerName = "Santander" && Tipo = "Liabilities", "#C0392B",  // rojo oscuro
+    Tipo = "Assets", "#1f77b4",                                  // azul para Assets
+    Tipo = "Liabilities", "#ff7f0e",                             // naranja para Liabilities
+    "#999999"                                                   // color por defecto
 )
