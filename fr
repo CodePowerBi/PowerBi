@@ -1,7 +1,0 @@
-Division_Var17_18_por_19 = 
-VAR Valor17 = CALCULATE(SUM(Memorias_vw[valor]), Memorias_vw[id_variable] = 17)
-VAR Valor18 = CALCULATE(SUM(Memorias_vw[valor]), Memorias_vw[id_variable] = 18)
-VAR Valor19 = CALCULATE(SUM(Memorias_vw[valor]), Memorias_vw[id_variable] = 19)
-
-RETURN
-DIVIDE(Valor17 + Valor18, Valor19)
