@@ -1,14 +1,5 @@
-OrdenMetrica = 
-SWITCH(
-    'tablones_des_dicc_metrica_buffer_hqla'[metrica],
-    "LEVEL 1", 1,
-    "Cash and Reserves at CB", 2,
-    "Sovereign Bonds", 3,
-    "Covered / SSA bonds and others", 4,
-    "LEVEL 2A + LEVEL 2B", 5,
-    "Covered Bonds", 6,
-    "Corporate Bonds", 7,
-    "Other", 8,
-    "TOTAL BUFFER", 9,
-    999  -- por si hubiera algún valor inesperado
+MetricasRepetidas = 
+CALCULATE(
+    COUNTROWS('tablones_des_dicc_metrica_buffer_hqla'),
+    ALLEXCEPT('tablones_des_dicc_metrica_buffer_hqla', 'tablones_des_dicc_metrica_buffer_hqla'[metrica])
 )
