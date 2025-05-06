@@ -1,0 +1,39 @@
+Calendario_NSFR_12MesesValidos = 
+VAR MaxFechaConDatos =
+    CALCULATE(
+        MAX('tablones_des salida_nsfr'[date]),
+        FILTER(
+            'tablones_des salida_nsfr',
+            'tablones_des salida_nsfr'[nsfr_surplus] <> 0 ||
+            'tablones_des salida_nsfr'[nsfr] <> 0 ||
+            'tablones_des salida_nsfr'[limit] <> 0 ||
+            'tablones_des salida_nsfr'[apetite] <> 0
+        )
+    )
+
+VAR MesMax = MONTH(MaxFechaConDatos)
+VAR AnioMax = YEAR(MaxFechaConDatos)
+VAR TrimestreActual = INT((MesMax - 1) / 3) + 1
+VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
+VAR AnioTrimestre = IF(TrimestreActual = 1, AnioMax - 1, AnioMax)
+
+VAR UltimoMesTrimestre = 
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,
+        2, 6,
+        3, 9,
+        4, 12
+    )
+
+VAR FechaFin = EOMONTH(DATE(AnioTrimestre, UltimoMesTrimestre, 1), 0)
+VAR FechaInicio = EOMONTH(FechaFin, -12) + 1
+
+RETURN
+ADDCOLUMNS(
+    CALENDAR(FechaInicio, FechaFin),
+    "Año", YEAR([Date]),
+    "Mes", MONTH([Date]),
+    "NombreMes", FORMAT([Date], "MMMM", "en-US"),
+    "AñoMes", FORMAT([Date], "YYYY-MM")
+)
