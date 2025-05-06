@@ -1,24 +1,8 @@
-DiccionarioBufferOrden = 
-ADDCOLUMNS(
-    DISTINCT(
-        SELECTCOLUMNS(
-            'tablones_des_dicc_metrica_buffer_hqla',
-            "id_metrica",   'tablones_des_dicc_metrica_buffer_hqla'[id_metrica],
-            "metrica",      'tablones_des_dicc_metrica_buffer_hqla'[metrica]
-        )
-    ),
-    "OrdenMetrica",
-    SWITCH(
-        TRUE(),
-        [metrica] = "LEVEL 1",                                    1,
-        [metrica] = "Cash and Reserves at CB",                    2,
-        [metrica] = "Exposures to CB that can be withdrawn",      3,
-        [metrica] = "Covered / SSA bonds and others",             4,
-        [metrica] = "LEVEL 2A + LEVEL 2B",                        5,
-        [metrica] = "Covered Bonds",                              6,
-        [metrica] = "Corporate Bonds",                            7,
-        [metrica] = "Other",                                      8,
-        [metrica] = "TOTAL BUFFER",                               9,
-        999
-    )
+ColorTextoMetrica =
+SWITCH(
+    TRUE(),
+    SELECTEDVALUE('tablones_des_dicc_metrica_buffer_hqla'[metrica]) = "LEVEL 1",                "#FF0000",
+    SELECTEDVALUE('tablones_des_dicc_metrica_buffer_hqla'[metrica]) = "LEVEL 2A + LEVEL 2B",   "#FF0000",
+    SELECTEDVALUE('tablones_des_dicc_metrica_buffer_hqla'[metrica]) = "TOTAL BUFFER",          "#FF0000",
+    "#000000"
 )
