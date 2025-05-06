@@ -1,8 +1,60 @@
-ColorTextoMetrica =
+informe_buffer_visible = 
 SWITCH(
-    TRUE(),
-    SELECTEDVALUE('tablones_des_dicc_metrica_buffer_hqla'[metrica]) = "LEVEL 1",                "#FF0000",
-    SELECTEDVALUE('tablones_des_dicc_metrica_buffer_hqla'[metrica]) = "LEVEL 2A + LEVEL 2B",   "#FF0000",
-    SELECTEDVALUE('tablones_des_dicc_metrica_buffer_hqla'[metrica]) = "TOTAL BUFFER",          "#FF0000",
-    "#000000"
+    'tablones_des_dicc_tipo_buffer_buffer'[tipo_buffer],
+    "reserves_at_central_banks", 1,
+    "sovereign_bonds", 1,
+    "saa_bonds", 1,
+    "covered_bonds", 1,
+    "corporate_bonds", 1,
+    "others_b", 1,
+    "total_buffer", 1,
+    0
 )
+
+_____________
+
+etiqueta_buffer = 
+SWITCH(
+    'tablones_des_dicc_tipo_buffer_buffer'[tipo_buffer],
+    "reserves_at_central_banks", "Cash and Reserves at CB",
+    "sovereign_bonds", "Sovereign Bonds",
+    "saa_bonds", "Covered / SSA bonds and others",
+    "covered_bonds", "Covered Bonds",
+    "corporate_bonds", "Corporate Bonds",
+    "others_b", "Others",
+    "total_buffer", "TOTAL BUFFER"
+)
+
+_______________
+
+
+grupo_buffer = 
+SWITCH(
+    'tablones_des_dicc_tipo_buffer_buffer'[tipo_buffer],
+    "reserves_at_central_banks", "Level A",
+    "sovereign_bonds", "Level A",
+    "saa_bonds", "Level A",
+    "covered_bonds", "Level B",
+    "corporate_bonds", "Level B",
+    "others_b", "Level B",
+    "total_buffer", "TOTAL BUFFER"
+)
+
+
+_________________
+
+orden_buffer = 
+SWITCH(
+    'tablones_des_dicc_tipo_buffer_buffer'[tipo_buffer],
+    "reserves_at_central_banks", 1,
+    "sovereign_bonds", 2,
+    "saa_bonds", 3,
+    "covered_bonds", 4,
+    "corporate_bonds", 5,
+    "others_b", 6,
+    "total_buffer", 7,
+    999
+)
+
+____________________-
+
