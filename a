@@ -1,48 +1,43 @@
-_MaxFecha_Válida_Stress = 
+_MaxFecha_Válida_Trading = 
 CALCULATE(
-    MAX ( 'tablones_des salida_escenario_stress'[fecha] ),
+    MAX( 'tablones_des_tabla_trading'[fecha] ),
     FILTER(
-        ALL ( 'tablones_des salida_escenario_stress' ),
-        'tablones_des salida_escenario_stress'[surplis_60_days_div_tc] <> 0 ||
-        'tablones_des salida_escenario_stress'[survival_days]       <> 0 ||
-        'tablones_des salida_escenario_stress'[apetite]             <> 0
+        ALL( 'tablones_des_tabla_trading' ),
+        'tablones_des_tabla_trading'[Valor] <> 0
     )
 )
 
-___________
 
-Es_Ultimos12Meses_Stress = 
-VAR MaxFecha     = [_MaxFecha_Válida_Stress]
+_______
+
+Es_Ultimos12Meses_Trading = 
+VAR MaxFecha     = [_MaxFecha_Válida_Trading]
 VAR FechaFin     = EOMONTH( MaxFecha, 0 )
 VAR PrimerDiaFin = DATE( YEAR(FechaFin), MONTH(FechaFin), 1 )
 VAR FechaInicio  = EDATE( PrimerDiaFin, -12 )
-VAR EstaFecha    = 'tablones_des salida_escenario_stress'[fecha]
+VAR EstaFecha    = 'tablones_des_tabla_trading'[fecha]
 
 RETURN
 IF(
     EstaFecha >= FechaInicio &&
     EstaFecha <= FechaFin &&
-    (
-      'tablones_des salida_escenario_stress'[surplis_60_days_div_tc] <> 0 ||
-      'tablones_des salida_escenario_stress'[survival_days]       <> 0 ||
-      'tablones_des salida_escenario_stress'[apetite]             <> 0
-    ),
+    'tablones_des_tabla_trading'[Valor] <> 0,
     1,
     0
 )
 
 ___________
 
-MesAnio_Short_Stress = 
+MesAnio_Short_Trading = 
 FORMAT(
-  'tablones_des salida_escenario_stress'[fecha],
+  'tablones_des_tabla_trading'[fecha],
   "MMM-yy",
   "en-US"
 )
 
 
-______________
+__________
 
-MesAnioOrden_Stress = 
-YEAR('tablones_des salida_escenario_stress'[fecha]) * 100
-+ MONTH('tablones_des salida_escenario_stress'[fecha])
+MesAnioOrden_Trading = 
+YEAR('tablones_des_tabla_trading'[fecha]) * 100
++ MONTH('tablones_des_tabla_trading'[fecha])
