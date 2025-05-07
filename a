@@ -1,34 +1,8 @@
-
-Es_Ultimos12Meses = 
-VAR MaxFechaConDatos =
-    CALCULATE(
-        MAX ( 'tablones_des_dicc_tipo_buffer_buffer'[fecha] ),
-        FILTER(
-            'tablones_des_dicc_tipo_buffer_buffer',
-            -- aquí defines qué significa “dato válido”,
-            -- por ejemplo que tu medida / columna de buffer <> 0:
-            'tablones_des_dicc_tipo_buffer_buffer'[valor_buffer] <> 0
-        )
-    )
-VAR FechaFin   = EOMONTH( MaxFechaConDatos, 0 )
-VAR FechaInicio= EOMONTH( FechaFin, -12 ) + 1
-
-RETURN
-IF(
-    'tablones_des_dicc_tipo_buffer_buffer'[fecha] >= FechaInicio &&
-    'tablones_des_dicc_tipo_buffer_buffer'[fecha] <= FechaFin,
-    1,
-    0
-)
-
-
-____________
-
-
-
-MesAnio_Short = 
-FORMAT(
-    'tablones_des_dicc_tipo_buffer_buffer'[fecha],
-    "MMM-yy",
-    "en-US"
+_MaxFecha_Válida = 
+CALCULATE(
+  MAX( 'tablones_des_salida_buffer'[fecha] ),
+  FILTER(
+    ALL( 'tablones_des_salida_buffer' ),
+    'tablones_des_salida_buffer'[tipo_buffer] IN { "level_a", "level_b", "level_c" }
+  )
 )
