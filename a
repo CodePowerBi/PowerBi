@@ -6,3 +6,29 @@ CALCULATE(
     'tablones_des_salida_buffer'[tipo_buffer] IN { "level_a", "level_b", "level_c" }
   )
 )
+
+______________
+
+Es_Ultimos12Meses = 
+VAR MaxFecha = [ _MaxFecha_Válida ]
+VAR FechaFin  = EOMONTH( MaxFecha, 0 )
+VAR FechaInicio = EOMONTH( FechaFin, -12 ) + 1
+VAR EstaFecha = 'tablones_des_salida_buffer'[fecha]
+RETURN
+IF(
+    EstaFecha >= FechaInicio
+    && EstaFecha <= FechaFin
+    && 'tablones_des_salida_buffer'[tipo_buffer] IN { "level_a", "level_b", "level_c" },
+    1,
+    0
+)
+
+
+_________________
+
+MesAnio_Short = 
+FORMAT(
+  'tablones_des_salida_buffer'[fecha],
+  "MMM-yy",
+  "en-US"
+)
