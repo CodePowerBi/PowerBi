@@ -1,34 +1,48 @@
-_MaxFecha_Válida = 
+_MaxFecha_Válida_Stress = 
 CALCULATE(
-  MAX( 'tablones_des_salida_buffer'[fecha] ),
-  FILTER(
-    ALL( 'tablones_des_salida_buffer' ),
-    'tablones_des_salida_buffer'[tipo_buffer] IN { "level_a", "level_b", "level_c" }
-  )
+    MAX ( 'tablones_des salida_escenario_stress'[fecha] ),
+    FILTER(
+        ALL ( 'tablones_des salida_escenario_stress' ),
+        'tablones_des salida_escenario_stress'[surplis_60_days_div_tc] <> 0 ||
+        'tablones_des salida_escenario_stress'[survival_days]       <> 0 ||
+        'tablones_des salida_escenario_stress'[apetite]             <> 0
+    )
 )
 
-______________
+___________
 
-Es_Ultimos12Meses = 
-VAR MaxFecha = [ _MaxFecha_Válida ]
-VAR FechaFin  = EOMONTH( MaxFecha, 0 )
-VAR FechaInicio = EOMONTH( FechaFin, -12 ) + 1
-VAR EstaFecha = 'tablones_des_salida_buffer'[fecha]
+Es_Ultimos12Meses_Stress = 
+VAR MaxFecha     = [_MaxFecha_Válida_Stress]
+VAR FechaFin     = EOMONTH( MaxFecha, 0 )
+VAR PrimerDiaFin = DATE( YEAR(FechaFin), MONTH(FechaFin), 1 )
+VAR FechaInicio  = EDATE( PrimerDiaFin, -12 )
+VAR EstaFecha    = 'tablones_des salida_escenario_stress'[fecha]
+
 RETURN
 IF(
-    EstaFecha >= FechaInicio
-    && EstaFecha <= FechaFin
-    && 'tablones_des_salida_buffer'[tipo_buffer] IN { "level_a", "level_b", "level_c" },
+    EstaFecha >= FechaInicio &&
+    EstaFecha <= FechaFin &&
+    (
+      'tablones_des salida_escenario_stress'[surplis_60_days_div_tc] <> 0 ||
+      'tablones_des salida_escenario_stress'[survival_days]       <> 0 ||
+      'tablones_des salida_escenario_stress'[apetite]             <> 0
+    ),
     1,
     0
 )
 
+___________
 
-_________________
-
-MesAnio_Short = 
+MesAnio_Short_Stress = 
 FORMAT(
-  'tablones_des_salida_buffer'[fecha],
+  'tablones_des salida_escenario_stress'[fecha],
   "MMM-yy",
   "en-US"
 )
+
+
+______________
+
+MesAnioOrden_Stress = 
+YEAR('tablones_des salida_escenario_stress'[fecha]) * 100
++ MONTH('tablones_des salida_escenario_stress'[fecha])
