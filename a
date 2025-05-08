@@ -1,9 +1,21 @@
-Es_Ultimos4Anios_Trading = 
-VAR FechaUmbral = EDATE( _MaxFecha_Valida_Trading, -48 )
-VAR EstaFecha  = 'tablones_des_tabla_trading'[fecha]
-RETURN
-IF(
-    EstaFecha >= FechaUmbral,
-    1,
-    0
+-- 1) Obtiene la última fecha con valor ≠ 0 (sin más condicionantes)
+_MaxFecha_Valor = 
+CALCULATE(
+  MAX( 'tablones_des_salida_buffer'[fecha] ),
+  FILTER(
+    ALL( 'tablones_des_salida_buffer' ),
+    'tablones_des_salida_buffer'[valor] <> 0
+  )
 )
+
+-- 2) Devuelve el primer día de ese mes
+_MesPrimerDia_MaxFecha_Valor = 
+VAR FechaMax = [_MaxFecha_Valor]
+RETURN
+DATE( YEAR(FechaMax), MONTH(FechaMax), 1 )
+
+-- 3) (Opcional) Como etiqueta tipo "Sep-23"
+_MesAnio_MaxFecha_Valor = 
+VAR PrimerDia = [_MesPrimerDia_MaxFecha_Valor]
+RETURN
+FORMAT( PrimerDia, "MMM-yy", "en-US" )
