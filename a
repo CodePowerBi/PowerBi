@@ -1,4 +1,4 @@
-Valor_Mes_MaxFecha = 
+Valor_Mes_T_Menos1 = 
 VAR FechaMax = 
     CALCULATE(
         MAX ( 'tablones_des_salida_buffer'[fecha] ),
@@ -7,12 +7,13 @@ VAR FechaMax =
             'tablones_des_salida_buffer'[valor] <> 0
         )
     )
-VAR FechaInicioMes = DATE( YEAR(FechaMax), MONTH(FechaMax), 1 )
-VAR FechaFinMes    = EOMONTH( FechaInicioMes, 0 )
+VAR PrimerDiaT   = DATE( YEAR(FechaMax), MONTH(FechaMax), 1 )
+VAR PrimerDiaT1  = EDATE( PrimerDiaT, -1 )            // un mes atrás
+VAR FinMesT1     = EOMONTH( PrimerDiaT1, 0 )
 
 RETURN
 CALCULATE(
     SUM( 'tablones_des_salida_buffer'[valor] ),
-    'tablones_des_salida_buffer'[fecha] >= FechaInicioMes,
-    'tablones_des_salida_buffer'[fecha] <= FechaFinMes
+    'tablones_des_salida_buffer'[fecha] >= PrimerDiaT1,
+    'tablones_des_salida_buffer'[fecha] <= FinMesT1
 )
