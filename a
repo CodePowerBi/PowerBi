@@ -1,21 +1,18 @@
--- 1) Obtiene la última fecha con valor ≠ 0 (sin más condicionantes)
-_MaxFecha_Valor = 
+Valor_Mes_MaxFecha = 
+VAR FechaMax = 
+    CALCULATE(
+        MAX ( 'tablones_des_salida_buffer'[fecha] ),
+        FILTER(
+            ALL ( 'tablones_des_salida_buffer' ),
+            'tablones_des_salida_buffer'[valor] <> 0
+        )
+    )
+VAR FechaInicioMes = DATE( YEAR(FechaMax), MONTH(FechaMax), 1 )
+VAR FechaFinMes    = EOMONTH( FechaInicioMes, 0 )
+
+RETURN
 CALCULATE(
-  MAX( 'tablones_des_salida_buffer'[fecha] ),
-  FILTER(
-    ALL( 'tablones_des_salida_buffer' ),
-    'tablones_des_salida_buffer'[valor] <> 0
-  )
+    SUM( 'tablones_des_salida_buffer'[valor] ),
+    'tablones_des_salida_buffer'[fecha] >= FechaInicioMes,
+    'tablones_des_salida_buffer'[fecha] <= FechaFinMes
 )
-
--- 2) Devuelve el primer día de ese mes
-_MesPrimerDia_MaxFecha_Valor = 
-VAR FechaMax = [_MaxFecha_Valor]
-RETURN
-DATE( YEAR(FechaMax), MONTH(FechaMax), 1 )
-
--- 3) (Opcional) Como etiqueta tipo "Sep-23"
-_MesAnio_MaxFecha_Valor = 
-VAR PrimerDia = [_MesPrimerDia_MaxFecha_Valor]
-RETURN
-FORMAT( PrimerDia, "MMM-yy", "en-US" )
