@@ -1,4 +1,4 @@
-Titulo_UltMesUltTrim_Menos1Mes = 
+Titulo_Valor_UltMesUltTrim = 
 VAR MaxFechaValida =
     CALCULATE(
         MAX( 'tablones_des_salida_buffer'[fecha] ),
@@ -25,12 +25,9 @@ VAR MesFinalPrevTrim =
         4, 12
     )
 
-// Primer día de ese mes de trimestre previo
-VAR FechaTrimPrev = DATE( AnioPrev, MesFinalPrevTrim, 1 )
+// Fecha del primer día de ese mes
+VAR FechaTitulo = DATE( AnioPrev, MesFinalPrevTrim, 1 )
 
-// Restamos un mes completo
-VAR FechaTitulo = EDATE( FechaTrimPrev, -1 )
-
-// Formateamos "Aug-23", "Sep-24", etc.
+// Devuelve “Sep-23”, “Jun-24”, etc.
 RETURN
 FORMAT( FechaTitulo, "MMM-yy", "en-US" )
