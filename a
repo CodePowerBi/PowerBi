@@ -1,18 +1,19 @@
-PrimerDia_UltimoMesUltTrim_SinBuffer = 
+–– 1) Primer día del último mes del último trimestre completo con datos
+PrimerDia_UltimoMesUltTrim_Stress = 
 VAR MaxFechaValida =
     CALCULATE(
-        MAX( 'tablones_des_salida_buffer'[fecha] ),
+        MAX( 'tablones_des_salida_escenario_stress'[fecha] ),
         FILTER(
-            ALL( 'tablones_des_salida_buffer' ),
-            'tablones_des_salida_buffer'[valor] <> 0
+            ALL( 'tablones_des_salida_escenario_stress' ),
+            'tablones_des_salida_escenario_stress'[surplis_60_days_div_tc] <> 0
         )
     )
-VAR Mes     = MONTH( MaxFechaValida )
-VAR Anio    = YEAR ( MaxFechaValida )
-VAR Trime   = INT(( Mes - 1 ) / 3) + 1
+VAR MesVal   = MONTH( MaxFechaValida )
+VAR AnioVal  = YEAR(  MaxFechaValida )
+VAR Trime    = INT(( MesVal - 1 ) / 3) + 1
 
-// Último mes de ese mismo trimestre
-VAR MesFinalTrim = 
+// Último mes de ese trimestre
+VAR MesFinalTrim =
     SWITCH(
         Trime,
         1, 3,   // Q1 → marzo
@@ -21,6 +22,5 @@ VAR MesFinalTrim =
         4, 12   // Q4 → diciembre
     )
 
-// Devuelve el primer día de ese mes
 RETURN
-DATE( Anio, MesFinalTrim, 1 )
+DATE( AnioVal, MesFinalTrim, 1 )
