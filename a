@@ -1,5 +1,9 @@
-Total_T_y_Tmenos1 = 
-VAR ValorT  = SELECTEDVALUE( 'tablones_des_salida_buffer'[T],  0 )
-VAR ValorT1 = SELECTEDVALUE( 'tablones_des_salida_buffer'[T-1M], 0 )
-RETURN
-  ValorT + ValorT1
+Suma_T_y_Tmenos1_PorCategoria = 
+SUMX(
+  FILTER(
+    ALL( 'tablones_des_salida_buffer' ),
+    'tablones_des_salida_buffer'[categoria] = SELECTEDVALUE('tablones_des_salida_buffer'[categoria])
+  ),
+  'tablones_des_salida_buffer'[T] + 
+  'tablones_des_salida_buffer'[T-1M]
+)
