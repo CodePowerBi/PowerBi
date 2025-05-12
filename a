@@ -1,53 +1,12 @@
 DimPaises = 
-ADDCOLUMNS(
-    DISTINCT(
-        UNION(
-            SELECTCOLUMNS(
-                'tablones_des_salida_buffer', 
-                "PaisCode", 'tablones_des_salida_buffer'[pais]
-            ),
-            SELECTCOLUMNS(
-                'tablones_des_salida_nsfr', 
-                "PaisCode", 'tablones_des_salida_nsfr'[pais]
-            ),
-            SELECTCOLUMNS(
-                'tablones_des_salida_escenario_stress', 
-                "PaisCode", 'tablones_des_salida_escenario_stress'[pais]
-            ),
-            SELECTCOLUMNS(
-                'tablones_des_tabla_trading', 
-                "PaisCode", 'tablones_des_tabla_trading'[pais]
-            )
-        )
-    ),
-    "NombrePais",
-      SWITCH(
-        [PaisCode],
-        "GBARG","Argentina",
-        "GBBRA","Brasil",
-        "GBUSA","Estados Unidos",
-        "GBFRA","Francia",
-        /* …otros mappings… */,
-        "Desconocido"
-      ),
-    "BufferCode",
-      LOOKUPVALUE(
-        'tablones_des_salida_buffer'[pais],
-        'tablones_des_salida_buffer'[pais], [PaisCode]
-      ),
-    "NSFRCode",
-      LOOKUPVALUE(
-        'tablones_des_salida_nsfr'[pais],
-        'tablones_des_salida_nsfr'[pais], [PaisCode]
-      ),
-    "StressCode",
-      LOOKUPVALUE(
-        'tablones_des_salida_escenario_stress'[pais],
-        'tablones_des_salida_escenario_stress'[pais], [PaisCode]
-      ),
-    "TradingCode",
-      LOOKUPVALUE(
-        'tablones_des_tabla_trading'[pais],
-        'tablones_des_tabla_trading'[pais], [PaisCode]
-      )
+DATATABLE(
+  "CodPais",    STRING,
+  "NombrePais", STRING,
+  {
+    { "GBARG", "Argentina"     },
+    { "GBBRA", "Brasil"        },
+    { "GBUSA", "Estados Unidos"},
+    { "GBFRA", "Francia"       }
+    // … sigue con todos los que necesites
+  }
 )
