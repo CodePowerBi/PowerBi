@@ -1,12 +1,55 @@
-DimPaises = 
-DATATABLE(
-  "CodPais",    STRING,
-  "NombrePais", STRING,
-  {
-    { "GBARG", "Argentina"     },
-    { "GBBRA", "Brasil"        },
-    { "GBUSA", "Estados Unidos"},
-    { "GBFRA", "Francia"       }
-    // … sigue con todos los que necesites
-  }
-)
+1. Tabla de matriz: Desglose por entidad del nivel 3
+Ubicación: Parte inferior izquierda
+Nombre sugerido: Detalle de exposición por entidad – Nivel 3
+Descripción funcional:
+Este objeto visual muestra, por entidad comparada (peers), la exposición detallada correspondiente al Nivel 3 según la jerarquía de valor razonable (Fair Value Hierarchy).
+
+Columnas incluidas:
+Level 3 Assets: importe total de activos clasificados como Nivel 3.
+
+Level 3 Liabilities: importe total de pasivos clasificados como Nivel 3.
+
+Total Level 3: suma de activos y pasivos de Nivel 3.
+
+Total Fair Value: valor razonable total de la entidad.
+
+% Level 3: proporción que representa el Total Level 3 sobre el Total Fair Value.
+
+Finalidad:
+Permite analizar el grado de exposición al Nivel 3 de cada entidad comparada y facilita el análisis de riesgo asociado a instrumentos de valoración menos observable.
+
+2. Gráfico de barras verticales: Ratio Level 3 / Total Fair Value
+Ubicación: Parte superior derecha
+Nombre sugerido: Comparativa de ratio de Nivel 3 sobre valor total por peer
+Descripción funcional:
+Este gráfico muestra, en forma de porcentaje, qué parte del valor razonable total de cada entidad corresponde a instrumentos clasificados como Nivel 3.
+
+Características visuales:
+Cada barra representa una entidad (peer).
+
+El valor mostrado es el % Level 3.
+
+La barra correspondiente a Santander se presenta destacada en color rojo para resaltar su posición relativa frente a otras entidades.
+
+Finalidad:
+Facilita el análisis de benchmarking, mostrando el posicionamiento del Banco Santander frente a sus comparables en cuanto a exposición relativa a instrumentos de Nivel 3.
+
+3. Gráfico de columnas agrupadas: Total de Level 3 Assets & Liabilities
+Ubicación: Parte inferior derecha
+Nombre sugerido: Distribución por entidad de Activos y Pasivos Nivel 3
+Descripción funcional:
+Gráfico que presenta, por peer, los volúmenes diferenciados de:
+
+Assets (activos) en color más claro
+
+Liabilities (pasivos) en color más oscuro
+
+Características visuales:
+Las columnas están agrupadas por entidad.
+
+Cada entidad muestra dos columnas: una para activos, otra para pasivos.
+
+En este caso, Santander se destaca con una barra en rojo (en este gráfico, para "Liabilities").
+
+Finalidad:
+Permite visualizar de forma segmentada la composición del nivel 3 por tipo de instrumento financiero (activo/pasivo), facilitando comparativas entre entidades y la evaluación de balances más arriesgados o complejos de valorar.
