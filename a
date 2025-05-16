@@ -1,51 +1,49 @@
 4. Level 3 | Historical Evolution
 Objetivo del gráfico:
-Este objeto visual representa la evolución histórica del volumen de instrumentos financieros clasificados como Nivel 3 según la jerarquía de valor razonable (Fair Value Hierarchy), desglosados por tipo contable y distribuidos a lo largo del tiempo.
+Este objeto visual representa la evolución histórica del volumen de instrumentos financieros clasificados como Nivel 3 según la jerarquía de valor razonable (Fair Value Hierarchy), desglosados por tipo contable, a lo largo del tiempo.
 
 Tipo de gráfico:
-Gráfico de columnas apiladas, con periodicidad semestral (junio y diciembre).
+Gráfico de columnas apiladas por período semestral (junio y diciembre de cada año).
 
 Datos representados:
-Cada columna del gráfico muestra el volumen total de instrumentos clasificados como Nivel 3 en un periodo determinado, dividido por categoría contable:
+Cada barra representa el volumen total de instrumentos Nivel 3 en un periodo concreto, y se divide en las siguientes categorías (leyenda de colores):
 
-Held for trading (color azul): instrumentos mantenidos para negociación.
+Azul: Held for trading (Activos mantenidos para negociación)
 
-FV through P&L (color rojo): valor razonable con cambios en resultados.
+Rojo: FV through P&L (Valor razonable con cambios en resultados)
 
-FV through OCI (color gris): valor razonable con cambios en otro resultado global.
+Gris: FV through OCI (Valor razonable con cambios en otro resultado global)
 
-Hedging derivatives (color naranja): derivados designados como cobertura.
+Naranja: Hedging derivatives (Derivados de cobertura)
 
-Liabilities under insurance contracts (color amarillo): pasivos bajo contratos de seguros.
+Amarillo: Liabilities under insurance contracts (Pasivos por contratos de seguros)
 
-Interpretación y análisis:
-Este visual permite observar:
+Interpretación:
+Este gráfico permite visualizar:
 
-La evolución global del nivel 3 a lo largo del tiempo.
+El crecimiento o descenso agregado del Nivel 3 a lo largo del tiempo.
 
-Las variaciones por tipo contable.
+La evolución por tipo de clasificación contable.
 
-El impacto de reclasificaciones, nuevas incorporaciones o reducciones significativas en la cartera de instrumentos.
+Cambios puntuales destacados por el usuario en los recuadros laterales.
 
-Plantilla editable (versión sin anotaciones):
-Incluye espacios en blanco alrededor del gráfico donde se pueden incorporar explicaciones cualitativas para contextualizar los cambios visualizados.
+Plantilla editable (imagen 2):
+El gráfico central está rodeado por recuadros de texto vacíos, donde el cliente debe documentar los hechos relevantes que justifican o explican variaciones significativas.
 
-Estos espacios están diseñados para documentar hechos relevantes que ayuden a interpretar incrementos o descensos puntuales.
+Ejemplos de contenido esperado por parte del cliente:
 
-Ejemplos de anotaciones:
+Cambios normativos o contables que expliquen aumentos o reclasificaciones.
 
-Ajustes contables o reclasificaciones por nuevos criterios de observabilidad.
+Entrada o salida de instrumentos por reevaluación de observabilidad.
 
-Inclusión de instrumentos no cotizados.
+Operaciones puntuales relevantes (e.g., securitizaciones, nuevas emisiones, bajas contables).
 
-Cambios en préstamos estructurados o derivados a largo plazo.
+Versión final con comentarios (imagen 1):
+El gráfico ya incluye las anotaciones rellenadas por el cliente, usando flechas y etiquetas con explicaciones específicas (e.g., “+3.550 MM – Nuevos préstamos HTC&S en Stellantis Italia...”).
 
-Versión final con anotaciones explicativas:
-La versión completa del gráfico incluye comentarios, flechas y cifras que destacan los movimientos más relevantes entre periodos.
+Estas anotaciones explican los factores cuantitativos y cualitativos detrás de las variaciones más significativas observadas en las barras del gráfico.
 
-Las anotaciones se colocan en torno al gráfico para facilitar una lectura narrativa y visualmente guiada.
+Las diferencias año a año y los eventos contables se comunican de forma clara para facilitar su análisis en auditorías o benchmarking interno.
 
-Se incluyen incrementos (e.g., +2.000 MM) y reducciones (-860 MM) asociados a eventos específicos o decisiones contables.
-
-Propósito del componente:
-Este gráfico facilita la trazabilidad y comprensión de la evolución del Nivel 3, permitiendo combinar análisis cuantitativo y cualitativo. Resulta útil para documentar decisiones contables, justificar variaciones ante entornos regulatorios o apoyar análisis comparativos internos.
+Finalidad del componente:
+Este objeto visual facilita la trazabilidad y explicación ejecutiva de los cambios en instrumentos Nivel 3. La combinación de gráfico + comentarios que permite que se justifiquen los movimientos según criterios contables y de observabilidad, aportando contexto cualitativo a los datos cuantitativos.
