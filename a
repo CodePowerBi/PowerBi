@@ -1,1 +1,51 @@
+4. Level 3 | Historical Evolution
+Objetivo del gráfico:
+Este objeto visual representa la evolución histórica del volumen de instrumentos financieros clasificados como Nivel 3 según la jerarquía de valor razonable (Fair Value Hierarchy), desglosados por tipo contable y distribuidos a lo largo del tiempo.
 
+Tipo de gráfico:
+Gráfico de columnas apiladas, con periodicidad semestral (junio y diciembre).
+
+Datos representados:
+Cada columna del gráfico muestra el volumen total de instrumentos clasificados como Nivel 3 en un periodo determinado, dividido por categoría contable:
+
+Held for trading (color azul): instrumentos mantenidos para negociación.
+
+FV through P&L (color rojo): valor razonable con cambios en resultados.
+
+FV through OCI (color gris): valor razonable con cambios en otro resultado global.
+
+Hedging derivatives (color naranja): derivados designados como cobertura.
+
+Liabilities under insurance contracts (color amarillo): pasivos bajo contratos de seguros.
+
+Interpretación y análisis:
+Este visual permite observar:
+
+La evolución global del nivel 3 a lo largo del tiempo.
+
+Las variaciones por tipo contable.
+
+El impacto de reclasificaciones, nuevas incorporaciones o reducciones significativas en la cartera de instrumentos.
+
+Plantilla editable (versión sin anotaciones):
+Incluye espacios en blanco alrededor del gráfico donde se pueden incorporar explicaciones cualitativas para contextualizar los cambios visualizados.
+
+Estos espacios están diseñados para documentar hechos relevantes que ayuden a interpretar incrementos o descensos puntuales.
+
+Ejemplos de anotaciones:
+
+Ajustes contables o reclasificaciones por nuevos criterios de observabilidad.
+
+Inclusión de instrumentos no cotizados.
+
+Cambios en préstamos estructurados o derivados a largo plazo.
+
+Versión final con anotaciones explicativas:
+La versión completa del gráfico incluye comentarios, flechas y cifras que destacan los movimientos más relevantes entre periodos.
+
+Las anotaciones se colocan en torno al gráfico para facilitar una lectura narrativa y visualmente guiada.
+
+Se incluyen incrementos (e.g., +2.000 MM) y reducciones (-860 MM) asociados a eventos específicos o decisiones contables.
+
+Propósito del componente:
+Este gráfico facilita la trazabilidad y comprensión de la evolución del Nivel 3, permitiendo combinar análisis cuantitativo y cualitativo. Resulta útil para documentar decisiones contables, justificar variaciones ante entornos regulatorios o apoyar análisis comparativos internos.
