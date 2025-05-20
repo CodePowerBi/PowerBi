@@ -1,1 +1,13 @@
-
+ParentName_Con_Valor =
+VAR FechaDesde = DATE(2024, 12, 1)  -- ajusta según lo que consideres como inicio de rango
+VAR FechaHasta = DATE(2025, 12, 1)  -- o TODAY() si quieres que sea dinámico
+RETURN
+    SUMMARIZE(
+        FILTER(
+            'tablones_des_salida_intragru_3',
+            'tablones_des_salida_intragru_3'[process_date] >= FechaDesde &&
+            'tablones_des_salida_intragru_3'[process_date] <= FechaHasta &&
+            'tablones_des_salida_intragru_3'[recop_max_eur] <> 0
+        ),
+        'tablones_des_salida_intragru_3'[Parent Name]
+    )
