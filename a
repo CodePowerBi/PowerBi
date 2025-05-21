@@ -1,13 +1,28 @@
-ParentName_Con_Valor =
-VAR FechaDesde = DATE(2024, 12, 1)  -- ajusta según lo que consideres como inicio de rango
-VAR FechaHasta = DATE(2025, 12, 1)  -- o TODAY() si quieres que sea dinámico
-RETURN
-    SUMMARIZE(
-        FILTER(
-            'tablones_des_salida_intragru_3',
-            'tablones_des_salida_intragru_3'[process_date] >= FechaDesde &&
-            'tablones_des_salida_intragru_3'[process_date] <= FechaHasta &&
-            'tablones_des_salida_intragru_3'[recop_max_eur] <> 0
-        ),
-        'tablones_des_salida_intragru_3'[Parent Name]
-    )
+Hoja: Risk Appetite – Detalle por Resolution Group
+Esta hoja presenta el detalle del Risk Appetite a nivel de Resolution Group, desglosado por país de booking.
+
+La tabla muestra:
+
+Las contrapartes clasificadas por grupo de resolución con sede en España (ES)
+
+La exposición correspondiente en cada país destino (AR, BR, CL, etc.)
+
+Valores expresados en millones de euros
+
+Inclusión de entidades con valor 0 y omisión de aquellas sin valores (indicadas como “-”)
+
+El periodo de referencia es diciembre 2024, correspondiente al último trimestre con datos disponibles.
+
+En la parte superior derecha se incluyen los siguientes botones de navegación:
+
+Botón RA1: Redirecciona a la hoja de Executive Summary
+
+Botón RA2: Redirecciona a la hoja de Risk Exposure and Limits by Country
+
+Botón RA3: Redirecciona a la hoja de Risk Distribution by Country
+
+Botón A1: Redirecciona a la presente hoja
+
+Botón A2: Redirecciona a otra hoja de detalle adicional (a definir)
+
+Botón Casa: Redirecciona al Menú Principal
