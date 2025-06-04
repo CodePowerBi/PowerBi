@@ -1,10 +1,8 @@
-MesAñoUltMesTrimestre = 
+MesAñoDicJun = 
 VAR Mes = MONTH(Dates[Date])
-VAR Anyo = YEAR(Dates[Date])
 RETURN
 IF(
-    Mes IN {3,6,9,12},
-    FORMAT(Dates[Date], "mmm-yy"),
+    Mes IN {6, 12},
+    UPPER(LEFT(FORMAT(Dates[Date], "mmm"),1)) & LOWER(MID(FORMAT(Dates[Date], "mmm"),2,2)) & "-" & RIGHT(FORMAT(Dates[Date], "yy"),2),
     BLANK()
 )
-
