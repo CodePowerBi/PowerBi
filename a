@@ -1,35 +1,39 @@
 Suma_Mes_Anterior = 
-VAR MesSeleccionado = SELECTEDVALUE(Dates[MesAñoUltMesTrimestre])
-VAR ListaMeses = 
-    FILTER(
-        VALUES(Dates[MesAñoUltMesTrimestre]),
-        NOT(ISBLANK(Dates[MesAñoUltMesTrimestre]))
-    )
-VAR PosSeleccionado = 
-    RANKX(
-        ListaMeses,
-        Dates[MesAñoUltMesTrimestre],
-        ,
-        DESC,
-        Dense
-    )
-VAR MesAnterior = 
-    CALCULATE(
-        MAX(Dates[MesAñoUltMesTrimestre]),
-        FILTER(
-            ListaMeses,
-            RANKX(ListaMeses, Dates[MesAñoUltMesTrimestre], , DESC, Dense) = PosSeleccionado + 1
-        )
-    )
-RETURN
 IF(
-    NOT(ISBLANK(MesAnterior)),
-    CALCULATE(
-        SUM(km1[cantidad]),
+    HASONEVALUE(Dates[MesAñoUltMesTrimestre]),
+    VAR MesSeleccionado = VALUES(Dates[MesAñoUltMesTrimestre])
+    VAR ListaMeses = 
         FILTER(
-            ALL(Dates),
-            Dates[MesAñoUltMesTrimestre] = MesAnterior
+            VALUES(Dates[MesAñoUltMesTrimestre]),
+            NOT(ISBLANK(Dates[MesAñoUltMesTrimestre]))
         )
+    VAR PosSeleccionado = 
+        RANKX(
+            ListaMeses,
+            Dates[MesAñoUltMesTrimestre],
+            ,
+            DESC,
+            Dense
+        )
+    VAR MesAnterior = 
+        CALCULATE(
+            MAX(Dates[MesAñoUltMesTrimestre]),
+            FILTER(
+                ListaMeses,
+                RANKX(ListaMeses, Dates[MesAñoUltMesTrimestre], , DESC, Dense) = PosSeleccionado + 1
+            )
+        )
+    RETURN
+    IF(
+        NOT(ISBLANK(MesAnterior)),
+        CALCULATE(
+            SUM(km1[cantidad]),
+            FILTER(
+                ALL(Dates),
+                Dates[MesAñoUltMesTrimestre] = MesAnterior
+            )
+        ),
+        BLANK()
     ),
     BLANK()
 )
