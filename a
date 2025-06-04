@@ -1,1 +1,10 @@
+MesAñoUltMesTrimestre = 
+VAR Mes = MONTH(Dates[Date])
+VAR Anyo = YEAR(Dates[Date])
+RETURN
+IF(
+    Mes IN {3,6,9,12},
+    FORMAT(Dates[Date], "mmm-yy"),
+    BLANK()
+)
 
