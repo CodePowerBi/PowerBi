@@ -1,9 +1,24 @@
--- Medida para 1 mes anterior al seleccionado
 Valor_Mes_Anterior_1 = 
-VAR MesSeleccionado = SELECTEDVALUE(Dates[MesAñoUltMesTrimestre])
-VAR ListaMeses = FILTER(ALL(Dates[MesAñoUltMesTrimestre]), NOT(ISBLANK(Dates[MesAñoUltMesTrimestre])))
-VAR PosSeleccionado = RANKX(ListaMeses, Dates[MesAñoUltMesTrimestre], , DESC, DENSE)
-VAR MesAnterior1 = 
+VAR MesSeleccionado =
+    IF(
+        HASONEVALUE(Dates[MesAñoUltMesTrimestre]),
+        VALUES(Dates[MesAñoUltMesTrimestre]),
+        BLANK()
+    )
+VAR ListaMeses =
+    FILTER(
+        ALL(Dates[MesAñoUltMesTrimestre]),
+        NOT(ISBLANK(Dates[MesAñoUltMesTrimestre]))
+    )
+VAR PosSeleccionado =
+    RANKX(
+        ListaMeses,
+        Dates[MesAñoUltMesTrimestre],
+        ,
+        DESC,
+        DENSE
+    )
+VAR MesAnterior =
     CALCULATE(
         MAX(Dates[MesAñoUltMesTrimestre]),
         FILTER(
@@ -12,10 +27,14 @@ VAR MesAnterior1 =
         )
     )
 RETURN
-CALCULATE(
-    SUM(km1[cantidad]),
-    FILTER(
-        ALL(Dates),
-        Dates[MesAñoUltMesTrimestre] = MesAnterior1
-    )
+IF(
+    NOT(ISBLANK(MesSeleccionado)) && NOT(ISBLANK(MesAnterior)),
+    CALCULATE(
+        SUM(km1[cantidad]),
+        FILTER(
+            ALL(Dates),
+            Dates[MesAñoUltMesTrimestre] = MesAnterior
+        )
+    ),
+    BLANK()
 )
