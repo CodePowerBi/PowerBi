@@ -2,7 +2,7 @@ Suma_Mes_Anterior =
 VAR MesSeleccionado = SELECTEDVALUE(Dates[MesAñoUltMesTrimestre])
 VAR ListaMeses = 
     FILTER(
-        ALL(Dates[MesAñoUltMesTrimestre]],
+        ALL(Dates[MesAñoUltMesTrimestre]),
         NOT(ISBLANK(Dates[MesAñoUltMesTrimestre]))
     )
 VAR PosSeleccionado = 
