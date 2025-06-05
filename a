@@ -1,8 +1,16 @@
-Cantidad_3_Meses_Antes =
-LOOKUPVALUE(
-    km1[cantidad],
-    km1[date], EDATE(km1[date], -3),
-    km1[metrica_eng], km1[metrica_eng],
-    km1[metrica_esp], km1[metrica_esp]
-    -- Añade aquí más columnas si son parte de la clave
+MesAñoUltimoMesTrim_Otro = 
+VAR AnyoActual = YEAR(TODAY())
+VAR AnyoFecha = YEAR(Dates[Date])
+VAR Mes = MONTH(Dates[Date])
+VAR MesTexto = UPPER(LEFT(FORMAT(Dates[Date], "mmm"), 1)) & LOWER(MID(FORMAT(Dates[Date], "mmm"), 2, 2))
+VAR AnyoTexto = RIGHT(FORMAT(Dates[Date], "yy"), 2)
+RETURN
+IF(
+    AnyoFecha >= AnyoActual - 3,
+    IF(
+        Mes = 12,
+        "Dic",
+        BLANK()
+    ),
+    MesTexto & "-" & AnyoTexto
 )
