@@ -1,11 +1,15 @@
-Cantidad_Mes_Anterior = 
-VAR FechaActual = 'TuTabla'[Fecha]
-VAR FechaMesAnterior = EDATE(FechaActual, -3)
-RETURN
-CALCULATE(
-    MAX('TuTabla'[Cantidad]),
-    FILTER(
-        'TuTabla',
-        'TuTabla'[Fecha] = FechaMesAnterior
+Cantidad_Anterior = 
+VAR FechaActual = km1[date]
+VAR FechaAnterior = 
+    CALCULATE(
+        MAX(km1[date]),
+        FILTER(
+            km1,
+            km1[date] < FechaActual
+        )
     )
-)
+RETURN
+    CALCULATE(
+        SUM(km1[cantidad]),
+        km1[date] = FechaAnterior
+    )
