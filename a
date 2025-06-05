@@ -1,22 +1,22 @@
-Suma_Mes_Anterior =
+Suma_Mes_Anterior = 
 VAR MesSeleccionado = SELECTEDVALUE(km1[MesAñoUltMesTrimestre])
-VAR ListaMeses =
-    DISTINCT(SELECTCOLUMNS(km1, "Mes", km1[MesAñoUltMesTrimestre]))
-VAR PosSeleccionado =
+VAR ListaMeses = 
+    DISTINCT(SELECTCOLUMNS(km1, "MesAño", km1[MesAñoUltMesTrimestre]))
+VAR PosSeleccionado = 
     RANKX(
         ListaMeses,
-        [Mes],
+        [MesAño],
         ,
         DESC,
         DENSE
     )
-VAR MesAnterior =
+VAR MesAnterior = 
     MAXX(
         FILTER(
             ListaMeses,
-            RANKX(ListaMeses, [Mes], , DESC, DENSE) = PosSeleccionado + 1
+            RANKX(ListaMeses, [MesAño], , DESC, DENSE) = PosSeleccionado + 1
         ),
-        [Mes]
+        [MesAño]
     )
 RETURN
 IF(
