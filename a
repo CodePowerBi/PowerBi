@@ -1,15 +1,7 @@
-Cantidad_Trimestre_Anterior = 
-VAR FechaActual = km1[date]
-VAR FechaAnterior =
-    CALCULATE(
-        MAX(km1[date]),
-        FILTER(
-            km1,
-            km1[date] < FechaActual
-        )
-    )
+Cantidad_3_Meses_Antes =
+VAR FechaObjetivo = EDATE(km1[date], -3)
 RETURN
     CALCULATE(
-        SUM(km1[cantidad]),
-        km1[date] = FechaAnterior
+        MAX(km1[cantidad]),
+        FILTER(km1, km1[date] = FechaObjetivo)
     )
