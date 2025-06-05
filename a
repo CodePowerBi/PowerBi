@@ -1,40 +1,11 @@
-Valor_Mes_Anterior_1 = 
-VAR MesSeleccionado =
-    IF(
-        HASONEVALUE(Dates[MesAñoUltMesTrimestre]),
-        VALUES(Dates[MesAñoUltMesTrimestre]),
-        BLANK()
-    )
-VAR ListaMeses =
-    FILTER(
-        ALL(Dates[MesAñoUltMesTrimestre]),
-        NOT(ISBLANK(Dates[MesAñoUltMesTrimestre]))
-    )
-VAR PosSeleccionado =
-    RANKX(
-        ListaMeses,
-        Dates[MesAñoUltMesTrimestre],
-        ,
-        DESC,
-        DENSE
-    )
-VAR MesAnterior =
-    CALCULATE(
-        MAX(Dates[MesAñoUltMesTrimestre]),
-        FILTER(
-            ListaMeses,
-            RANKX(ListaMeses, Dates[MesAñoUltMesTrimestre], , DESC, DENSE) = PosSeleccionado + 1
-        )
-    )
+Cantidad_Mes_Anterior = 
+VAR FechaActual = 'TuTabla'[Fecha]
+VAR FechaMesAnterior = EDATE(FechaActual, -3)
 RETURN
-IF(
-    NOT(ISBLANK(MesSeleccionado)) && NOT(ISBLANK(MesAnterior)),
-    CALCULATE(
-        SUM(km1[cantidad]),
-        FILTER(
-            ALL(Dates),
-            Dates[MesAñoUltMesTrimestre] = MesAnterior
-        )
-    ),
-    BLANK()
+CALCULATE(
+    MAX('TuTabla'[Cantidad]),
+    FILTER(
+        'TuTabla',
+        'TuTabla'[Fecha] = FechaMesAnterior
+    )
 )
