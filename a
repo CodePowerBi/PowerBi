@@ -1,6 +1,6 @@
-Cantidad_Anterior = 
+Cantidad_Trimestre_Anterior = 
 VAR FechaActual = km1[date]
-VAR FechaAnterior = 
+VAR FechaAnterior =
     CALCULATE(
         MAX(km1[date]),
         FILTER(
