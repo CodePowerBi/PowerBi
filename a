@@ -1,18 +1,13 @@
 Tabla_CET1 =
-VAR Base = 
-    ADDCOLUMNS(
-        SUMMARIZE(
-            FILTER(cet_1, cet_1[metrica] IN {1, 2}),
-            cet_1[MesAñoUltMesTrim]
-        ),
-        "Valor_Metrica_1", 
-            CALCULATE(SUM(cet_1[Valor]), cet_1[metrica] = 1),
-        "Valor_Metrica_2", 
-            CALCULATE(SUM(cet_1[Valor]), cet_1[metrica] = 2)
-    )
-
-RETURN
-    ADDCOLUMNS(
-        Base,
-        "cet1", [Valor_Metrica_1] + [Valor_Metrica_2]
-    )
+ADDCOLUMNS(
+    SUMMARIZE(
+        FILTER(cet_1, cet_1[metrica] IN {1, 2}),
+        cet_1[MesAñoUltMesTrim]
+    ),
+    "Valor_Metrica_1", 
+        CALCULATE(SUM(cet_1[Valor]), cet_1[metrica] = 1),
+    "Valor_Metrica_2", 
+        CALCULATE(SUM(cet_1[Valor]), cet_1[metrica] = 2),
+    "CET1", 
+        CALCULATE(MAX(cet_1[cet1]), cet_1[metrica] = 1)
+)
