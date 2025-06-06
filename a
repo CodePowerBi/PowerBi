@@ -1,21 +1,10 @@
-Tabla_CET1_Matriz =
-UNION(
-    SELECTCOLUMNS(
-        FILTER(cet_1, cet_1[metrica] = 1),
-        "Mes", cet_1[MesAñoUltMesTrim],
-        "Metrica_Nombre", "Métrica 1",
-        "Valor", cet_1[Valor]
-    ),
-    SELECTCOLUMNS(
-        FILTER(cet_1, cet_1[metrica] = 2),
-        "Mes", cet_1[MesAñoUltMesTrim],
-        "Metrica_Nombre", "Métrica 2",
-        "Valor", cet_1[Valor]
-    ),
-    SELECTCOLUMNS(
-        FILTER(cet_1, cet_1[metrica] = 1),
-        "Mes", cet_1[MesAñoUltMesTrim],
-        "Metrica_Nombre", "CET1",
-        "Valor", cet_1[cet1]
+Valor_Formateado = 
+VAR nombreMetrica = SELECTEDVALUE(Tabla_CET1_Matriz[Metrica_Nombre])
+VAR valorOriginal = SELECTEDVALUE(Tabla_CET1_Matriz[Valor])
+
+RETURN
+    SWITCH(
+        TRUE(),
+        nombreMetrica = "Métrica 2" || nombreMetrica = "CET1", FORMAT(valorOriginal, "0.00%"),
+        FORMAT(valorOriginal, "#,##0")
     )
-)
