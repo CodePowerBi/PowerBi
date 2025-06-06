@@ -1,8 +1,14 @@
-Total_Metrica =
-SUMMARIZE(
-    cet_1,
-    "metrica", 0,
-    "Valor", SUM(cet_1[Valor]),
-    "Mes", "Total", // o el campo de fecha que uses
-    ...
+Valor_Con_Metrica_2 = 
+IF(
+    cet_1[metrica] = 1,
+    cet_1[Valor] +
+        CALCULATE(
+            MAX(cet_1[Valor]),
+            FILTER(
+                cet_1,
+                cet_1[metrica] = 2 &&
+                cet_1[MesAñoUltMesTrim] = EARLIER(cet_1[MesAñoUltMesTrim])
+            )
+        ),
+    BLANK()
 )
