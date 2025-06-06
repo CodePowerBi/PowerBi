@@ -1,10 +1,8 @@
-Valor_Formateado = 
-VAR nombreMetrica = SELECTEDVALUE(Tabla_CET1_Matriz[Metrica_Nombre])
-VAR valorOriginal = SELECTEDVALUE(Tabla_CET1_Matriz[Valor])
+Valor_Metrica_1 = 
+CALCULATE(SUM(Tabla_CET1_Matriz[Valor]), Tabla_CET1_Matriz[Metrica_Nombre] = "Métrica 1")
 
-RETURN
-    SWITCH(
-        TRUE(),
-        nombreMetrica = "Métrica 2" || nombreMetrica = "CET1", FORMAT(valorOriginal, "0.00%"),
-        FORMAT(valorOriginal, "#,##0")
-    )
+Valor_Metrica_2 = 
+CALCULATE(SUM(Tabla_CET1_Matriz[Valor]), Tabla_CET1_Matriz[Metrica_Nombre] = "Métrica 2")
+
+Valor_CET1 = 
+CALCULATE(SUM(Tabla_CET1_Matriz[Valor]), Tabla_CET1_Matriz[Metrica_Nombre] = "CET1")
