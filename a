@@ -1,13 +1,21 @@
-Tabla_CET1 =
-ADDCOLUMNS(
-    SUMMARIZE(
-        FILTER(cet_1, cet_1[metrica] IN {1, 2}),
-        cet_1[MesAñoUltMesTrim]
+Tabla_CET1_Matriz =
+UNION(
+    SELECTCOLUMNS(
+        FILTER(cet_1, cet_1[metrica] = 1),
+        "Mes", cet_1[MesAñoUltMesTrim],
+        "Metrica_Nombre", "Métrica 1",
+        "Valor", cet_1[Valor]
     ),
-    "Valor_Metrica_1", 
-        CALCULATE(SUM(cet_1[Valor]), cet_1[metrica] = 1),
-    "Valor_Metrica_2", 
-        CALCULATE(SUM(cet_1[Valor]), cet_1[metrica] = 2),
-    "CET1", 
-        CALCULATE(MAX(cet_1[cet1]), cet_1[metrica] = 1)
+    SELECTCOLUMNS(
+        FILTER(cet_1, cet_1[metrica] = 2),
+        "Mes", cet_1[MesAñoUltMesTrim],
+        "Metrica_Nombre", "Métrica 2",
+        "Valor", cet_1[Valor]
+    ),
+    SELECTCOLUMNS(
+        FILTER(cet_1, cet_1[metrica] = 1),
+        "Mes", cet_1[MesAñoUltMesTrim],
+        "Metrica_Nombre", "CET1",
+        "Valor", cet_1[cet1]
+    )
 )
