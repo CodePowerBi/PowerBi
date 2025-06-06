@@ -2,13 +2,16 @@ Valor_Con_Metrica_2 =
 IF(
     cet_1[metrica] = 1,
     cet_1[Valor] +
-        CALCULATE(
-            MAX(cet_1[Valor]),
-            FILTER(
-                cet_1,
-                cet_1[metrica] = 2 &&
-                cet_1[MesAñoUltMesTrim] = EARLIER(cet_1[MesAñoUltMesTrim])
-            )
+        COALESCE(
+            CALCULATE(
+                MAX(cet_1[Valor]),
+                FILTER(
+                    cet_1,
+                    cet_1[metrica] = 2 &&
+                    cet_1[MesAñoUltMesTrim] = EARLIER(cet_1[MesAñoUltMesTrim])
+                )
+            ),
+            0
         ),
     BLANK()
 )
