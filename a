@@ -1,16 +1,8 @@
-MesAñoUltimoMesTrim_Otro = 
-VAR AnyoActual = YEAR(TODAY())
-VAR AnyoFecha = YEAR(Dates[Date])
-VAR Mes = MONTH(Dates[Date])
-VAR MesTexto = UPPER(LEFT(FORMAT(Dates[Date], "mmm"), 1)) & LOWER(MID(FORMAT(Dates[Date], "mmm"), 2, 2))
-VAR AnyoTexto = RIGHT(FORMAT(Dates[Date], "yy"), 2)
-RETURN
-IF(
-    AnyoFecha >= AnyoActual - 3,
-    IF(
-        Mes = 12,
-        "Dic",
-        BLANK()
-    ),
-    MesTexto & "-" & AnyoTexto
+Total_Metrica =
+SUMMARIZE(
+    cet_1,
+    "metrica", 0,
+    "Valor", SUM(cet_1[Valor]),
+    "Mes", "Total", // o el campo de fecha que uses
+    ...
 )
