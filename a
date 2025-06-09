@@ -1,13 +1,6 @@
-Orden_Metrica_Final =
-VAR OrdenDiccionario =
-    LOOKUPVALUE(
-        dicc_metricas_cet_1[order name],
-        dicc_metricas_cet_1[metrica_nombre],
-        tabla_nueva_Cet[metrica_nombre]
-    )
-RETURN
-    IF(
-        tabla_nueva_Cet[metrica_nombre] = "CET1",
-        1,
-        OrdenDiccionario + 10
-    )
+ID_Metrica =
+LOOKUPVALUE(
+    dicc_metricas_cet_1[id],
+    dicc_metricas_cet_1[metrica_nombre],
+    tabla_nueva_Cet[metrica_nombre]
+)
