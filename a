@@ -1,4 +1,4 @@
-Es_Fecha_CET_Referencia =
+Fecha_CET_Referencia_MesAnyo =
 VAR FechaMaxDatos =
     CALCULATE(
         MAX('tabla_nueva_Cet'[fecha]),
@@ -28,4 +28,8 @@ VAR MesUltimoPrevTrim =
 VAR FechaObjetivo = DATE(AnioPrev, MesUltimoPrevTrim, 1)
 
 RETURN
-    IF('Dates'[Date] = FechaObjetivo, "Fecha CET1", BLANK())
+    IF(
+        'Dates'[Date] = FechaObjetivo,
+        FORMAT(FechaObjetivo, "mmm-yy"),
+        BLANK()
+    )
