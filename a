@@ -1,9 +1,14 @@
-Valor_CET1_OnlyTotal =
+Valor =
+SUM('TABLA'[valor])
+
+__________
+
+Valor_CET1_SoloEnTotal =
 IF (
-    HASONEVALUE('TABLA_NUEVA_CET'[Metrica_Nombre]),
-    SUM('TABLA_NUEVA_CET'[valor]),  -- devuelve normal cuando es una fila concreta
-    CALCULATE(
-        SUM('TABLA_NUEVA_CET'[valor]),
-        'TABLA_NUEVA_CET'[Metrica_Nombre] = "CET1"
-    )  -- solo CET1 cuando estamos en el total
+    HASONEVALUE('TABLA'[Metrica_Nombre]),
+    [Valor],  // Muestra el valor normal por fila
+    CALCULATE (
+        [Valor],
+        'TABLA'[Metrica_Nombre] = "CET1"
+    )
 )
