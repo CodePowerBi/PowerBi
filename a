@@ -1,8 +1,13 @@
-Orden_Metrica =
-SWITCH (
-    'TABLA'[Metrica_Nombre],
-    "CET1", 1,
-    "Equity Banking Book Position", 2,
-    "Max. Exp. of equity BB as % of CET1", 3,
-    99  // por si aparece alguna métrica no prevista
-)
+Orden_Metrica_Final =
+VAR OrdenDiccionario =
+    LOOKUPVALUE(
+        dicc_metricas_cet_1[order name],
+        dicc_metricas_cet_1[metrica_nombre],
+        tabla_nueva_Cet[metrica_nombre]
+    )
+RETURN
+    IF(
+        tabla_nueva_Cet[metrica_nombre] = "CET1",
+        1,
+        OrdenDiccionario + 10
+    )
