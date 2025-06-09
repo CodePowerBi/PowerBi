@@ -1,21 +1,9 @@
-Tabla_CET1_Matriz =
-UNION(
-    SELECTCOLUMNS(
-        FILTER(cet_1, cet_1[metrica] = 1),
-        "Mes", cet_1[MesAñoUltMesTrim],
-        "Metrica_Nombre", "Métrica 1",
-        "Valor", FORMAT(cet_1[Valor], "#,##0")
-    ),
-    SELECTCOLUMNS(
-        FILTER(cet_1, cet_1[metrica] = 2),
-        "Mes", cet_1[MesAñoUltMesTrim],
-        "Metrica_Nombre", "Métrica 2",
-        "Valor", FORMAT(cet_1[Valor], "0.00%")
-    ),
-    SELECTCOLUMNS(
-        FILTER(cet_1, cet_1[metrica] = 1),
-        "Mes", cet_1[MesAñoUltMesTrim],
-        "Metrica_Nombre", "CET1",
-        "Valor", FORMAT(cet_1[cet1], "0.00%")
-    )
+Valor_CET1_OnlyTotal =
+IF (
+    HASONEVALUE('TABLA_NUEVA_CET'[Metrica_Nombre]),
+    SUM('TABLA_NUEVA_CET'[valor]),  -- devuelve normal cuando es una fila concreta
+    CALCULATE(
+        SUM('TABLA_NUEVA_CET'[valor]),
+        'TABLA_NUEVA_CET'[Metrica_Nombre] = "CET1"
+    )  -- solo CET1 cuando estamos en el total
 )
