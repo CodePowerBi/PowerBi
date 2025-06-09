@@ -1,6 +1,10 @@
 ID_Metrica =
-LOOKUPVALUE(
-    dicc_metricas_cet_1[id],
-    dicc_metricas_cet_1[metrica_nombre],
-    tabla_nueva_Cet[metrica_nombre]
+IF (
+    tabla_nueva_Cet[metrica_nombre] = "CET1",
+    0,
+    LOOKUPVALUE(
+        dicc_metricas_cet_1[id],
+        dicc_metricas_cet_1[metrica_nombre],
+        tabla_nueva_Cet[metrica_nombre]
+    )
 )
