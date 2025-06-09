@@ -1,14 +1,8 @@
-Valor =
-SUM('TABLA'[valor])
-
-__________
-
-Valor_CET1_SoloEnTotal =
-IF (
-    HASONEVALUE('TABLA'[Metrica_Nombre]),
-    [Valor],  // Muestra el valor normal por fila
-    CALCULATE (
-        [Valor],
-        'TABLA'[Metrica_Nombre] = "CET1"
-    )
+Orden_Metrica =
+SWITCH (
+    'TABLA'[Metrica_Nombre],
+    "CET1", 1,
+    "Equity Banking Book Position", 2,
+    "Max. Exp. of equity BB as % of CET1", 3,
+    99  // por si aparece alguna métrica no prevista
 )
