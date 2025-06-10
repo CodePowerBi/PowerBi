@@ -1,6 +1,5 @@
-Fecha_Menos2Anios = 
-IF (
-    NOT ISBLANK(Dates[MaxFecha_Valida]),
-    EDATE(Dates[MaxFecha_Valida], -24),
-    BLANK()
-)
+// Columna calculada en 'Dates'
+Date =
+VAR MaxFecha = MAX('Dates'[MaxFecha_Valida_Trading_])
+RETURN
+    EDATE( MaxFecha, -24 )  // 24 meses atrás
