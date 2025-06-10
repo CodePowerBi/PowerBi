@@ -1,31 +1,31 @@
-DentroDe2Años = 
-VAR MaxFecha = [MaxFecha_Válida_cet]
-VAR FechaLimite = 
-    DATE(
-        YEAR( MaxFecha ) - 2,
-        MONTH( MaxFecha ),
-        DAY( MaxFecha )
+MesAñoUltMesTrimestre =
+VAR Mes     = MONTH( Dates[Date] )
+VAR Anyo    = YEAR( Dates[Date] )
+
+// 1) Recupera la fecha máxima válida (mismo cálculo que tu medida)
+VAR MaxFecha =
+    CALCULATE(
+        MAX( 'TABLA_NUEVA_CET'[fecha] ),
+        FILTER(
+            ALL( 'TABLA_NUEVA_CET' ),
+            'TABLA_NUEVA_CET'[Valor] <> 0
+        )
     )
+VAR MesMax  = MONTH( MaxFecha )
+VAR AnyoMax = YEAR(  MaxFecha )
+
 RETURN
-    IF(
-        'TABLA_NUEVA_CET'[fecha] >= FechaLimite
-        && 'TABLA_NUEVA_CET'[fecha] <= MaxFecha,
-        TRUE(),
-        FALSE()
-    )
-
-
-______________
-
-
-DentroDe2Años =
-VAR MaxFecha = [MaxFecha_Válida_cet]
-RETURN
-    IF(
-        AND(
-            'TABLA_NUEVA_CET'[fecha] <= MaxFecha,
-            DATEDIFF( 'TABLA_NUEVA_CET'[fecha], MaxFecha, YEAR ) <= 2
-        ),
-        TRUE(),
-        FALSE()
-    )
+IF(
+    // 2) Si es fin de trimestre...
+    Mes IN { 3, 6, 9, 12 }
+    //  …o si coincide con el mes-año de MaxFecha
+    || ( Mes = MesMax && Anyo = AnyoMax ),
+    
+    // Formatea “mmm-yy” en minúsculas
+    LOWER( FORMAT( Dates[Date], "mmm" ) )
+      & "-"
+      & RIGHT( FORMAT( Dates[Date], "yy" ), 2 ),
+      
+    // Resto de meses → guión
+    "-"
+)
