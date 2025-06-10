@@ -1,6 +1,6 @@
-MesAnioUltTrim_Orden =
-IF(
-    MONTH(Dates[Date]) IN {3, 6, 9, 12},
-    YEAR(Dates[Date]) * 100 + MONTH(Dates[Date]),
-    0  // o 999999 si quieres que "-" quede al final
+Fecha_Menos2Anios = 
+IF (
+    NOT ISBLANK(Dates[MaxFecha_Valida]),
+    EDATE(Dates[MaxFecha_Valida], -24),
+    BLANK()
 )
