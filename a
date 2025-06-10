@@ -1,9 +1,6 @@
-Es_Ultimos4Anios_CET =
-VAR FechaUmbral = EDATE([MaxFecha_Válida_cet], -48)
-VAR EstaFecha = 'tabla_nueva_Cet'[fecha]
-RETURN
-    IF(
-        EstaFecha >= FechaUmbral,
-        1,
-        0
-    )
+MesAnioUltTrim_Orden =
+IF(
+    MONTH(Dates[Date]) IN {3, 6, 9, 12},
+    YEAR(Dates[Date]) * 100 + MONTH(Dates[Date]),
+    0  // o 999999 si quieres que "-" quede al final
+)
