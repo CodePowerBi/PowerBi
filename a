@@ -1,5 +1,31 @@
-// Columna calculada en 'Dates'
-Date =
-VAR MaxFecha = MAX('Dates'[MaxFecha_Valida_Trading_])
+DentroDe2Años = 
+VAR MaxFecha = [MaxFecha_Válida_cet]
+VAR FechaLimite = 
+    DATE(
+        YEAR( MaxFecha ) - 2,
+        MONTH( MaxFecha ),
+        DAY( MaxFecha )
+    )
 RETURN
-    EDATE( MaxFecha, -24 )  // 24 meses atrás
+    IF(
+        'TABLA_NUEVA_CET'[fecha] >= FechaLimite
+        && 'TABLA_NUEVA_CET'[fecha] <= MaxFecha,
+        TRUE(),
+        FALSE()
+    )
+
+
+______________
+
+
+DentroDe2Años =
+VAR MaxFecha = [MaxFecha_Válida_cet]
+RETURN
+    IF(
+        AND(
+            'TABLA_NUEVA_CET'[fecha] <= MaxFecha,
+            DATEDIFF( 'TABLA_NUEVA_CET'[fecha], MaxFecha, YEAR ) <= 2
+        ),
+        TRUE(),
+        FALSE()
+    )
