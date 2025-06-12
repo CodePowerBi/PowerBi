@@ -1,11 +1,13 @@
-id_unit_concat = 
+id_unit_count_or_one = 
 VAR IdBuscado = dicc_id_bsi[id_bsi]
+VAR DistinctCount = 
+    COUNTROWS(
+        DISTINCT(
+            FILTER(
+                usa_liquidez_vw,
+                usa_liquidez_vw[id_bsi] = IdBuscado
+            )
+        )
+    )
 RETURN
-CONCATENATEX(
-    FILTER(
-        usa_liquidez_vw,
-        usa_liquidez_vw[id_bsi] = IdBuscado
-    ),
-    usa_liquidez_vw[id_unit],
-    " - "
-)
+IF(DistinctCount = 1, 1, DistinctCount)
