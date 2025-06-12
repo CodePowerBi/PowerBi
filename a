@@ -1,6 +1,13 @@
-MaxFecha_Valida_Título =
-FORMAT(
-    MAX( Dates[MaxFecha_Valida] ),  // o simplemente FORMAT([MaxFecha_Válida_cet], ...)
-    "MMMM yyyy",
-    "en-US"
+IsMaxMonthYear =
+VAR MaxFecha = [Max]
+VAR MesMax = MONTH(MaxFecha)
+VAR AñoMax = YEAR(MaxFecha)
+VAR MesFila = MONTH('Dates'[Date])
+VAR AñoFila = YEAR('Dates'[Date])
+RETURN
+IF(
+    MesFila = MesMax &&
+    AñoFila = AñoMax,
+    TRUE(),
+    FALSE()
 )
