@@ -1,6 +1,12 @@
 id_unit_lookup =
-LOOKUPVALUE(
-    usa_liquidez_vw[id_unit],       -- columna que quieres traer
-    usa_liquidez_vw[id_bsi],        -- columna clave en tabla usa_liquidez_vw
-    dicc_id_bsi[id_bsi]             -- valor a buscar (columna clave en dicc_id_bsi)
+VAR Resultado = LOOKUPVALUE(
+    usa_liquidez_vw[id_unit],
+    usa_liquidez_vw[id_bsi],
+    dicc_id_bsi[id_bsi]
+)
+RETURN
+IF(
+    ISBLANK(Resultado),
+    "No encontrado",
+    Resultado
 )
