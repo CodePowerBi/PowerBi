@@ -1,11 +1,13 @@
-id_unit_GBUSA = 
+id_unit_GBUSA_distinct = 
 VAR IdBuscado = dicc_id_bsi[id_bsi]
 RETURN
 CONCATENATEX(
-    FILTER(
-        usa_liquidez_vw,
-        usa_liquidez_vw[id_bsi] = IdBuscado &&
-        CONTAINSSTRING(usa_liquidez_vw[id_unit], "GBUSA")
+    DISTINCT(
+        FILTER(
+            usa_liquidez_vw,
+            usa_liquidez_vw[id_bsi] = IdBuscado &&
+            CONTAINSSTRING(usa_liquidez_vw[id_unit], "GBUSA")
+        )
     ),
     usa_liquidez_vw[id_unit],
     " - "
