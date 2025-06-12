@@ -1,16 +1,12 @@
-id_unit_count_or_one = 
-VAR IdBuscado = 'tablones_des dicc_id_bsi'[id_id_bsi]
-VAR CountDistinctValues =
-    COUNTROWS(
-        DISTINCT(
-            SELECTCOLUMNS(
-                FILTER(
-                    'tablones_des usa_liquidez_vw',
-                    'tablones_des usa_liquidez_vw'[id_id_bsi] = IdBuscado
-                ),
-                "id_unit", 'tablones_des usa_liquidez_vw'[id_unit]
-            )
-        )
-    )
+id_unit_GBUSA = 
+VAR IdBuscado = dicc_id_bsi[id_bsi]
 RETURN
-IF(CountDistinctValues = 1, 1, CountDistinctValues)
+CONCATENATEX(
+    FILTER(
+        usa_liquidez_vw,
+        usa_liquidez_vw[id_bsi] = IdBuscado &&
+        CONTAINSSTRING(usa_liquidez_vw[id_unit], "GBUSA")
+    ),
+    usa_liquidez_vw[id_unit],
+    " - "
+)
