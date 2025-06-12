@@ -1,13 +1,13 @@
 id_unit_count_or_one = 
 VAR IdBuscado = 'tablones_des dicc_id_bsi'[id_id_bsi]
-VAR DistinctCount = 
+VAR DistinctCount =
     COUNTROWS(
         DISTINCT(
             FILTER(
-                'tablones_des usa_liquidez_bw';
-                'tablones_des usa_liquidez_bw'[id_id_bsi] = IdBuscado
+                'tablones_des usa_liquidez_vw',
+                'tablones_des usa_liquidez_vw'[id_id_bsi] = IdBuscado
             )
         )
     )
 RETURN
-IF(DistinctCount = 1; 1; DistinctCount)
+    IF(DistinctCount = 1, 1, DistinctCount)
