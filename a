@@ -1,12 +1,11 @@
-id_unit_lookup =
-VAR Resultado = LOOKUPVALUE(
-    usa_liquidez_vw[id_unit],
-    usa_liquidez_vw[id_bsi],
-    dicc_id_bsi[id_bsi]
-)
+id_unit_concat = 
+VAR IdBuscado = dicc_id_bsi[id_bsi]
 RETURN
-IF(
-    ISBLANK(Resultado),
-    "No encontrado",
-    Resultado
+CONCATENATEX(
+    FILTER(
+        usa_liquidez_vw,
+        usa_liquidez_vw[id_bsi] = IdBuscado
+    ),
+    usa_liquidez_vw[id_unit],
+    " - "
 )
