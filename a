@@ -1,14 +1,14 @@
-id_unit_GBUSA_distinct = 
-VAR IdBuscado = dicc_id_bsi[id_bsi]
+IsMaxMonthYear_Menos3Meses =
+VAR MaxFecha = [Max]
+VAR MaxFecha_Menos3 = EDATE(MaxFecha, -3)
+VAR MesMax = MONTH(MaxFecha_Menos3)
+VAR AñoMax = YEAR(MaxFecha_Menos3)
+VAR MesFila = MONTH('Dates'[Date])
+VAR AñoFila = YEAR('Dates'[Date])
 RETURN
-CONCATENATEX(
-    DISTINCT(
-        FILTER(
-            usa_liquidez_vw,
-            usa_liquidez_vw[id_bsi] = IdBuscado &&
-            CONTAINSSTRING(usa_liquidez_vw[id_unit], "GBUSA")
-        )
-    ),
-    usa_liquidez_vw[id_unit],
-    " - "
+IF(
+    MesFila = MesMax &&
+    AñoFila = AñoMax,
+    TRUE(),
+    FALSE()
 )
