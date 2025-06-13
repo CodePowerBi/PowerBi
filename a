@@ -1,16 +1,19 @@
-Título_position_menos_3meses =
-VAR MesSeleccionado = SELECTEDVALUE(Dates[MesAñoUltMesTrimestre])
-VAR FechaSeleccionada = 
-    CALCULATE(
-        MAX(Dates[Date]),
-        Dates[MesAñoUltMesTrimestre] = MesSeleccionado
+Título_Position_Menos_3Meses =
+VAR MesSeleccionadoTexto =
+    IF(
+        HASONEVALUE(Dates[Trim]),
+        VALUES(Dates[Trim]),
+        BLANK()
     )
-VAR FechaMenos3M = EDATE(FechaSeleccionada, -3)
-VAR Resultado =
-    FORMAT(FechaMenos3M, "MMM") & "'" & FORMAT(FechaMenos3M, "yy")
+VAR FechaCorrespondiente =
+    CALCULATE(
+        MIN(Dates[Date]),
+        FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
+    )
+VAR FechaMenos3Meses = EDATE(FechaCorrespondiente, -3)
 RETURN
-    UPPER(LEFT(Resultado,1)) & LOWER(MID(Resultado,2,3))
-
-
-_____________-
-
+IF(
+    NOT ISBLANK(MesSeleccionadoTexto),
+    "Position " & FORMAT(FechaMenos3Meses, "MMM''yy"),  -- Aquí está el formato ajustado
+    "Please select a month first"
+)
