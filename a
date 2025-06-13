@@ -1,6 +1,16 @@
-TítuloTrim =
-VAR MesTexto = LEFT([TuColumnaTexto], 3)  -- toma las primeras 3 letras del mes
-VAR AnyoTexto = RIGHT([TuColumnaTexto], 2) -- toma los dos últimos dígitos del año
-VAR MesMayus = UPPER(LEFT(MesTexto, 1)) & LOWER(MID(MesTexto, 2, 2)) -- Capitalizar sólo primera letra
+Título_position_menos_3meses =
+VAR MesSeleccionado = SELECTEDVALUE(Dates[MesAñoUltMesTrimestre])
+VAR FechaSeleccionada = 
+    CALCULATE(
+        MAX(Dates[Date]),
+        Dates[MesAñoUltMesTrimestre] = MesSeleccionado
+    )
+VAR FechaMenos3M = EDATE(FechaSeleccionada, -3)
+VAR Resultado =
+    FORMAT(FechaMenos3M, "MMM") & "'" & FORMAT(FechaMenos3M, "yy")
 RETURN
-MesMayus & "'" & AnyoTexto
+    UPPER(LEFT(Resultado,1)) & LOWER(MID(Resultado,2,3))
+
+
+_____________-
+
