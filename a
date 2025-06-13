@@ -1,12 +1,6 @@
-Amount_diff_3m = 
-VAR CurrentDate = 'tablones_des mrf_plantilla_67'[effective_date]
-VAR CurrentCounterparty = 'tablones_des mrf_plantilla_67'[counterparty_name]
-VAR AmountCurrent = 'tablones_des mrf_plantilla_67'[amount_received]
-VAR AmountPrev3m =
-    LOOKUPVALUE(
-        'tablones_des mrf_plantilla_67'[amount_received],
-        'tablones_des mrf_plantilla_67'[effective_date], EDATE(CurrentDate, -3),
-        'tablones_des mrf_plantilla_67'[counterparty_name], CurrentCounterparty
-    )
-RETURN
-AmountCurrent - AmountPrev3m
+Título_Trim_Seleccionado = 
+IF(
+    HASONEVALUE(Dates[Trim]),
+    VALUES(Dates[Trim]),
+    "Selecciona un mes"
+)
