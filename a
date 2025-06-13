@@ -1,19 +1,9 @@
-Título_Position_Menos_3Meses = 
-VAR MesSeleccionadoTexto = 
-    IF(
-        HASONEVALUE(Dates[Trim]),
-        VALUES(Dates[Trim]),
-        BLANK()
-    )
-VAR FechaCorrespondiente = 
+% Funding = 
+DIVIDE(
+    SUM('TuTabla'[AmountReceived]),
     CALCULATE(
-        MIN(Dates[Date]),
-        FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
-    )
-VAR FechaMenos3Meses = EDATE(FechaCorrespondiente, -3)
-RETURN
-IF(
-    NOT ISBLANK(MesSeleccionadoTexto),
-    "Position " & FORMAT(FechaMenos3Meses, "MMM yyyy"),
-    "Please select a month first"
+        SUM('TuTabla'[AmountReceived]),
+        ALL('TuTabla')
+    ),
+    0
 )
