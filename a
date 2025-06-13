@@ -1,9 +1,18 @@
 Título_Position_Trim = 
-VAR MesSeleccionado = 
+VAR MesSeleccionadoTexto = 
     IF(
         HASONEVALUE(Dates[Trim]),
         VALUES(Dates[Trim]),
-        "Mes no seleccionado"
+        BLANK()
+    )
+VAR FechaCorrespondiente = 
+    CALCULATE(
+        MIN(Dates[Date]),
+        FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
     )
 RETURN
-    "Position " & MesSeleccionado
+IF(
+    NOT ISBLANK(MesSeleccionadoTexto),
+    "Position " & FORMAT(FechaCorrespondiente, "MMM yyyy"),
+    "Please select a month first"
+)
