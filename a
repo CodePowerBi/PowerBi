@@ -1,4 +1,4 @@
-Título_Position_Trim = 
+Título_Position_Menos_3Meses = 
 VAR MesSeleccionadoTexto = 
     IF(
         HASONEVALUE(Dates[Trim]),
@@ -10,9 +10,10 @@ VAR FechaCorrespondiente =
         MIN(Dates[Date]),
         FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
     )
+VAR FechaMenos3Meses = EDATE(FechaCorrespondiente, -3)
 RETURN
 IF(
     NOT ISBLANK(MesSeleccionadoTexto),
-    "Position " & FORMAT(FechaCorrespondiente, "MMM yyyy"),
+    "Position " & FORMAT(FechaMenos3Meses, "MMM yyyy"),
     "Please select a month first"
 )
