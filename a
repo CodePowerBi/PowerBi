@@ -1,6 +1,9 @@
-Título_Trim_Seleccionado = 
-IF(
-    HASONEVALUE(Dates[Trim]),
-    VALUES(Dates[Trim]),
-    "Selecciona un mes"
-)
+Título_Position_Trim = 
+VAR MesSeleccionado = 
+    IF(
+        HASONEVALUE(Dates[Trim]),
+        VALUES(Dates[Trim]),
+        "Mes no seleccionado"
+    )
+RETURN
+    "Position " & MesSeleccionado
