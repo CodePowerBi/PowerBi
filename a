@@ -1,5 +1,2 @@
-AmountReceived_MaxMonthYear = 
-CALCULATE(
-    SUM(mrf_plantilla_67[amount_received]),
-    Dates[IsMaxMonthYear] = TRUE()
-)
+AmountReceived_Difference = 
+[AmountReceived_MaxMonthYear] - [AmountReceived_-3M]
