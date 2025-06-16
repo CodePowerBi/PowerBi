@@ -1,66 +1,56 @@
-Ultimos6Meses_MesesCalculados =
-VAR TextoMes = 'Dates'[Meses calculados]
+EsUltimos6Meses =
+VAR TextoMes = 'Dates'[Meses Calculados]
 VAR EstaVacio = TextoMes = "--" || ISBLANK(TextoMes)
 
-VAR FechaActual =
+-- Convierte el texto a fecha
+VAR FechaMesCalculado =
     IF(
         EstaVacio,
         BLANK(),
         DATE(
             2000 + VALUE(RIGHT(TextoMes, 2)),
             SWITCH(LEFT(TextoMes, 3),
-                "ene", 1,
-                "feb", 2,
-                "mar", 3,
-                "abr", 4,
-                "may", 5,
-                "jun", 6,
-                "jul", 7,
-                "ago", 8,
-                "sep", 9,
-                "oct", 10,
-                "nov", 11,
-                "dic", 12,
+                "ene", 1, "feb", 2, "mar", 3, "abr", 4,
+                "may", 5, "jun", 6, "jul", 7, "ago", 8,
+                "sep", 9, "oct", 10, "nov", 11, "dic", 12,
                 BLANK()
             ),
             1
         )
     )
 
-VAR MaxTexto =
-    MAXX(
-        FILTER('Dates', 'Dates'[Meses calculados] <> "--"),
-        'Dates'[Meses calculados]
-    )
-
-VAR MaxFecha =
-    DATE(
-        2000 + VALUE(RIGHT(MaxTexto, 2)),
-        SWITCH(LEFT(MaxTexto, 3),
-            "ene", 1,
-            "feb", 2,
-            "mar", 3,
-            "abr", 4,
-            "may", 5,
-            "jun", 6,
-            "jul", 7,
-            "ago", 8,
-            "sep", 9,
-            "oct", 10,
-            "nov", 11,
-            "dic", 12,
-            BLANK()
+-- Tabla con los 6 meses únicos más recientes
+VAR Top6Fechas =
+    TOPN(
+        6,
+        FILTER(
+            ADDCOLUMNS(
+                VALUES('Dates'[Meses Calculados]),
+                "FechaReal",
+                IF(
+                    [Meses Calculados] = "--" || ISBLANK([Meses Calculados]),
+                    BLANK(),
+                    DATE(
+                        2000 + VALUE(RIGHT([Meses Calculados], 2)),
+                        SWITCH(LEFT([Meses Calculados], 3),
+                            "ene", 1, "feb", 2, "mar", 3, "abr", 4,
+                            "may", 5, "jun", 6, "jul", 7, "ago", 8,
+                            "sep", 9, "oct", 10, "nov", 11, "dic", 12,
+                            BLANK()
+                        ),
+                        1
+                    )
+                )
+            ),
+            NOT ISBLANK([FechaReal])
         ),
-        1
+        [FechaReal], DESC
     )
 
-VAR FechaLimite = EOMONTH(MaxFecha, -5)
-
+-- Verifica si la fila actual está entre esos 6 meses
 RETURN
-IF(
-    NOT ISBLANK(FechaActual) &&
-    FechaActual >= FechaLimite &&
-    FechaActual <= MaxFecha,
+IF (
+    FechaMesCalculado IN SELECTCOLUMNS(Top6Fechas, "FechaReal"),
     TRUE(),
     FALSE()
 )
