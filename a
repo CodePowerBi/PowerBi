@@ -1,12 +1,12 @@
-MaxFechaReal =
-VAR TextoMes = [Max]  -- debe venir como "may-24", "dic-23", etc.
-RETURN
+Ultimos6Meses = 
+VAR MaxTexto = MAX('Dates'[Meses calculados])  -- Asegúrate de que apunta al campo correcto
+VAR MaxFecha =
     IF(
-        TextoMes = "--",
+        MaxTexto = "--" || ISBLANK(MaxTexto),
         BLANK(),
         DATE(
-            2000 + RIGHT(TextoMes, 2),
-            SWITCH(LEFT(TextoMes, 3),
+            2000 + VALUE(RIGHT(MaxTexto, 2)),
+            SWITCH(LEFT(MaxTexto, 3),
                 "ene", 1,
                 "feb", 2,
                 "mar", 3,
@@ -24,3 +24,15 @@ RETURN
             1
         )
     )
+
+VAR FechaLimite = EOMONTH(MaxFecha, -5)
+VAR FechaActual = 'Dates'[Date]
+
+RETURN
+IF (
+    NOT ISBLANK(MaxFecha) &&
+    FechaActual >= FechaLimite &&
+    FechaActual <= MaxFecha,
+    TRUE(),
+    FALSE()
+)
