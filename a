@@ -1,8 +1,8 @@
 OrdenCartera =
-RANKX(
-    ALL('NombreDeTuTabla'[nbcartera]),
-    'NombreDeTuTabla'[nbcartera],
-    ,
-    ASC,
-    DENSE
+SWITCH(
+    TRUE(),
+    'NombreDeTuTabla'[nbcartera] = "Equity", 1,
+    'NombreDeTuTabla'[nbcartera] = "FVPL", 2,
+    'NombreDeTuTabla'[nbcartera] = "FVOCI", 3,
+    99  -- Por si hay otros valores
 )
