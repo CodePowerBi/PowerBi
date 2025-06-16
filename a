@@ -1,56 +1,31 @@
 EsUltimos6Meses =
-VAR TextoMes = 'Dates'[Meses Calculados]
-VAR EstaVacio = TextoMes = "--" || ISBLANK(TextoMes)
+VAR MesActual = 'Dates'[Meses Calculados]
 
--- Convierte el texto a fecha
-VAR FechaMesCalculado =
-    IF(
-        EstaVacio,
-        BLANK(),
+-- Crea tabla con los 6 valores únicos más recientes válidos
+VAR Top6 =
+    TOPN(
+        6,
+        FILTER(
+            VALUES('Dates'[Meses Calculados]),
+            'Dates'[Meses Calculados] <> "--"
+        ),
         DATE(
-            2000 + VALUE(RIGHT(TextoMes, 2)),
-            SWITCH(LEFT(TextoMes, 3),
+            2000 + VALUE(RIGHT('Dates'[Meses Calculados], 2)),
+            SWITCH(LEFT('Dates'[Meses Calculados], 3),
                 "ene", 1, "feb", 2, "mar", 3, "abr", 4,
                 "may", 5, "jun", 6, "jul", 7, "ago", 8,
                 "sep", 9, "oct", 10, "nov", 11, "dic", 12,
                 BLANK()
             ),
             1
-        )
-    )
-
--- Tabla con los 6 meses únicos más recientes
-VAR Top6Fechas =
-    TOPN(
-        6,
-        FILTER(
-            ADDCOLUMNS(
-                VALUES('Dates'[Meses Calculados]),
-                "FechaReal",
-                IF(
-                    [Meses Calculados] = "--" || ISBLANK([Meses Calculados]),
-                    BLANK(),
-                    DATE(
-                        2000 + VALUE(RIGHT([Meses Calculados], 2)),
-                        SWITCH(LEFT([Meses Calculados], 3),
-                            "ene", 1, "feb", 2, "mar", 3, "abr", 4,
-                            "may", 5, "jun", 6, "jul", 7, "ago", 8,
-                            "sep", 9, "oct", 10, "nov", 11, "dic", 12,
-                            BLANK()
-                        ),
-                        1
-                    )
-                )
-            ),
-            NOT ISBLANK([FechaReal])
         ),
-        [FechaReal], DESC
+        DESC
     )
 
--- Verifica si la fila actual está entre esos 6 meses
+-- Devolver TRUE si el valor actual está dentro de los top 6
 RETURN
 IF (
-    FechaMesCalculado IN SELECTCOLUMNS(Top6Fechas, "FechaReal"),
+    MesActual IN Top6,
     TRUE(),
     FALSE()
 )
