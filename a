@@ -1,33 +1,12 @@
-VAR Mes = MONTH( Dates[Date] )
-VAR Anyo = YEAR( Dates[Date] )
-
-// 1) Fecha máxima válida
-VAR MaxFecha =
-    CALCULATE(
-        MAX( 'Dates'[Date] ),
-        FILTER(
-            ALL('TABLA_NUEVA_CET'),
-            'TABLA_NUEVA_CET'[VALOOR] <> 0
-        )
-    )
-
-VAR MesMax = MONTH( MaxFecha )
-VAR AnyoMax = YEAR( MaxFecha )
-
-// 2) Mes anterior
-VAR FechaAnterior = EOMONTH(MaxFecha, -1)
-VAR MesAnterior = MONTH(FechaAnterior)
-VAR AnyoAnterior = YEAR(FechaAnterior)
-
-// 3) Condiciones
-VAR EsFinTrimestre = Mes IN {3, 6, 9, 12}
-VAR EsMesActual = Mes = MesMax && Anyo = AnyoMax
-VAR EsMesAnterior = Mes = MesAnterior && Anyo = AnyoAnterior
-
-// 4) Mostrar o no mostrar
+Dates = 
+VAR FechaMin = MIN('salida_rwa'[fecha])
+VAR FechaMax = TODAY()
 RETURN
-IF(
-    EsFinTrimestre || EsMesActual || EsMesAnterior,
-    LOWER(FORMAT(Dates[Date], "mmm")) & "-" & RIGHT(FORMAT(Dates[Date], "yy"), 2),
-    "--"
+ADDCOLUMNS(
+    CALENDAR(FechaMin, FechaMax),
+    "Año", YEAR([Date]),
+    "Mes", MONTH([Date]),
+    "NombreMes", FORMAT([Date], "mmmm"),
+    "Trimestre", "T" & FORMAT([Date], "Q"),
+    "AñoMes", FORMAT([Date], "YYYY-MM")
 )
