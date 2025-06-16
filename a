@@ -1,31 +1,8 @@
-EsUltimos6Meses =
-VAR MesActual = 'Dates'[Meses Calculados]
-
--- Crea tabla con los 6 valores únicos más recientes válidos
-VAR Top6 =
-    TOPN(
-        6,
-        FILTER(
-            VALUES('Dates'[Meses Calculados]),
-            'Dates'[Meses Calculados] <> "--"
-        ),
-        DATE(
-            2000 + VALUE(RIGHT('Dates'[Meses Calculados], 2)),
-            SWITCH(LEFT('Dates'[Meses Calculados], 3),
-                "ene", 1, "feb", 2, "mar", 3, "abr", 4,
-                "may", 5, "jun", 6, "jul", 7, "ago", 8,
-                "sep", 9, "oct", 10, "nov", 11, "dic", 12,
-                BLANK()
-            ),
-            1
-        ),
-        DESC
-    )
-
--- Devolver TRUE si el valor actual está dentro de los top 6
-RETURN
-IF (
-    MesActual IN Top6,
-    TRUE(),
-    FALSE()
+OrdenCartera =
+RANKX(
+    ALL('NombreDeTuTabla'[nbcartera]),
+    'NombreDeTuTabla'[nbcartera],
+    ,
+    ASC,
+    DENSE
 )
