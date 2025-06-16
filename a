@@ -1,16 +1,26 @@
-Ultimos6Meses = 
-VAR MaxFecha = [Max]
-VAR AnyoMax = YEAR(MaxFecha)
-VAR MesMax = MONTH(MaxFecha)
-
-VAR MesComparado = MONTH('Dates'[Date])
-VAR AnyoComparado = YEAR('Dates'[Date])
-
-VAR NMesesDiff = DATEDIFF(DATE(AnyoComparado, MesComparado, 1), DATE(AnyoMax, MesMax, 1), MONTH)
-
+MaxFechaReal =
+VAR TextoMes = [Max]  -- debe venir como "may-24", "dic-23", etc.
 RETURN
-IF (
-    NMesesDiff >= 0 && NMesesDiff <= 5,
-    TRUE(),
-    FALSE()
-)
+    IF(
+        TextoMes = "--",
+        BLANK(),
+        DATE(
+            2000 + RIGHT(TextoMes, 2),
+            SWITCH(LEFT(TextoMes, 3),
+                "ene", 1,
+                "feb", 2,
+                "mar", 3,
+                "abr", 4,
+                "may", 5,
+                "jun", 6,
+                "jul", 7,
+                "ago", 8,
+                "sep", 9,
+                "oct", 10,
+                "nov", 11,
+                "dic", 12,
+                BLANK()
+            ),
+            1
+        )
+    )
