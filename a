@@ -1,19 +1,33 @@
-Título_Position_Menos_3Meses =
-VAR MesSeleccionadoTexto =
-    IF(
-        HASONEVALUE(Dates[Trim]),
-        VALUES(Dates[Trim]),
-        BLANK()
-    )
-VAR FechaCorrespondiente =
+VAR Mes = MONTH( Dates[Date] )
+VAR Anyo = YEAR( Dates[Date] )
+
+// 1) Fecha máxima válida
+VAR MaxFecha =
     CALCULATE(
-        MIN(Dates[Date]),
-        FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
+        MAX( 'Dates'[Date] ),
+        FILTER(
+            ALL('TABLA_NUEVA_CET'),
+            'TABLA_NUEVA_CET'[VALOOR] <> 0
+        )
     )
-VAR FechaMenos3Meses = EDATE(FechaCorrespondiente, -3)
+
+VAR MesMax = MONTH( MaxFecha )
+VAR AnyoMax = YEAR( MaxFecha )
+
+// 2) Mes anterior
+VAR FechaAnterior = EOMONTH(MaxFecha, -1)
+VAR MesAnterior = MONTH(FechaAnterior)
+VAR AnyoAnterior = YEAR(FechaAnterior)
+
+// 3) Condiciones
+VAR EsFinTrimestre = Mes IN {3, 6, 9, 12}
+VAR EsMesActual = Mes = MesMax && Anyo = AnyoMax
+VAR EsMesAnterior = Mes = MesAnterior && Anyo = AnyoAnterior
+
+// 4) Mostrar o no mostrar
 RETURN
 IF(
-    NOT ISBLANK(MesSeleccionadoTexto),
-    "Position " & FORMAT(FechaMenos3Meses, "MMM''yy"),  -- Aquí está el formato ajustado
-    "Please select a month first"
+    EsFinTrimestre || EsMesActual || EsMesAnterior,
+    LOWER(FORMAT(Dates[Date], "mmm")) & "-" & RIGHT(FORMAT(Dates[Date], "yy"), 2),
+    "--"
 )
