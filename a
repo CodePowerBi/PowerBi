@@ -1,28 +1,28 @@
 Ultimos6Meses = 
-VAR MaxTexto = MAX('Dates'[Meses calculados])  -- Asegúrate de que apunta al campo correcto
+VAR MaxTexto = MAXX(
+    FILTER('Dates', 'Dates'[Meses calculados] <> "--"),
+    'Dates'[Meses calculados]
+)
+
 VAR MaxFecha =
-    IF(
-        MaxTexto = "--" || ISBLANK(MaxTexto),
-        BLANK(),
-        DATE(
-            2000 + VALUE(RIGHT(MaxTexto, 2)),
-            SWITCH(LEFT(MaxTexto, 3),
-                "ene", 1,
-                "feb", 2,
-                "mar", 3,
-                "abr", 4,
-                "may", 5,
-                "jun", 6,
-                "jul", 7,
-                "ago", 8,
-                "sep", 9,
-                "oct", 10,
-                "nov", 11,
-                "dic", 12,
-                BLANK()
-            ),
-            1
-        )
+    DATE(
+        2000 + VALUE(RIGHT(MaxTexto, 2)),
+        SWITCH(LEFT(MaxTexto, 3),
+            "ene", 1,
+            "feb", 2,
+            "mar", 3,
+            "abr", 4,
+            "may", 5,
+            "jun", 6,
+            "jul", 7,
+            "ago", 8,
+            "sep", 9,
+            "oct", 10,
+            "nov", 11,
+            "dic", 12,
+            BLANK()
+        ),
+        1
     )
 
 VAR FechaLimite = EOMONTH(MaxFecha, -5)
@@ -30,9 +30,7 @@ VAR FechaActual = 'Dates'[Date]
 
 RETURN
 IF (
-    NOT ISBLANK(MaxFecha) &&
-    FechaActual >= FechaLimite &&
-    FechaActual <= MaxFecha,
-    TRUE(),
-    FALSE()
+    ISBLANK(MaxFecha),
+    FALSE,
+    FechaActual >= FechaLimite && FechaActual <= MaxFecha
 )
