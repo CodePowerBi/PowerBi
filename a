@@ -1,12 +1,16 @@
-Dates = 
-VAR FechaMin = MIN('salida_rwa'[fecha])
-VAR FechaMax = TODAY()
+Ultimos6Meses = 
+VAR MaxFecha = [Max]
+VAR AnyoMax = YEAR(MaxFecha)
+VAR MesMax = MONTH(MaxFecha)
+
+VAR MesComparado = MONTH('Dates'[Date])
+VAR AnyoComparado = YEAR('Dates'[Date])
+
+VAR NMesesDiff = DATEDIFF(DATE(AnyoComparado, MesComparado, 1), DATE(AnyoMax, MesMax, 1), MONTH)
+
 RETURN
-ADDCOLUMNS(
-    CALENDAR(FechaMin, FechaMax),
-    "Año", YEAR([Date]),
-    "Mes", MONTH([Date]),
-    "NombreMes", FORMAT([Date], "mmmm"),
-    "Trimestre", "T" & FORMAT([Date], "Q"),
-    "AñoMes", FORMAT([Date], "YYYY-MM")
+IF (
+    NMesesDiff >= 0 && NMesesDiff <= 5,
+    TRUE(),
+    FALSE()
 )
