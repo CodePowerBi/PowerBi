@@ -1,8 +1,45 @@
-OrdenCartera =
-SWITCH(
-    TRUE(),
-    'NombreDeTuTabla'[nbcartera] = "Equity", 1,
-    'NombreDeTuTabla'[nbcartera] = "FVPL", 2,
-    'NombreDeTuTabla'[nbcartera] = "FVOCI", 3,
-    99  -- Por si hay otros valores
-)
+Hoja 1 – Impacto en CET1:
+Permite analizar cómo las posiciones de equity afectan al ratio de solvencia (CET1), incluyendo la evolución del riesgo (VaR 95%) y el impacto en puntos básicos. Es clave para monitorear si el riesgo asociado a estas posiciones está dentro del apetito definido por la entidad.
+
+Hoja 2 – Exposición máxima:
+Sirve para controlar que la exposición del Equity Banking Book no supere los límites internos establecidos en relación con el capital CET1. Es útil para seguimiento histórico de dicha exposición y para validar cumplimiento con umbrales de alerta y límite.
+
+Hoja 3 – Posiciones de equity:
+Ofrece una visión detallada de las posiciones actuales por método contable (Fair Value P&L, OCI, Equity Method), destacando las variaciones mensuales y principales valores. Es útil para el análisis operativo y el control de concentración en la cartera.
+
+
+___
+
+Introducción – Equity Non-Trading
+La siguiente sección del informe está dedicada al análisis del Equity Banking Book no destinado a trading, dentro del marco de Risk Appetite y bajo criterios de solvencia regulatoria.
+
+A través de tres páginas interconectadas, se ofrece una visión detallada sobre:
+
+El impacto del equity en el ratio regulatorio CET1.
+
+La exposición máxima permitida frente a límites internos definidos.
+
+El detalle granular de posiciones en cartera, clasificado por método contable (Fair Value P&L, OCI y Equity Method).
+
+Cada página incluye visualizaciones históricas, tablas comparativas y segmentación por periodos clave, permitiendo un análisis claro del comportamiento y evolución del equity non-trading en el tiempo. La navegación entre páginas se realiza mediante botones ubicados en la parte superior derecha del informe.
+CET1 → Página de impacto sobre CET1.
+
+RWA → Página de exposición máxima.
+
+BBEP → Página de detalle de posiciones del Banking Book.
+
+Home → Regresa al menú principal del informe.
+
+
+__________-
+
+Equity Non-Trading – Contenido por hoja
+Hoja 1 – Impacto en CET1:
+Incluye tabla con evolución trimestral de posición de equity, VaR 95% (3M) y su impacto en el ratio CET1. Se añaden dos gráficos: línea de VaR y barras con impacto en CET1 y límites de alerta.
+
+Hoja 2 – Exposición máxima:
+Muestra la posición del Equity Banking Book como porcentaje del CET1. Contiene tabla con valores históricos y dos gráficos: evolución de la posición total y exposición máxima frente a límites internos.
+
+Hoja 3 – Posiciones de equity:
+Detalle mensual de las posiciones en Fair Value P&L, Fair Value OCI y Equity Method. Incluye variaciones, top 5 de posiciones por método y gráfico apilado de evolución trimestral.
+
