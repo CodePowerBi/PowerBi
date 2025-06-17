@@ -1,8 +1,8 @@
-MaxMesCalculadoTexto =
-VAR FechaMax =
+MaxFechaDateTexto =
+FORMAT(
     CALCULATE(
-        MAX('TABLA'[MesCalculado_Fecha]),
-        NOT(ISBLANK('TABLA'[MesCalculado_Fecha]))
-    )
-RETURN
-FORMAT(FechaMax, "MMMM yy", "en-US")
+        MAX('TuTabla'[Date])
+    ),
+    "MMMM yyyy",
+    "en-US"
+)
