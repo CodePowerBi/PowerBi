@@ -1,8 +1,8 @@
-MaxFechaDateTexto =
-FORMAT(
-    CALCULATE(
-        MAX('TuTabla'[Date])
-    ),
-    "MMMM yyyy",
-    "en-US"
+NombreEscenario = 
+SWITCH(
+    TRUE(),
+    'dicc_escenario_gb_cii'[escenario] = "IDIOSYNCRATIC", "Limit Days",
+    'dicc_escenario_gb_cii'[escenario] = "BASELINE", "Base Case",
+    'dicc_escenario_gb_cii'[escenario] = "ADVERSE", "Stress Case",
+    "Otro"
 )
