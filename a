@@ -1,8 +1,24 @@
-NombreEscenario = 
-SWITCH(
-    TRUE(),
-    'dicc_escenario_gb_cii'[escenario] = "IDIOSYNCRATIC", "Limit Days",
-    'dicc_escenario_gb_cii'[escenario] = "BASELINE", "Base Case",
-    'dicc_escenario_gb_cii'[escenario] = "ADVERSE", "Stress Case",
-    "Otro"
-)
+Una duda rápida: ahora mismo en base de datos los valores de Public Debt son los mismos que los de Sovereign Bonds, porque no hay más bonos cargados.
+¿Usamos el nombre Sovereign Bonds, que es como sale en la PPT, o dejamos Public Debt?
+¿Creéis que en algún momento podrían diferenciarse si se meten más instrumentos?
+____
+
+Esto es solo para dejar todo muy limpio y alineado con la presentación.
+
+En dicc_metrica_buffer_hqla:
+
+Esto corresponde a la slide 11 de Portugal y sus respectivas categorías.
+He revisado la categoría Sovereign Bonds en la PPT y en base de datos coincide con el ID 5, que actualmente aparece como "Public Debt & Central Bank". Sería ideal renombrarlo a:
+
+ID 5 = Sovereign Bonds
+
+ID 9 = Corporate Bonds
+
+También aplica en el diccionario:
+tablones_des dicc_tipo_buffer_buffer
+
+ID 6 = Covered / SSA Bonds and Others
+
+ID 19 = Cash and Reserves at CB
+
+Así quedaría todo más claro y en línea con el naming del material de presentación.
