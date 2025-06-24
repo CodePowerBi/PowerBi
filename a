@@ -1,9 +1,10 @@
-DentroUltimoAnio =
+2Years =
 VAR MaxFecha = [MaxFecha]
-VAR FechaLimite = EDATE(MaxFecha, -12)
+VAR FechaFin = EOMONTH(MaxFecha, 0)            -- Fin de mes de MaxFecha
+VAR FechaInicio = EOMONTH(MaxFecha, -12) + 1   -- Inicio del mes siguiente 12 meses antes
 RETURN
 IF(
-    'Dates'[Date] >= FechaLimite && 'Dates'[Date] <= MaxFecha,
+    'Dates'[Date] >= FechaInicio && 'Dates'[Date] <= FechaFin,
     TRUE(),
     FALSE()
 )
