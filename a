@@ -1,10 +1,44 @@
-2Years =
-VAR MaxFecha = [MaxFecha]
-VAR FechaFin = EOMONTH(MaxFecha, 0)            -- Fin de mes de MaxFecha
-VAR FechaInicio = EOMONTH(MaxFecha, -12) + 1   -- Inicio del mes siguiente 12 meses antes
-RETURN
-IF(
-    'Dates'[Date] >= FechaInicio && 'Dates'[Date] <= FechaFin,
-    TRUE(),
-    FALSE()
-)
+Appetite: Estructurales
+14 → df-mve
+a) bsi
+
+b) time_bucket
+
+c) nombre_metrica
+
+d) unit
+
+e) escenario
+
+15 → salida-estructurales-mensual
+a) bsi
+
+b) time_bucket
+
+c) nombre_metrica
+
+d) unit
+
+e) escenario
+
+f) currency
+
+16 → gb-cii
+a)
+
+b)
+
+c)
+
+d)
+
+e) 2 tipos de escenario (sin idea de id)
+
+f) currency
+
+g) area
+
+○ mve-rpp-vw
+a) currency_mve
+
+b) escenario
