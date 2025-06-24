@@ -1,24 +1,39 @@
-Una duda rápida: ahora mismo en base de datos los valores de Public Debt son los mismos que los de Sovereign Bonds, porque no hay más bonos cargados.
-¿Usamos el nombre Sovereign Bonds, que es como sale en la PPT, o dejamos Public Debt?
-¿Creéis que en algún momento podrían diferenciarse si se meten más instrumentos?
-____
+VAR MaxFechaValida =
+    CALCULATE(
+        MAX('tablones_des_salida_buffer'[fecha]),
+        FILTER(
+            ALL('tablones_des_salida_buffer'),
+            'tablones_des_salida_buffer'[valor] <> 0
+        )
+    )
 
-Esto es solo para dejar todo muy limpio y alineado con la presentación.
+VAR MesVal = MONTH(MaxFechaValida)
+VAR AnioVal = YEAR(MaxFechaValida)
+VAR TrimestreActual = INT((MesVal - 1) / 3) + 1
 
-En dicc_metrica_buffer_hqla:
+// Ajuste para calcular el trimestre anterior y su año correspondiente
+VAR TrimestreAnterior = IF(TrimestreActual = 1, 4, TrimestreActual - 1)
+VAR AnioAnterior = IF(TrimestreActual = 1, AnioVal - 1, AnioVal)
 
-Esto corresponde a la slide 11 de Portugal y sus respectivas categorías.
-He revisado la categoría Sovereign Bonds en la PPT y en base de datos coincide con el ID 5, que actualmente aparece como "Public Debt & Central Bank". Sería ideal renombrarlo a:
+// Determinar el último mes del trimestre anterior
+VAR UltimoMesTrimestreAnterior =
+    SWITCH(
+        TrimestreAnterior,
+        1, 3,    // Q1 → marzo
+        2, 6,    // Q2 → junio
+        3, 9,    // Q3 → septiembre
+        4, 12    // Q4 → diciembre
+    )
 
-ID 5 = Sovereign Bonds
+// Rango de fechas para filtrar el último mes del trimestre anterior
+VAR FechaInicio = DATE(AnioAnterior, UltimoMesTrimestreAnterior, 1)
+VAR FechaFin = EOMONTH(FechaInicio, 0)
 
-ID 9 = Corporate Bonds
-
-También aplica en el diccionario:
-tablones_des dicc_tipo_buffer_buffer
-
-ID 6 = Covered / SSA Bonds and Others
-
-ID 19 = Cash and Reserves at CB
-
-Así quedaría todo más claro y en línea con el naming del material de presentación.
+RETURN
+    IF(
+        'tablones_des_salida_buffer'[fecha] >= FechaInicio &&
+        'tablones_des_salida_buffer'[fecha] <= FechaFin &&
+        'tablones_des_salida_buffer'[valor] <> 0,
+        1,
+        BLANK()
+    )
