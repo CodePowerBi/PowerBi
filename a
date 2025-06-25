@@ -1,13 +1,7 @@
-1YearExtendido =
-VAR MaxFecha = [Max]
-VAR FechaFin = EOMONTH(MaxFecha, 0) -- Fin del mes de MaxFecha
-VAR FechaInicio = EOMONTH(MaxFecha, -12) + 1 -- Inicio del mes siguiente 12 meses atrás
-VAR FechaDespues = EOMONTH(MaxFecha, 0) + 1 -- Primer día del mes siguiente a MaxFecha
+Dates = 
+VAR FechaMin = MIN('🔶tablones_des_salida_buffer'['fecha'])
+VAR FechaMaxReal = TODAY()
+VAR FechaMax = EOMONTH(FechaMaxReal, -1)  -- Último día del mes anterior al actual
 
 RETURN
-IF (
-    ('Dates'[Date] >= FechaInicio && 'Dates'[Date] <= FechaFin) -- Año hacia atrás
-    || ('Dates'[Date] >= FechaDespues), -- Desde el mes siguiente hacia adelante
-    TRUE(),
-    FALSE()
-)
+CALENDAR(FechaMin, FechaMax)
