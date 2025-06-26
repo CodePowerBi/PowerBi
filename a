@@ -1,6 +1,6 @@
-| Métrica gráfica    | Columna tabla                     | Justificación aproximada                                                                      |
-| ------------------ | --------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Estimated Loss** | `lineal_sum`                      | Es el valor negativo más destacado, y aparece como barras.                                    |
-| **SOT**            | `regulatory_aggregation_criteria` | También negativo, pero con diferente magnitud (criterio regulatorio).                         |
-| **Limit**          | No se ve directamente en tabla    | Puede estar implícito en alguna otra capa o no mostrarse.                                     |
-| **Apetite**        | `group_equity_tier_i`             | Son valores muy bajos (0,03 y 0,07), lo que puede indicar un umbral tipo “apetito de riesgo”. |
+Dates = 
+ADDCOLUMNS(
+    CALENDARAUTO(),
+    "EsUltimoMesTrimestre", 
+        IF(MONTH([Date]) IN {3,6,9,12}, TRUE(), FALSE())
+)
