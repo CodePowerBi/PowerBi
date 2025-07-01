@@ -1,33 +1,12 @@
-EjeIndicador = DATATABLE("Item", STRING, {
-    {"(SUP/DEF)"},
-    {"RATIO"}
-})
-
-
-____________
-
-ValorIndicador =
-SWITCH(
-    SELECTEDVALUE(EjeIndicador[Item]),
-    "(SUP/DEF)", MAX('TuTabla'[sup_def]),
-    "RATIO", MAX('TuTabla'[ratio])
+OrdenMoneda =
+SWITCH (
+    [MONEDA],
+    "TOT", 1,
+    "EUR", 2,
+    "USD", 3,
+    "GBP", 4,
+    "BRL", 5,
+    "MXN", 6,
+    "CLP", 7,
+    99
 )
-
-
-___________
-
-ValorIndicador Formateado =
-VAR indicador = SELECTEDVALUE(EjeIndicador[Item])
-VAR valor = 
-    SWITCH(
-        indicador,
-        "(SUP/DEF)", MAX('composition_per_currency'[sup_def]),
-        "RATIO", MAX('composition_per_currency'[ratio]) / 100
-    )
-RETURN
-    SWITCH(
-        indicador,
-        "RATIO", FORMAT(valor, "0%"),
-        FORMAT(valor, "0.0")
-    )
-
