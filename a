@@ -1,3 +1,14 @@
-Hola, necesitamos que en el primer diccionario se añada el campo concatenado_front, o bien que en la segunda tabla se incluya el id_id_bsi, ya que actualmente no hay ningún campo que permita unir ambas tablas uno a uno.
+EjeIndicador = DATATABLE("Item", STRING, {
+    {"(SUP/DEF)"},
+    {"RATIO"}
+})
 
-En la segunda tabla detectamos un duplicado en la columna "concatenado", con un código como "OTHLQBFSBIOT", y por eso omitimos el sufijo "Tot" para intentar unirlo con el id_bsi de la primera tabla. Sin embargo, hay un registro duplicado que lo impide: se trata de covered bonds y corporate bonds, que comparten el mismo código sin el "Tot".
+
+____________
+
+ValorIndicador =
+SWITCH(
+    SELECTEDVALUE(EjeIndicador[Item]),
+    "(SUP/DEF)", MAX('TuTabla'[sup_def]),
+    "RATIO", MAX('TuTabla'[ratio])
+)
