@@ -12,3 +12,22 @@ SWITCH(
     "(SUP/DEF)", MAX('TuTabla'[sup_def]),
     "RATIO", MAX('TuTabla'[ratio])
 )
+
+
+___________
+
+ValorIndicador Formateado =
+VAR indicador = SELECTEDVALUE(EjeIndicador[Item])
+VAR valor = 
+    SWITCH(
+        indicador,
+        "(SUP/DEF)", MAX('composition_per_currency'[sup_def]),
+        "RATIO", MAX('composition_per_currency'[ratio]) / 100
+    )
+RETURN
+    SWITCH(
+        indicador,
+        "RATIO", FORMAT(valor, "0%"),
+        FORMAT(valor, "0.0")
+    )
+
