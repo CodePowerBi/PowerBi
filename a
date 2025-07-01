@@ -1,9 +1,20 @@
-MostrarPeriodoHastaMax =
-VAR FechaMaxUsuario =
-    MAX('Dates'[Date])  // valor seleccionado en el slicer
+FechaMaxPorTrimSeleccionado =
+CALCULATE(
+    MAX('Dates'[Date]), -- Usa [Date] real, no el TRIM
+    ALLSELECTED('Dates'[TRIM])
+)
+
+___________________
+
+MostrarPeriodoHastaMaxTrim =
+VAR FechaMaxUsuario = [FechaMaxPorTrimSeleccionado]
 RETURN
     IF (
         MAX('Dates'[Date]) <= FechaMaxUsuario,
         1,
         0
     )
+
+
+_______________________
+
