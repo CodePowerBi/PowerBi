@@ -1,12 +1,9 @@
-OrdenMoneda =
-SWITCH (
-    [MONEDA],
-    "TOT", 1,
-    "EUR", 2,
-    "USD", 3,
-    "GBP", 4,
-    "BRL", 5,
-    "MXN", 6,
-    "CLP", 7,
-    99
-)
+MostrarPeriodoHastaMax =
+VAR FechaMaxUsuario =
+    MAX('Dates'[Date])  // valor seleccionado en el slicer
+RETURN
+    IF (
+        MAX('Dates'[Date]) <= FechaMaxUsuario,
+        1,
+        0
+    )
