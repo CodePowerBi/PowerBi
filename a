@@ -1,20 +1,22 @@
-FechaMaxPorTrimSeleccionado =
-CALCULATE(
-    MAX('Dates'[Date]), -- Usa [Date] real, no el TRIM
-    ALLSELECTED('Dates'[TRIM])
-)
-
-___________________
-
-MostrarPeriodoHastaMaxTrim =
-VAR FechaMaxUsuario = [FechaMaxPorTrimSeleccionado]
-RETURN
-    IF (
-        MAX('Dates'[Date]) <= FechaMaxUsuario,
-        1,
-        0
+SELECT 
+    t.date,
+    t.effective_date,
+    t.calculation_date,
+    t.filename,
+    t.metrica_esp,
+    SUM(t.cantidad) AS cantidad_total
+FROM 
+    tablones_des_mrf_km1 t
+WHERE 
+    t.effective_date = (
+        SELECT MAX(effective_date)
+        FROM tablones_des_mrf_km1
     )
-
-
-_______________________
-
+GROUP BY 
+    t.date,
+    t.effective_date,
+    t.calculation_date,
+    t.filename,
+    t.metrica_esp
+ORDER BY
+    t.date, t.metrica_esp;
