@@ -1,27 +1,6 @@
-outflows =
-CALCULATE(
-    SUM(comprobaciones_eba[outflows]),
-    FILTER(
-        comprobaciones_eba,
-        comprobaciones_eba[effective_date] = comprobaciones_eba_hbla[effective_date]
-            && comprobaciones_eba[pais] = comprobaciones_eba_hbla[pais]
-            && comprobaciones_eba[moneda] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" }
-    )
-)
-
-________
-
 Over Outflows =
-DIVIDE(
-    [three notches] + [hbla],
-    [outflows]
+IF (
+    ISBLANK([outflows]),
+    BLANK(),
+    DIVIDE( [three notches] + [hbla], [outflows] )
 )
-
-____________
-
-Over Outflows % =
-DIVIDE(
-    [three notches] + [hbla],
-    [outflows]
-)
-
