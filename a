@@ -1,47 +1,38 @@
 TablaDespivotada =
-VAR BaseTable =
-    ADDCOLUMNS (
-        SELECTCOLUMNS (
-            'tablones_des_mrf_comprobaciones_eba',
-            "effective_date", 'tablones_des_mrf_comprobaciones_eba'[effective_date],
-            "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
-            "activos", 'tablones_des_mrf_comprobaciones_eba'[activos],
-            "outflows", 'tablones_des_mrf_comprobaciones_eba'[outflows],
-            "inflows", 'tablones_des_mrf_comprobaciones_eba'[inflows],
-            "superavit", 'tablones_des_mrf_comprobaciones_eba'[superavit],
-            "ratio", 'tablones_des_mrf_comprobaciones_eba'[ratio]
-        )
+UNION (
+    SELECTCOLUMNS (
+        'tablones_des_mrf_comprobaciones_eba',
+        "effective_date", 'tablones_des_mrf_comprobaciones_eba'[effective_date],
+        "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
+        "metrica", "activos",
+        "valor", 'tablones_des_mrf_comprobaciones_eba'[activos]
+    ),
+    SELECTCOLUMNS (
+        'tablones_des_mrf_comprobaciones_eba',
+        "effective_date", 'tablones_des_mrf_comprobaciones_eba'[effective_date],
+        "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
+        "metrica", "outflows",
+        "valor", 'tablones_des_mrf_comprobaciones_eba'[outflows]
+    ),
+    SELECTCOLUMNS (
+        'tablones_des_mrf_comprobaciones_eba',
+        "effective_date", 'tablones_des_mrf_comprobaciones_eba'[effective_date],
+        "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
+        "metrica", "inflows",
+        "valor", 'tablones_des_mrf_comprobaciones_eba'[inflows]
+    ),
+    SELECTCOLUMNS (
+        'tablones_des_mrf_comprobaciones_eba',
+        "effective_date", 'tablones_des_mrf_comprobaciones_eba'[effective_date],
+        "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
+        "metrica", "superavit",
+        "valor", 'tablones_des_mrf_comprobaciones_eba'[superavit]
+    ),
+    SELECTCOLUMNS (
+        'tablones_des_mrf_comprobaciones_eba',
+        "effective_date", 'tablones_des_mrf_comprobaciones_eba'[effective_date],
+        "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
+        "metrica", "ratio",
+        "valor", 'tablones_des_mrf_comprobaciones_eba'[ratio]
     )
-RETURN
-    UNION (
-        SELECTCOLUMNS ( BaseTable,
-            "effective_date", [effective_date],
-            "pais", [pais],
-            "Metrica", "activos",
-            "Valor", [activos]
-        ),
-        SELECTCOLUMNS ( BaseTable,
-            "effective_date", [effective_date],
-            "pais", [pais],
-            "Metrica", "outflows",
-            "Valor", [outflows]
-        ),
-        SELECTCOLUMNS ( BaseTable,
-            "effective_date", [effective_date],
-            "pais", [pais],
-            "Metrica", "inflows",
-            "Valor", [inflows]
-        ),
-        SELECTCOLUMNS ( BaseTable,
-            "effective_date", [effective_date],
-            "pais", [pais],
-            "Metrica", "superavit",
-            "Valor", [superavit]
-        ),
-        SELECTCOLUMNS ( BaseTable,
-            "effective_date", [effective_date],
-            "pais", [pais],
-            "Metrica", "ratio",
-            "Valor", [ratio]
-        )
-    )
+)
