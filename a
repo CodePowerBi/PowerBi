@@ -1,6 +1,10 @@
 Over Outflows =
-IF (
-    ISBLANK([outflows]),
-    BLANK(),
-    DIVIDE( [three notches] + [hbla], [outflows] )
+DIVIDE(
+    CALCULATE(
+        SUM(comprobaciones_eba_hbla[three notches]) + SUM(comprobaciones_eba_hbla[hbla])
+    ),
+    CALCULATE(
+        SUM(comprobaciones_eba[outflows]),
+        comprobaciones_eba[moneda] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" }
+    )
 )
