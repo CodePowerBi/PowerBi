@@ -8,3 +8,20 @@ CALCULATE(
             && comprobaciones_eba[moneda] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" }
     )
 )
+
+________
+
+Over Outflows =
+DIVIDE(
+    [three notches] + [hbla],
+    [outflows]
+)
+
+____________
+
+Over Outflows % =
+DIVIDE(
+    [three notches] + [hbla],
+    [outflows]
+)
+
