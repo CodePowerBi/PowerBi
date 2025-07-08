@@ -16,7 +16,7 @@ VAR CashFlows =
         "pais", 'tablones_des_mrf_comprobaciones_eba'[pais],
         "moneda", 'tablones_des_mrf_comprobaciones_eba'[hoja_limpio_moneda],
         "metrica", "CASH FLOWS",
-        "valor",
+        "valor", 
             'tablones_des_mrf_comprobaciones_eba'[outflows] - 'tablones_des_mrf_comprobaciones_eba'[inflows]
     )
 
@@ -32,7 +32,12 @@ VAR SupDef =
         "valor",
             DIVIDE (
                 CALCULATE( SUM( 'tablones_des_mrf_comprobaciones_eba'[activos] ) ),
-                CALCULATE( SUM( 'tablones_des_mrf_comprobaciones_eba'[outflows] - 'tablones_des_mrf_comprobaciones_eba'[inflows] ) )
+                CALCULATE(
+                    SUMX (
+                        'tablones_des_mrf_comprobaciones_eba',
+                        'tablones_des_mrf_comprobaciones_eba'[outflows] - 'tablones_des_mrf_comprobaciones_eba'[inflows]
+                    )
+                )
             )
     )
 
