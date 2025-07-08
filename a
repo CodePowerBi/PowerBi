@@ -1,10 +1,7 @@
-Over Outflows =
-DIVIDE (
-    CALCULATE (
-        SUM ( comprobaciones_eba_hbla[three notches] )
-        + SUM ( comprobaciones_eba_hbla[hbla] )
-    ),
-    CALCULATE (
-        SUM ( comprobaciones_eba[outflows] )
-    )
+outflows =
+LOOKUPVALUE(
+    comprobaciones_eba[outflows],
+    comprobaciones_eba[effective_date], comprobaciones_eba_hbla[effective_date],
+    comprobaciones_eba[pais], comprobaciones_eba_hbla[pais],
+    comprobaciones_eba[moneda], comprobaciones_eba_hbla[moneda]
 )
