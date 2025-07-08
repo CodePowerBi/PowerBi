@@ -1,10 +1,13 @@
 Over Outflows =
 DIVIDE(
     CALCULATE(
-        SUM( comprobaciones_eba_hbla[three notches] ) + SUM( comprobaciones_eba_hbla[hbla] )
+        SUM( comprobaciones_eba_hbla[three notches] ) +
+        SUM( comprobaciones_eba_hbla[hbla] )
     ),
     CALCULATE(
         SUM( comprobaciones_eba[outflows] ),
-        comprobaciones_eba[moneda] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" }
+        comprobaciones_eba[moneda] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" },
+        comprobaciones_eba[effective_date] IN VALUES( comprobaciones_eba_hbla[effective_date] ),
+        comprobaciones_eba[pais] IN VALUES( comprobaciones_eba_hbla[pais] )
     )
 )
