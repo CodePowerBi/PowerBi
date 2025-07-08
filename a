@@ -1,5 +1,5 @@
-ActivosSeleccionados =
-CALCULATE(
-    SUM( Pag4[valor] ),
+Activos =
+CALCULATE (
+    SUM ( Pag4[valor] ),
     Pag4[metrica] = "activos"
 )
