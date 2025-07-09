@@ -1,13 +1,71 @@
-Over Outflows =
-DIVIDE(
-    CALCULATE(
-        SUM( comprobaciones_eba_hbla[three notches] ) +
-        SUM( comprobaciones_eba_hbla[hbla] )
-    ),
-    CALCULATE(
-        SUM( comprobaciones_eba[outflows] ),
-        comprobaciones_eba[moneda] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" },
-        comprobaciones_eba[effective_date] IN VALUES( comprobaciones_eba_hbla[effective_date] ),
-        comprobaciones_eba[pais] IN VALUES( comprobaciones_eba_hbla[pais] )
-    )
-)
+Slide 7:
+
+✅ LCH Clearnet Group, Bank of England
+✅ Banco Santander, Ministerio de Justicia Español, Spanish Treasury
+✅ Banco de México
+✅ Crédit Agricole
+✅ Bank of New York, Charles Schwab, Federal Home Loan Bank
+
+✅ Amount Received (bn €) (diciembre 2024)
+✅ Residual Maturity (years)
+✅ % Funding (wo Equit.+Deriv.)
+✅ Position Sept 2024 - Amount Received (bn €)
+✅ Difference - Amount Received (bn €)
+
+___________
+
+8
+
+✅ SPANISH TREASURY
+✅ HER MAJESTY’S TREASURY
+✅ TESOURO NACIONAL
+✅ ITALIAN TREASURY
+✅ TREASURY OF POLAND
+✅ GOVERNMENT NATIONAL MORTGAGE ASSOCIATION
+✅ FEDERAL HOME LOAN BANK
+✅ TESORERIA GENERAL DE LA REPUBLICA
+✅ TESORO EEUU
+✅ SECRETARIA DE HACIENDA Y CREDITO PUBLICO
+
+✅ MtM value / nominal (Dec 2024)
+✅ Collateral value CB-eligible (Dec 2024)
+✅ MtM value / nominal (Sept 2024)
+✅ Collateral value CB-eligible (Sept 2024)
+✅ Dif. MtM value / nominal
+
+__________
+
+9 
+
+✅ Parent Co
+✅ Polonia
+✅ Portugal
+✅ RFB
+✅ USA
+✅ Mexico
+✅ Brasil
+✅ Chile
+✅ Argentina
+✅ Uruguay
+
+✅ Covered by DGS
+✅ Not Covered
+
+_____________
+
+9b
+✅ Parent Co
+✅ Polonia
+✅ Portugal
+✅ RFB
+✅ USA
+✅ Mexico
+✅ Brasil
+✅ Chile
+✅ Argentina
+✅ Uruguay
+
+✅ Total Uninsured
+✅ Total Insured
+✅ Unin/Total Depo
+✅ Buffer coverage
