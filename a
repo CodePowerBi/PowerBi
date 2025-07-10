@@ -1,24 +1,46 @@
+✅ Filas (monedas):
+EUR
+USD
+GBP
+BRL
+MXN
+CLP
+OTHER
+
+_______________
+
 ✅ Filas
-UK - RFB
-SAN USA
-SAN MEXICO
-SAN CHILE
-SCF NORDICOS Y FINLANDIA
-SAN ARGENTINA
-SAN URUGUAY
-SFS
-BPI SUIZA
-SAN COLOMBIA
-PERU
+HQLA
+CASH FLOWS
+(SUP/DEF)
+RATIO
 
 ✅ Columnas
-Entidad
-HQLA
-Outflows
-Asset Transfer
-Early Termination
-ILL Unused
-Fraction
-Transfer Capacity
-Capped HQLA
-Adjustment
+TOT
+EUR
+USD
+GBP
+BRL
+MXN
+CLP
+
+_____________
+
+✅ Filas
+CONSOLIDATED
+Parent
+RFB
+Brazil
+USA
+Mexico
+Chile
+Portugal
+SCF SA
+SCF Alemania
+Poland
+
+✅ Columnas
+Entity
+Three notches
+HLBA
+% over outflows
