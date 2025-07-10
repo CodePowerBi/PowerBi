@@ -1,45 +1,21 @@
-✅ Columnas
-dic.-23
-mar.-24
-jun.-24
-sep.-24
-dic.-24
-
-✅ Filas
-Parent Co
-UK
-Brazil
-Polonia
-USA
-Resto
-NSFR
-
-____
-
-✅ Filas
-(SUP/DEF)
-RATIO
-
-✅ Columnas
+✅ Filas (categorías de monedas)
 TOT
 EUR
-USD
 GBP
+USD
 BRL
 MXN
 CLP
 
-__
+✅ Columnas (leyenda de categorías)
+Assets (Amount/RSF):
+Loans
+Financial Assets
+All Other Assets
+Off Balance
 
-✅ Filas (monedas)
-EUR
-USD
-GBP
-BRL
-MXN
-CLP
-OTHER
-
-✅ Columnas (porcentajes)
-62%
-17%
+Liabilities (Amount/ASF):
+Retail & SMEs
+Wholesale
+All Other Liabilities
+Equity (T1&S2&other)
