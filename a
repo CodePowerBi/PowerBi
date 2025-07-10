@@ -1,13 +1,53 @@
-✅ Leyenda (líneas del gráfico):
+✅ Leyenda (líneas y símbolos del gráfico):
 
-Regulatorio mensual (línea negra)
+Daily LCR (línea roja continua)
 
-Diario final de mes (línea roja)
+Limit (línea roja discontinua)
+
+LCR (picos con triángulos grises)
 
 ✅ Eje Y:
 
-Porcentaje de LCR (de 110 % a 200 %)
+Porcentaje de LCR (aproximadamente de 110 % a 190 %)
 
 ✅ Eje X:
 
-Fechas mensuales, de ene-21 a dic-24
+Fechas mensuales de dic-23 a dic-24
+
+✅ Nota adicional:
+
+Diferencia destacada: –3.3 pps (diario) en rojo al lado derecho.
+
+✅ Filas (REPORT):
+
+Parent Co
+
+UK
+
+Brasil
+
+Consumer
+
+USA
+
+Mexico
+
+Chile
+
+Portugal
+
+Polonia
+
+Argentina
+
+✅ Columnas:
+
+ALMM (C 66.00)
+
+LCR (C 72.00)
+
+(sin título, pero valor C 73.00)
+
+(sin título, pero valor C 74.00)
+
+NSFR (C 81.00)
