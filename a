@@ -1,53 +1,19 @@
-✅ Leyenda (líneas y símbolos del gráfico):
-
-Daily LCR (línea roja continua)
-
-Limit (línea roja discontinua)
-
-LCR (picos con triángulos grises)
-
-✅ Eje Y:
-
-Porcentaje de LCR (aproximadamente de 110 % a 190 %)
-
-✅ Eje X:
-
-Fechas mensuales de dic-23 a dic-24
-
-✅ Nota adicional:
-
-Diferencia destacada: –3.3 pps (diario) en rojo al lado derecho.
-
-✅ Filas (REPORT):
-
+✅ Filas
 Parent Co
-
 UK
-
 Brasil
-
-Consumer
-
+SCF SA
+SCF Alemania
 USA
-
 Mexico
-
 Chile
-
 Portugal
-
 Polonia
-
 Argentina
+Uruguay
 
-✅ Columnas:
-
-ALMM (C 66.00)
-
-LCR (C 72.00)
-
-(sin título, pero valor C 73.00)
-
-(sin título, pero valor C 74.00)
-
-NSFR (C 81.00)
+✅ Columnas
+LCR
+NSFR
+ALMM
+Promedio
