@@ -1,21 +1,5 @@
-✅ Filas (categorías de monedas)
-TOT
-EUR
-GBP
-USD
-BRL
-MXN
-CLP
-
-✅ Columnas (leyenda de categorías)
-Assets (Amount/RSF):
-Loans
-Financial Assets
-All Other Assets
-Off Balance
-
-Liabilities (Amount/ASF):
-Retail & SMEs
-Wholesale
-All Other Liabilities
-Equity (T1&S2&other)
+LCR Valor :=
+CALCULATE(
+    SUM('tablones_des_mrf_gestion_balance'[Valor]), 
+    'tablones_des_mrf_gestion_balance'[Metrica] = "LCR"
+)
