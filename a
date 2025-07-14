@@ -1,5 +1,12 @@
-LCR Valor :=
-CALCULATE(
-    SUM('tablones_des_mrf_gestion_balance'[Valor]), 
-    'tablones_des_mrf_gestion_balance'[Metrica] = "LCR"
-)
+EsUltimoMes :=
+VAR MaxMes =
+    CALCULATE(
+        MAX('tablones_des_mrf_gestion_balance'[effective_date]),
+        ALL('tablones_des_mrf_gestion_balance')
+    )
+VAR FechaActualMes =
+    EOMONTH('Dates'[Date], 0)
+VAR UltimoMes =
+    EOMONTH(MaxMes, 0)
+RETURN
+    FechaActualMes = UltimoMes
