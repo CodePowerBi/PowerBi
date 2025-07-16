@@ -1,12 +1,27 @@
-EsUltimoMes :=
-VAR MaxMes =
-    CALCULATE(
-        MAX('tablones_des_mrf_gestion_balance'[effective_date]),
-        ALL('tablones_des_mrf_gestion_balance')
-    )
-VAR FechaActualMes =
-    EOMONTH('Dates'[Date], 0)
-VAR UltimoMes =
-    EOMONTH(MaxMes, 0)
-RETURN
-    FechaActualMes = UltimoMes
+NotaControl =
+SWITCH(
+    TRUE(),
+    mrf_liquidity[pct_diferencia] < 5, 1,          // compliant
+    mrf_liquidity[pct_diferencia] < 15, 2,         // medio
+    3                                              // non-compliant
+)
+
+
+____________
+
+
+NotaMedia :=
+AVERAGEX(
+    mrf_liquidity,
+    mrf_liquidity[NotaControl]
+)
+
+___________
+
+KPI :=
+SWITCH(
+    TRUE(),
+    [NotaMedia] < 1.66, 0,
+    [NotaMedia] < 2.33, 0.5,
+    1
+)
