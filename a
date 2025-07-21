@@ -1,27 +1,15 @@
-NotaControl =
+ppt_order = 
 SWITCH(
-    TRUE(),
-    mrf_liquidity[pct_diferencia] < 5, 1,          // compliant
-    mrf_liquidity[pct_diferencia] < 15, 2,         // medio
-    3                                              // non-compliant
-)
-
-
-____________
-
-
-NotaMedia :=
-AVERAGEX(
-    mrf_liquidity,
-    mrf_liquidity[NotaControl]
-)
-
-___________
-
-KPI :=
-SWITCH(
-    TRUE(),
-    [NotaMedia] < 1.66, 0,
-    [NotaMedia] < 2.33, 0.5,
-    1
+    [counterparty_name],
+    "SPANISH TREASURY", 1,
+    "HER MAJESTYS TREASURY", 2,
+    "TESOURO NACIONAL", 3,
+    "ITALIAN TREASURY", 4,
+    "Treasury of Poland", 5,
+    "GOVERNMENT NATIONAL MORTGAGE ASSOCIATION", 6,
+    "FEDERAL HOME LOAN BANK", 7,
+    "TESORERIA GENERAL DE LA REPUBLICA", 8,
+    "TESORO EEUU", 9,
+    "SECRETARIA DE HACIENDA Y CREDITO PUBLICO", 10,
+    BLANK()
 )
