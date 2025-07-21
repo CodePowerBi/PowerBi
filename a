@@ -1,13 +1,12 @@
-ppt_order = 
+Categoria_1_Nombre =
 SWITCH(
-    [id],
-    8, 1,    // Total de activos líquidos de alta calidad (HQLA)
-    7, 2,    // Salidas de efectivo – Valor total ponderado
-    1, 3,    // Entradas de efectivo – Valor total ponderado
-    10, 4,   // Total de salidas de efectivo netas (valor ajustado)
-    5, 5,    // Ratio de cobertura de liquidez (%)
-    9, 6,    // Total de fondos estables disponibles
-    2, 7,    // Financiación estable total requerida
-    3, 8,    // Ratio NSFR (%)
-    BLANK()
+    TRUE(),
+    // Ratio de cobertura de liquidez
+    [id] IN {1, 5, 7, 8, 10}, "Ratio de cobertura de liquidez",
+
+    // Ratio de financiación estable neta
+    [id] IN {2, 3, 9}, "Ratio de financiación estable neta",
+
+    // Si no cuadra
+    "Sin GranCategoria"
 )
