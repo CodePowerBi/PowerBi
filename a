@@ -1,12 +1,8 @@
-Categoria_1_Nombre =
+ppt_order =
 SWITCH(
-    TRUE(),
-    // Ratio de cobertura de liquidez
-    [id] IN {1, 5, 7, 8, 10}, "Ratio de cobertura de liquidez",
-
-    // Ratio de financiación estable neta
-    [id] IN {2, 3, 9}, "Ratio de financiación estable neta",
-
-    // Si no cuadra
-    "Sin GranCategoria"
+    [id],
+    14, 1,   // Colchón de liquidez
+    42, 2,   // Total de salidas de efectivo netas
+    5,  3,   // Ratio de cobertura de liquidez
+    BLANK()
 )
