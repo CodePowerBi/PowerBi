@@ -1,15 +1,13 @@
 ppt_order = 
 SWITCH(
     [id],
-    232, 1,   // THE LCH CLEARNET GROUP
-    231, 2,   // THE GOVERNOR AND COMPANY OF THE BANK OF ENGLAND
-    49,  3,   // BANCO SANTANDER, S.A.
-    102, 4,   // EMPRESARIOS INDUSTRIALES DE MEXICO
-    92,  5,   // CREDIT AGRICOLE
-    30,  6,   // BANK OF NEW YORK
-    175, 7,   // MINISTERIO DE JUSTICIA ESPAÑOL
-    58,  8,   // CHARLES SCHWAB
-    115, 9,   // FEDERAL HOME LOAN BANK
-    218, 10,  // SPANISH TREASURY
+    8, 1,    // Total de activos líquidos de alta calidad (HQLA)
+    7, 2,    // Salidas de efectivo – Valor total ponderado
+    1, 3,    // Entradas de efectivo – Valor total ponderado
+    10, 4,   // Total de salidas de efectivo netas (valor ajustado)
+    5, 5,    // Ratio de cobertura de liquidez (%)
+    9, 6,    // Total de fondos estables disponibles
+    2, 7,    // Financiación estable total requerida
+    3, 8,    // Ratio NSFR (%)
     BLANK()
 )
