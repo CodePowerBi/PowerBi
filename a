@@ -1,8 +1,35 @@
 ppt_order =
 SWITCH(
     [id],
-    14, 1,   // Colchón de liquidez
-    42, 2,   // Total de salidas de efectivo netas
-    5,  3,   // Ratio de cobertura de liquidez
+    13, 1,   // Activos líquidos de alta calidad (HQLA)
+    36, 2,   // Salidas de efectivo
+    17, 3,   // Depósitos minoristas y depósitos de pequeñas empresas, de los
+    15, 4,   // Depósitos estables
+    16, 5,   // Depósitos menos estables
+    32, 6,   // Financiación mayorista no garantizada
+    19, 7,   // Depósitos operativos (todas las contrapartes) y depósitos en redes
+    18, 8,   // Depósitos no operativos (todas las contrapartes)
+    20, 9,   // Deuda no garantizada
+    27, 10,  // Financiación mayorista garantizada
+    34, 11,  // Requisitos adicionales
+    35, 12,  // Salidas relacionadas con derivados y otros
+    33, 13,  // Salidas relacionadas con la pérdida de financiación
+    28, 14,  // Líneas de crédito y de liquidez
+    32, 15,  // Otras obligaciones contractuales
+    31, 16,  // Otras obligaciones contingentes
+    42, 17,  // TOTAL DE SALIDAS DE EFECTIVO NETAS
+    21, 18,  // Entradas de efectivo
+    29, 19,  // Operaciones de préstamo garantizadas
+    30, 20,  // Otras entradas de efectivo
+    11, 21,  // Diferencia entre total de entradas ponderadas
+    12, 22,  // Entradas exoneradas procedentes de una entidad de crédito
+    41, 23,  // TOTAL DE ENTRADAS DE EFECTIVO
+    25, 24,  // Entradas totalmente exentas
+    23, 25,  // Entradas sujetas al límite máximo del 75 %
+    22, 26,  // Entradas sujetas al límite máximo del 90 %
+    46, 27,  // TOTAL VALOR AJUSTADO (LCR Grupo)
+    14, 28,  // Colchón de liquidez
+    42, 29,  // Total de salidas de efectivo netas
+    5,  30,  // Ratio de cobertura de liquidez (%)
     BLANK()
 )
