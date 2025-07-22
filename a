@@ -1,35 +1,18 @@
-ppt_order =
-SWITCH(
-    [id],
-    13, 1,   // Activos líquidos de alta calidad
-    37, 2,   // Total de activos líquidos de alta calidad (HQLA)
-    36, 3,   // Salidas de efectivo
-    17, 4,   // Depósitos minoristas y depósitos de pequeñas empresas
-    15, 5,   // Depósitos estables
-    16, 6,   // Depósitos menos estables
-    32, 7,   // Financiación mayorista no garantizada
-    19, 8,   // Depósitos operativos (todas las contrapartes)
-    18, 9,   // Depósitos no operativos
-    20, 10,  // Deuda no garantizada
-    27, 11,  // Financiación mayorista garantizada
-    33, 12,  // Requisitos adicionales
-    34, 13,  // Salidas relacionadas con derivados y otros
-    35, 14,  // Salidas relacionadas con la pérdida de financiación
-    29, 15,  // Líneas de crédito y liquidez
-    32, 16,  // Otras obligaciones contractuales en materia de financiación
-    31, 17,  // Otras obligaciones contingentes en materia de financiación
-    42, 18,  // Total de salidas de efectivo netas
-    21, 19,  // Entradas de efectivo
-    29, 20,  // Operaciones de préstamo garantizadas
-    30, 21,  // Otras entradas de efectivo
-    11, 22,  // Diferencia entre entradas ponderadas y salidas ponderadas
-    12, 23,  // Entradas exoneradas procedentes de una entidad de crédito
-    41, 24,  // Total de entradas de efectivo
-    25, 25,  // Entradas totalmente exentas
-    22, 26,  // Entradas sujetas al límite máximo del 75 %
-    24, 27,  // Entradas sujetas al límite máximo del 90 %
-    38, 28,  // TOTAL VALOR AJUSTADO
-    14, 29,  // Colchón de liquidez
-    5,  30,  // Ratio de cobertura de liquidez (%)
-    BLANK()
-)
+CODIGO_PAISES_TABLA_NUEVA =
+DATATABLE(
+    "NombrePais", STRING,
+    "CodPais", STRING,
+    "HQLA", STRING,
+{
+    { "Argentina",      "GBARG", "Santander Argentina" },
+    { "Brazil",         "GBBRA", "SAN BRAZIL" },
+    { "Germany",        "GBCALE", "SCF Germany" },
+    { "CSFA SPAIN",     "GBCES", "SCF SA" },
+    { "Chile",          "GBCHI", "SAN CHILE" },
+    { "Madrid",         "GBMAD", "PARENT" },
+    { "Mexico",         "GBMEX", "Mexico" },
+    { "Poland",         "GBPOL", "Santander Bank Polska S.A." },
+    { "Portugal",       "GBPOR", "Banco Santander Totta S.A." },
+    { "United Kingdom", "GBUK",  "San UK RFB" },
+    { "United States",  "GBUSA", "SHUSA" }
+})
