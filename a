@@ -1,18 +1,16 @@
-CODIGO_PAISES_TABLA_NUEVA =
+NuevaTabla = 
 DATATABLE(
-    "NombrePais", STRING,
-    "CodPais", STRING,
-    "HQLA", STRING,
+    "NombrePais", STRING, "CodPais", STRING, "HQLA", STRING, "Stress", STRING,
 {
-    { "Argentina",      "GBARG", "Santander Argentina" },
-    { "Brazil",         "GBBRA", "SAN BRAZIL" },
-    { "Germany",        "GBCALE", "SCF Germany" },
-    { "CSFA SPAIN",     "GBCES", "SCF SA" },
-    { "Chile",          "GBCHI", "SAN CHILE" },
-    { "Madrid",         "GBMAD", "PARENT" },
-    { "Mexico",         "GBMEX", "Mexico" },
-    { "Poland",         "GBPOL", "Santander Bank Polska S.A." },
-    { "Portugal",       "GBPOR", "Banco Santander Totta S.A." },
-    { "United Kingdom", "GBUK",  "San UK RFB" },
-    { "United States",  "GBUSA", "SHUSA" }
+    { "Argentina",       "GBARG",  "Santander Argentina",         "GBARG" },
+    { "Brazil",          "GBBRA",  "SAN BRAZIL",                  "GBBRA" },
+    { "Germany",         "GBCALE", "SCF Germany",                 "GBCALE" },
+    { "CSFA SPAIN",      "GBCES",  "SCF SA",                      "SCF SA" },
+    { "Chile",           "GBCHI",  "SAN CHILE",                   "GBCHI" },
+    { "Madrid",          "GBMAD",  "PARENT",                      "GBMAD" },
+    { "Mexico",          "GBMEX",  "Mexico",                      "GBMEX" },
+    { "Poland",          "GBPOL",  "Santander Bank Polska S.A.",  "GBPOL" },
+    { "Portugal",        "GBPOR",  "Banco Santander Totta S.A.",  "GBPOR" },
+    { "United Kingdom",  "GBUK",   "San UK RFB",                  "GBUK"  },
+    { "United States",   "GBUSA",  "SHUSA",                       "GBUSA" }
 })
