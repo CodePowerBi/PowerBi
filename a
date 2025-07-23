@@ -1,24 +1,6 @@
-CategoriasDivisa =
-DATATABLE(
-    "divisa", STRING,
-    {
-        { "BRL" },
-        { "CLP" },
-        { "EUR" },
-        { "GBP" },
-        { "MXN" },
-        { "USD" },
-        { "OTHER" }
-    }
-)
-
-
-_______________
-
-TablaGraficoConOther =
+Tabla_Grafico_Con_Other =
 VAR Fechas =
-    SUMMARIZE(
-        'tablones_des_mrf_composition_per_currency_lcr_divisas',
+    DISTINCT(
         'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date]
     )
 RETURN
