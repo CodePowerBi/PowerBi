@@ -15,28 +15,47 @@ DATATABLE(
 
 _______________
 
-SUP_DEF_CATEGORIA =
-VAR total =
-    CALCULATE(
-        MAX('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
-        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "TOT"
+TablaGraficoConOther =
+VAR Fechas =
+    SUMMARIZE(
+        'tablones_des_mrf_composition_per_currency_lcr_divisas',
+        'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date]
     )
-VAR suma_6divisas =
-    CALCULATE(
-        SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
-        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] IN {
-            "BRL", "CLP", "EUR", "GBP", "MXN", "USD"
-        }
-    )
-VAR other = total - suma_6divisas
 RETURN
-SWITCH(
-    TRUE(),
-    SELECTEDVALUE('tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa]) IN {
-        "BRL", "CLP", "EUR", "GBP", "MXN", "USD"
-    },
-    SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
-    SELECTEDVALUE('tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa]) = "OTHER",
-    IF(other > 0, other, 0),
-    BLANK()
+ADDCOLUMNS(
+    GENERATE(
+        Fechas,
+        DATATABLE(
+            "divisa", STRING,
+            {
+                { "BRL" }, { "CLP" }, { "EUR" }, { "GBP" }, { "MXN" }, { "USD" }, { "OTHER" }
+            }
+        )
+    ),
+    "sup_def",
+    VAR fechaActual = [effective_date]
+    VAR total =
+        CALCULATE(
+            MAX('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
+            'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "TOT",
+            'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual
+        )
+    VAR suma6 =
+        CALCULATE(
+            SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
+            'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] IN { "BRL", "CLP", "EUR", "GBP", "MXN", "USD" },
+            'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual
+        )
+    RETURN
+        SWITCH(
+            [divisa],
+            "BRL", CALCULATE(SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]), 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "BRL", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual),
+            "CLP", CALCULATE(SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]), 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "CLP", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual),
+            "EUR", CALCULATE(SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]), 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "EUR", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual),
+            "GBP", CALCULATE(SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]), 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "GBP", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual),
+            "MXN", CALCULATE(SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]), 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "MXN", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual),
+            "USD", CALCULATE(SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]), 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "USD", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date] = fechaActual),
+            "OTHER", total - suma6,
+            BLANK()
+        )
 )
