@@ -1,3 +1,20 @@
+CategoriasDivisa =
+DATATABLE(
+    "divisa", STRING,
+    {
+        { "BRL" },
+        { "CLP" },
+        { "EUR" },
+        { "GBP" },
+        { "MXN" },
+        { "USD" },
+        { "OTHER" }
+    }
+)
+
+
+_______________
+
 SUP_DEF_CATEGORIA =
 VAR total =
     CALCULATE(
