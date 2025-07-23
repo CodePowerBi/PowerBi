@@ -1,11 +1,23 @@
-ValorIndicador_Num = 
-VAR indicador = SELECTEDVALUE(pag5[Item])
-RETURN
-    SWITCH(
-        indicador,
-        "SUP/DEF", MAX('tablones_des mrf_composition_per_currency'[sup_def]),
-        "RATIO", MAX('tablones_des mrf_composition_per_currency'[ratio]) / 100,
-        "HQLA", MAX('tablones_des mrf_composition_per_currency_lcr_divisas'[hqla]),
-        "CASH FLOWS", MAX('tablones_des mrf_composition_per_currency_lcr_divisas'[cash_flows]),
-        BLANK()
+Tabla_Grafico_Con_Other =
+VAR total =
+    CALCULATE(
+        MAX('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
+        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "TOT"
     )
+VAR suma_sin_tot =
+    CALCULATE(
+        SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
+        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] <> "TOT"
+    )
+RETURN
+UNION(
+    SELECTCOLUMNS(
+        FILTER(
+            'tablones_des_mrf_composition_per_currency_lcr_divisas',
+            'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] <> "TOT"
+        ),
+        "divisa", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa],
+        "sup_def", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]
+    ),
+    ROW("divisa", "OTHER", "sup_def", total - suma_sin_tot)
+)
