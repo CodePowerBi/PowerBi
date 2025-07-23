@@ -1,16 +1,11 @@
-NuevaTabla = 
-DATATABLE(
-    "NombrePais", STRING, "CodPais", STRING, "HQLA", STRING, "Stress", STRING,
-{
-    { "Argentina",       "GBARG",  "Santander Argentina",         "GBARG" },
-    { "Brazil",          "GBBRA",  "SAN BRAZIL",                  "GBBRA" },
-    { "Germany",         "GBCALE", "SCF Germany",                 "GBCALE" },
-    { "CSFA SPAIN",      "GBCES",  "SCF SA",                      "SCF SA" },
-    { "Chile",           "GBCHI",  "SAN CHILE",                   "GBCHI" },
-    { "Madrid",          "GBMAD",  "PARENT",                      "GBMAD" },
-    { "Mexico",          "GBMEX",  "Mexico",                      "GBMEX" },
-    { "Poland",          "GBPOL",  "Santander Bank Polska S.A.",  "GBPOL" },
-    { "Portugal",        "GBPOR",  "Banco Santander Totta S.A.",  "GBPOR" },
-    { "United Kingdom",  "GBUK",   "San UK RFB",                  "GBUK"  },
-    { "United States",   "GBUSA",  "SHUSA",                       "GBUSA" }
-})
+ValorIndicador_Num = 
+VAR indicador = SELECTEDVALUE(pag5[Item])
+RETURN
+    SWITCH(
+        indicador,
+        "SUP/DEF", MAX('tablones_des mrf_composition_per_currency'[sup_def]),
+        "RATIO", MAX('tablones_des mrf_composition_per_currency'[ratio]) / 100,
+        "HQLA", MAX('tablones_des mrf_composition_per_currency_lcr_divisas'[hqla]),
+        "CASH FLOWS", MAX('tablones_des mrf_composition_per_currency_lcr_divisas'[cash_flows]),
+        BLANK()
+    )
