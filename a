@@ -1,42 +1,34 @@
 Tabla_Grafico_Con_Other =
+VAR total =
+    CALCULATE(
+        MAX('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
+        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "TOT"
+    )
+VAR suma_6divisas =
+    CALCULATE(
+        SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
+        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] IN {
+            "BRL", "CLP", "EUR", "GBP", "MXN", "USD"
+        }
+    )
+VAR fecha =
+    MAX('tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date])
+RETURN
 UNION(
-    // Parte 1: las divisas normales
     SELECTCOLUMNS(
         FILTER(
             'tablones_des_mrf_composition_per_currency_lcr_divisas',
-            'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] IN { "BRL", "CLP", "EUR", "GBP", "MXN", "USD" }
+            'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] IN {
+                "BRL", "CLP", "EUR", "GBP", "MXN", "USD"
+            }
         ),
-        "effective_date", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date],
         "divisa", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa],
-        "sup_def", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]
+        "sup_def", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def],
+        "effective_date", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date]
     ),
-    // Parte 2: OTHER por fecha
-    SELECTCOLUMNS(
-        ADDCOLUMNS(
-            SUMMARIZE(
-                'tablones_des_mrf_composition_per_currency_lcr_divisas',
-                'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date]
-            ),
-            "other_sup_def",
-            CALCULATE(
-                MAXX(
-                    FILTER(
-                        'tablones_des_mrf_composition_per_currency_lcr_divisas',
-                        'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] = "TOT"
-                    ),
-                    'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]
-                )
-                -
-                CALCULATE(
-                    SUM(
-                        'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]
-                    ),
-                    'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] IN { "BRL", "CLP", "EUR", "GBP", "MXN", "USD" }
-                )
-            )
-        ),
-        "effective_date", [effective_date],
+    ROW(
         "divisa", "OTHER",
-        "sup_def", [other_sup_def]
+        "sup_def", total - suma_6divisas,
+        "effective_date", fecha
     )
 )
