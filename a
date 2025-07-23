@@ -9,6 +9,8 @@ VAR suma_sin_tot =
         SUM('tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]),
         'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] <> "TOT"
     )
+VAR fecha =
+    MAX('tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date])
 RETURN
 UNION(
     SELECTCOLUMNS(
@@ -17,7 +19,12 @@ UNION(
             'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa] <> "TOT"
         ),
         "divisa", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[divisa],
-        "sup_def", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def]
+        "sup_def", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[sup_def],
+        "effective_date", 'tablones_des_mrf_composition_per_currency_lcr_divisas'[effective_date]
     ),
-    ROW("divisa", "OTHER", "sup_def", total - suma_sin_tot)
+    ROW(
+        "divisa", "OTHER",
+        "sup_def", total - suma_sin_tot,
+        "effective_date", fecha
+    )
 )
