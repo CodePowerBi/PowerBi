@@ -1,15 +1,17 @@
 SELECT
     MONTH(f.fecha) AS mes,
     d.concatenado_front,
-    SUM(CASE WHEN f.id_unit = 'GBUSA' THEN f.contravalor ELSE NULL END) AS GBUSA,
-    SUM(CASE WHEN f.id_unit = 'GBSBNA' THEN f.contravalor ELSE NULL END) AS GBSBNA
+    SUM(CASE WHEN f.id_unit = 'GBUSA' THEN f.contravalor ELSE 0 END) AS GBUSA,
+    SUM(CASE WHEN f.id_unit = 'GBSBNA' THEN f.contravalor ELSE 0 END) AS GBSBNA
 FROM
     usa_liquidez_front_vw f
 INNER JOIN
     tablones_des_dicc_aux_fron_id_bsi d
     ON f.id_id_bsi = d.id_bsi_front
 WHERE
-    MONTH(f.fecha) = 3
+    YEAR(f.fecha) = 2025
+    AND MONTH(f.fecha) = 3
+    AND f.currency = 'TOT'
 GROUP BY
     MONTH(f.fecha),
     d.concatenado_front
