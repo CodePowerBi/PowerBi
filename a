@@ -4,14 +4,14 @@ SELECT
     ROUND(SUM(CASE WHEN f.id_unit = 'GBUSA' THEN f.contravalor ELSE 0 END) / 1000, 2) AS GBUSA,
     ROUND(SUM(CASE WHEN f.id_unit = 'GBSBNA' THEN f.contravalor ELSE 0 END) / 1000, 2) AS GBSBNA
 FROM
-    usa_liquidez_front_vw f
-INNER JOIN
     tablones_des_dicc_aux_fron_id_bsi d
+LEFT JOIN
+    usa_liquidez_front_vw f
     ON f.id_id_bsi = d.id_bsi_front
-WHERE
-    YEAR(f.fecha) = 2025
+    AND YEAR(f.fecha) = 2025
     AND MONTH(f.fecha) = 3
     AND f.currency = 'TOT'
+    AND f.id_unit IN ('GBUSA', 'GBSBNA')
 GROUP BY
     MONTH(f.fecha),
     d.concatenado_front
