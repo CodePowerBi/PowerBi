@@ -1,8 +1,8 @@
 SELECT
     MONTH(f.fecha) AS mes,
     d.concatenado_front,
-    SUM(CASE WHEN f.id_unit = 'GBUSA' THEN f.contravalor ELSE 0 END) AS GBUSA,
-    SUM(CASE WHEN f.id_unit = 'GBSBNA' THEN f.contravalor ELSE 0 END) AS GBSBNA
+    ROUND(SUM(CASE WHEN f.id_unit = 'GBUSA' THEN f.contravalor ELSE 0 END) / 1000, 2) AS GBUSA,
+    ROUND(SUM(CASE WHEN f.id_unit = 'GBSBNA' THEN f.contravalor ELSE 0 END) / 1000, 2) AS GBSBNA
 FROM
     usa_liquidez_front_vw f
 INNER JOIN
