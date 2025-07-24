@@ -1,19 +1,16 @@
-SELECT
-    MONTH(f.fecha) AS mes,
-    d.concatenado_front,
-    ROUND(SUM(CASE WHEN f.id_unit = 'GBUSA' THEN f.contravalor ELSE 0 END) / 1000, 2) AS GBUSA,
-    ROUND(SUM(CASE WHEN f.id_unit = 'GBSBNA' THEN f.contravalor ELSE 0 END) / 1000, 2) AS GBSBNA
-FROM
-    tablones_des_dicc_aux_fron_id_bsi d
-LEFT JOIN
-    usa_liquidez_front_vw f
-    ON f.id_id_bsi = d.id_bsi_front
-    AND YEAR(f.fecha) = 2025
-    AND MONTH(f.fecha) = 3
-    AND f.currency = 'TOT'
-    AND f.id_unit IN ('GBUSA', 'GBSBNA')
-GROUP BY
-    MONTH(f.fecha),
-    d.concatenado_front
-ORDER BY
-    d.concatenado_front;
+Orden_PPT = 
+SWITCH(
+    'TuTabla'[unidad],
+    "RFB", 1,
+    "SAN USA", 2,
+    "SAN MEXICO", 3,
+    "SAN CHILE", 4,
+    "SCF NORDICOS y FINLANDIA", 5,
+    "SAN ARGENTINA", 6,
+    "SAN URUGUAY", 7,
+    "SFS", 8,
+    "BPI SUIZA", 9,
+    "SAN COLOMBIA", 10,
+    "PERU", 11,
+    99  -- por si hay alguna unidad no listada
+)
