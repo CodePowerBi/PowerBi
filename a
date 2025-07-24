@@ -1,22 +1,22 @@
-Nombre_PPT = 
+Orden_PPT =
 SWITCH(
     TRUE(),
-    'TABLA_COUNTRIES'[Country] = "UK", "RFB",
-    'TABLA_COUNTRIES'[Country] = "USA", "SAN USA",
-    'TABLA_COUNTRIES'[Country] = "Mexico", "SAN MEXICO",
-    'TABLA_COUNTRIES'[Country] = "Chile", "SAN CHILE",
-    'TABLA_COUNTRIES'[Country] = "Finlandia", "SCF NORDICOS Y FINLANDIA",
-    'TABLA_COUNTRIES'[Country] = "Arg", "SAN ARGENTINA",
-    'TABLA_COUNTRIES'[Country] = "Uruguay", "SAN URUGUAY",
-    'TABLA_COUNTRIES'[Country] = "SFS", "SFS",
-    'TABLA_COUNTRIES'[Country] = "Suiza", "BPI SUIZA",
-    'TABLA_COUNTRIES'[Country] = "Colombia", "SAN COLOMBIA",
-    'TABLA_COUNTRIES'[Country] = "Peru", "PERU",
-    'TABLA_COUNTRIES'[Country] = "Brasil", "SAN BRASIL",
-    'TABLA_COUNTRIES'[Country] = "Poland", "SAN POLAND",
-    'TABLA_COUNTRIES'[Country] = "Spain", "SPAIN",
-    'TABLA_COUNTRIES'[Country] = "Portugal", "PORTUGAL",
-    'TABLA_COUNTRIES'[Country] = "Madrid", "MADRID",
-    'TABLA_COUNTRIES'[Country] = "Parent Co", "PARENT CO",
-    BLANK()
+    'TABLA_COUNTRIES'[Country] = "UK", 1,             // RFB
+    'TABLA_COUNTRIES'[Country] = "USA", 2,            // SAN USA
+    'TABLA_COUNTRIES'[Country] = "Mexico", 3,         // SAN MEXICO
+    'TABLA_COUNTRIES'[Country] = "Chile", 4,          // SAN CHILE
+    'TABLA_COUNTRIES'[Country] = "Finlandia", 5,      // SCF NORDICOS Y FINLANDIA
+    'TABLA_COUNTRIES'[Country] = "Arg", 6,            // SAN ARGENTINA
+    'TABLA_COUNTRIES'[Country] = "Uruguay", 7,        // SAN URUGUAY
+    'TABLA_COUNTRIES'[Country] = "SFS", 8,            // SFS
+    'TABLA_COUNTRIES'[Country] = "Suiza", 9,          // BPI SUIZA
+    'TABLA_COUNTRIES'[Country] = "Colombia", 10,      // SAN COLOMBIA
+    'TABLA_COUNTRIES'[Country] = "Peru", 11,          // PERU
+    'TABLA_COUNTRIES'[Country] = "Brasil", 12,        // SAN BRASIL
+    'TABLA_COUNTRIES'[Country] = "Poland", 13,        // SAN POLAND
+    'TABLA_COUNTRIES'[Country] = "Spain", 14,         // SPAIN
+    'TABLA_COUNTRIES'[Country] = "Portugal", 15,      // PORTUGAL
+    'TABLA_COUNTRIES'[Country] = "Madrid", 16,        // MADRID
+    'TABLA_COUNTRIES'[Country] = "Parent Co", 17,     // PARENT CO
+    99                                                // cualquier otro
 )
