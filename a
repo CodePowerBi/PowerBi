@@ -1,26 +1,22 @@
-TABLA_COUNTRIES =
-DATATABLE(
-    "Country", STRING,
-    "ID", INTEGER,
-    "ID Entidad Pais", INTEGER,
-    "ID3", INTEGER,
-{
-    { "Parent Co", 99, 49, 8 },
-    { "Madrid", 13, 99, 99 },
-    { "Spain", 9, 23, 9 },
-    { "UK", 21, 2, 35 },               -- RFB
-    { "Brasil", 3, 19, 3 },
-    { "Poland", 12, 25, 20 },
-    { "USA", 23, 7, 23 },              -- SAN USA
-    { "Arg", 1, 3, 1 },                -- SAN ARGENTINA
-    { "Mexico", 17, 6, 17 },           -- SAN MEXICO
-    { "Portugal", 18, 12, 21 },
-    { "Chile", 31, 5, 99 },            -- SAN CHILE
-    { "Uruguay", 32, 51, 99 },         -- SAN URUGUAY
-    { "Colombia", 33, 50, 99 },        -- SAN COLOMBIA
-    { "Suiza", 34, 18, 99 },           -- BPI SUIZA
-    { "Peru", 35, 31, 99 },            -- PERU
-    { "Finlandia", 36, 36, 99 },       -- SCF NORDICOS Y FINLANDIA
-    { "SFS", 37, 39, 99 }              -- SFS también incluido
-}
+Nombre_PPT = 
+SWITCH(
+    TRUE(),
+    'TABLA_COUNTRIES'[Country] = "UK", "RFB",
+    'TABLA_COUNTRIES'[Country] = "USA", "SAN USA",
+    'TABLA_COUNTRIES'[Country] = "Mexico", "SAN MEXICO",
+    'TABLA_COUNTRIES'[Country] = "Chile", "SAN CHILE",
+    'TABLA_COUNTRIES'[Country] = "Finlandia", "SCF NORDICOS Y FINLANDIA",
+    'TABLA_COUNTRIES'[Country] = "Arg", "SAN ARGENTINA",
+    'TABLA_COUNTRIES'[Country] = "Uruguay", "SAN URUGUAY",
+    'TABLA_COUNTRIES'[Country] = "SFS", "SFS",
+    'TABLA_COUNTRIES'[Country] = "Suiza", "BPI SUIZA",
+    'TABLA_COUNTRIES'[Country] = "Colombia", "SAN COLOMBIA",
+    'TABLA_COUNTRIES'[Country] = "Peru", "PERU",
+    'TABLA_COUNTRIES'[Country] = "Brasil", "SAN BRASIL",
+    'TABLA_COUNTRIES'[Country] = "Poland", "SAN POLAND",
+    'TABLA_COUNTRIES'[Country] = "Spain", "SPAIN",
+    'TABLA_COUNTRIES'[Country] = "Portugal", "PORTUGAL",
+    'TABLA_COUNTRIES'[Country] = "Madrid", "MADRID",
+    'TABLA_COUNTRIES'[Country] = "Parent Co", "PARENT CO",
+    BLANK()
 )
