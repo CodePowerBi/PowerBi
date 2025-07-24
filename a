@@ -1,16 +1,26 @@
-Orden_PPT = 
-SWITCH(
-    'TuTabla'[unidad],
-    "RFB", 1,
-    "SAN USA", 2,
-    "SAN MEXICO", 3,
-    "SAN CHILE", 4,
-    "SCF NORDICOS y FINLANDIA", 5,
-    "SAN ARGENTINA", 6,
-    "SAN URUGUAY", 7,
-    "SFS", 8,
-    "BPI SUIZA", 9,
-    "SAN COLOMBIA", 10,
-    "PERU", 11,
-    99  -- por si hay alguna unidad no listada
+TABLA_COUNTRIES =
+DATATABLE(
+    "Country", STRING,
+    "ID", INTEGER,
+    "ID Entidad Pais", INTEGER,
+    "ID3", INTEGER,
+{
+    { "Parent Co", 99, 49, 8 },
+    { "Madrid", 13, 99, 99 },
+    { "Spain", 9, 23, 9 },
+    { "UK", 21, 2, 35 },               -- RFB
+    { "Brasil", 3, 19, 3 },
+    { "Poland", 12, 25, 20 },
+    { "USA", 23, 7, 23 },              -- SAN USA
+    { "Arg", 1, 3, 1 },                -- SAN ARGENTINA
+    { "Mexico", 17, 6, 17 },           -- SAN MEXICO
+    { "Portugal", 18, 12, 21 },
+    { "Chile", 31, 5, 99 },            -- SAN CHILE
+    { "Uruguay", 32, 51, 99 },         -- SAN URUGUAY
+    { "Colombia", 33, 50, 99 },        -- SAN COLOMBIA
+    { "Suiza", 34, 18, 99 },           -- BPI SUIZA
+    { "Peru", 35, 31, 99 },            -- PERU
+    { "Finlandia", 36, 36, 99 },       -- SCF NORDICOS Y FINLANDIA
+    { "SFS", 37, 39, 99 }              -- SFS también incluido
+}
 )
