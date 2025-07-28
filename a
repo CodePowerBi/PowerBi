@@ -1,22 +1,56 @@
-Orden_PPT =
-SWITCH(
-    TRUE(),
-    'TABLA_COUNTRIES'[Country] = "UK", 1,             // RFB
-    'TABLA_COUNTRIES'[Country] = "USA", 2,            // SAN USA
-    'TABLA_COUNTRIES'[Country] = "Mexico", 3,         // SAN MEXICO
-    'TABLA_COUNTRIES'[Country] = "Chile", 4,          // SAN CHILE
-    'TABLA_COUNTRIES'[Country] = "Finlandia", 5,      // SCF NORDICOS Y FINLANDIA
-    'TABLA_COUNTRIES'[Country] = "Arg", 6,            // SAN ARGENTINA
-    'TABLA_COUNTRIES'[Country] = "Uruguay", 7,        // SAN URUGUAY
-    'TABLA_COUNTRIES'[Country] = "SFS", 8,            // SFS
-    'TABLA_COUNTRIES'[Country] = "Suiza", 9,          // BPI SUIZA
-    'TABLA_COUNTRIES'[Country] = "Colombia", 10,      // SAN COLOMBIA
-    'TABLA_COUNTRIES'[Country] = "Peru", 11,          // PERU
-    'TABLA_COUNTRIES'[Country] = "Brasil", 12,        // SAN BRASIL
-    'TABLA_COUNTRIES'[Country] = "Poland", 13,        // SAN POLAND
-    'TABLA_COUNTRIES'[Country] = "Spain", 14,         // SPAIN
-    'TABLA_COUNTRIES'[Country] = "Portugal", 15,      // PORTUGAL
-    'TABLA_COUNTRIES'[Country] = "Madrid", 16,        // MADRID
-    'TABLA_COUNTRIES'[Country] = "Parent Co", 17,     // PARENT CO
-    99                                                // cualquier otro
-)
+Hemos revisado los datos frente a las slides del informe y detallamos a continuación las diferencias detectadas, organizadas por slide
+
+Slide 5 – SCF
+
+SCF aparece con datos diferentes en ambas tablas siguientes
+tablones_des_salida_buffer_hqla_vw
+salida_buffer_vw
+
+Slide 6 – Escenarios de estrés
+
+La tabla salida_escenarios_stress presenta diferencias frente a la ppt
+
+Ejemplo en Brasil para septiembre 2024 en el campo surplus_60_days_tc
+Antes el valor era 1250
+En la ppt aparece aproximadamente como 12
+Actualmente figura como 324
+
+El resto de campos como survival_days se mantienen igual
+
+Slide 7 – NSFR
+
+Comparando con la tabla vista_salida_nsfr
+Limit y apetito están correctos según el Excel compartido
+
+En cambio, en NSFR y NSFR Surplus se detectan las siguientes diferencias por país
+
+UK NSFR y NSFR Surplus muy diferentes todos los meses
+Argentina NSFR Surplus distinto en marzo 2024, marzo 2025 coincide
+Chile NSFR diferente, enero sin datos
+Polonia marzo sin datos en ppt, septiembre sí aparece
+SCF NSFR Surplus distinto
+Germany en NSFR Surplus faltan varios meses
+USA ok
+México ok
+Brasil ok
+
+¿Confirmamos si se mantienen estas diferencias o habría que revisar algún ajuste?
+
+Slide 41 – Liquidez USA
+
+La tabla tablones_des_usa_liquidez_vw aparece vacía
+Esto impide representar correctamente algunos campos en el informe
+
+Para GBUSA tabla central faltan
+Reserves at Central Banks
+Sovereign Bonds
+SSA Bonds
+Covered Bonds
+
+Para GBSBNA tabla derecha faltan
+Corporate Bonds
+SSA Bonds and Others
+
+Quedamos atentos a vuestra validación o comentarios por si hay que ajustar algo
+
+Un saludo
