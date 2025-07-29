@@ -2,19 +2,20 @@
 VAR TotalAmountRecibido = 
     CALCULATE(
         SUM('mrf_plantilla_67'[amount_recibido]),
-        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name])  // Solo quita el filtro de contraparte, mantiene fecha
+        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name]),
+        'mrf_plantilla_67'[Counterparty ID] IN {232, 231, 49, 16, 92, 30, 175, 58, 115, 218}
     )
 
 VAR CantidadTotalPasivo = 
     CALCULATE(
         SUM('mrf_pasivo_plantilla_67'[cantidad]),
-        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name])  // Lo mismo
+        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name])  // Esto sí lo dejamos general
     )
 
 VAR CantidadAjustada = CantidadTotalPasivo - TotalAmountRecibido
 
 VAR AmountRecibido = 
-    SUM('mrf_plantilla_67'[amount_recibido])  // Respetando la contraparte
+    SUM('mrf_plantilla_67'[amount_recibido])  // Este respeta el contexto de fila
 
 RETURN
 DIVIDE(AmountRecibido, CantidadAjustada)
