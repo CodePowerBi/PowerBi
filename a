@@ -1,21 +1,9 @@
-%Funding = 
-VAR TotalAmountRecibido = 
-    CALCULATE(
-        SUM('mrf_plantilla_67'[amount_recibido]),
-        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name]),
+TotalAmountRecibidoPorFecha = 
+CALCULATE(
+    SUM('mrf_plantilla_67'[amount_recibido]),
+    FILTER(
+        'mrf_plantilla_67',
         'mrf_plantilla_67'[Counterparty ID] IN {232, 231, 49, 16, 92, 30, 175, 58, 115, 218}
+        && 'mrf_plantilla_67'[Effective Date] = EARLIER('mrf_plantilla_67'[Effective Date])
     )
-
-VAR CantidadTotalPasivo = 
-    CALCULATE(
-        SUM('mrf_pasivo_plantilla_67'[cantidad]),
-        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name])  // Esto sí lo dejamos general
-    )
-
-VAR CantidadAjustada = CantidadTotalPasivo - TotalAmountRecibido
-
-VAR AmountRecibido = 
-    SUM('mrf_plantilla_67'[amount_recibido])  // Este respeta el contexto de fila
-
-RETURN
-DIVIDE(AmountRecibido, CantidadAjustada)
+)
