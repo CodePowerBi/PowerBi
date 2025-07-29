@@ -1,19 +1,20 @@
-TotalAmountRecibido = SUM('mrf_plantilla_67'[amount_recibido])
+%Funding = 
+VAR TotalAmountRecibido = 
+    CALCULATE(
+        SUM('mrf_plantilla_67'[amount_recibido]),
+        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name])  // Solo quita el filtro de contraparte, mantiene fecha
+    )
 
-_________________
+VAR CantidadTotalPasivo = 
+    CALCULATE(
+        SUM('mrf_pasivo_plantilla_67'[cantidad]),
+        REMOVEFILTERS('mrf_plantilla_67'[Counterparty Name])  // Lo mismo
+    )
 
-AmountRecibido = SUM('mrf_plantilla_67'[amount_recibido]) 
+VAR CantidadAjustada = CantidadTotalPasivo - TotalAmountRecibido
 
-____________________
+VAR AmountRecibido = 
+    SUM('mrf_plantilla_67'[amount_recibido])  // Respetando la contraparte
 
-Cantidad = SUM('mrf_pasivo_plantilla_67'[cantidad])
-
-_______________
-
-CantidadAjustada = [Cantidad] - [TotalAmountRecibido]
-
-_____________-
-
-%Funding = DIVIDE([AmountRecibido], [TotalAmountRecibido] + [CantidadAjustada])
-
-______________
+RETURN
+DIVIDE(AmountRecibido, CantidadAjustada)
