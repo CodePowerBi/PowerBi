@@ -1,9 +1,18 @@
-TotalAmountRecibidoPorFecha = 
-CALCULATE(
-    SUM('mrf_plantilla_67'[amount_recibido]),
-    FILTER(
+ResumenFunding =
+ADDCOLUMNS(
+    SELECTCOLUMNS(
         'mrf_plantilla_67',
-        'mrf_plantilla_67'[Counterparty ID] IN {232, 231, 49, 16, 92, 30, 175, 58, 115, 218}
-        && 'mrf_plantilla_67'[Effective Date] = EARLIER('mrf_plantilla_67'[Effective Date])
-    )
+        "EffectiveDate", 'mrf_plantilla_67'[Effective Date],
+        "CounterpartyName", 'mrf_plantilla_67'[Counterparty Name],
+        "AmountRecibido", 'mrf_plantilla_67'[amount_recibido],
+        "TotalAmountRecibidoPorFecha", 'mrf_plantilla_67'[TotalAmountRecibidoPorFecha]
+    ),
+    "CantidadTotalPasivo", 
+        CALCULATE(
+            SUM('mrf_pasivo_plantilla_67'[cantidad]),
+            FILTER(
+                'mrf_pasivo_plantilla_67',
+                'mrf_pasivo_plantilla_67'[Effective Date] = EARLIER('mrf_plantilla_67'[Effective Date])
+            )
+        )
 )
