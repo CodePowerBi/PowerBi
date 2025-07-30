@@ -1,6 +1,8 @@
-MetricaLimpia = 
-IF(
-    CONTAINSSTRING('TuTabla'[metrica], "metodo_interno"),
-    SUBSTITUTE('TuTabla'[metrica], "metodo_interno", ""),
-    "-"
+OrdenSlide12B =
+SWITCH(
+    TRUE(),
+    'TuTabla'[ID] = 43, 1,
+    'TuTabla'[ID] = 44, 2,
+    'TuTabla'[ID] = 45, 3,
+    100 + 'TuTabla'[ID]  // El resto va después, pero mantiene su orden relativo
 )
