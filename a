@@ -1,15 +1,6 @@
-ResumenFunding =
-ADDCOLUMNS(
-    'mrf_plantilla_67',
-    
-    "TotalAmountRecibidoPorFecha", 'mrf_plantilla_67'[TotalAmountRecibidoPorFecha],
-    
-    "CantidadTotalPasivo",
-        CALCULATE(
-            SUM('mrf_pasivo_plantilla_67'[cantidad]),
-            FILTER(
-                'mrf_pasivo_plantilla_67',
-                'mrf_pasivo_plantilla_67'[Effective Date] = 'mrf_plantilla_67'[Effective Date]
-            )
-        )
+MetricaLimpia = 
+IF(
+    CONTAINSSTRING('TuTabla'[metrica], "metodo_interno"),
+    SUBSTITUTE('TuTabla'[metrica], "metodo_interno", ""),
+    "-"
 )
