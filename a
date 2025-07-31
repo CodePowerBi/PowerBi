@@ -1,8 +1,15 @@
-OrdenSlide12B =
+orden_visual = 
 SWITCH(
-    TRUE(),
-    'TuTabla'[ID] = 43, 1,
-    'TuTabla'[ID] = 44, 2,
-    'TuTabla'[ID] = 45, 3,
-    100 + 'TuTabla'[ID]  // El resto va después, pero mantiene su orden relativo
+    'TuTabla'[id_unit],
+    13, 1,
+    17, 2,
+    18, 3,
+    21, 4,
+    23, 5,
+    14, 6,
+    3, 7,
+    9, 8,
+    1, 9,
+    22, 10,
+    BLANK()
 )
