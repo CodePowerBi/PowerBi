@@ -1,15 +1,11 @@
-orden_visual = 
-SWITCH(
-    'TuTabla'[country_code],
-    "001", 1,
-    "021", 2,
-    "020", 3,
-    "018", 4,
-    "019", 5,
-    "014", 6,
-    "015", 7,
-    "016", 8,
-    "045", 9,
-    "046", 10,
+orden_LCR = 
+SWITCH(TRUE(),
+    CONTAINSSTRING([texto], "Explanations on the main drivers of LCR"), 1,
+    CONTAINSSTRING([texto], "Explanations on the changes in the LCR"), 2,
+    CONTAINSSTRING([texto], "Explanations on the actual concentration of funding sources"), 3,
+    CONTAINSSTRING([texto], "High-level description of the composition"), 4,
+    CONTAINSSTRING([texto], "Derivative exposures and potential collateral calls"), 5,
+    CONTAINSSTRING([texto], "Currency mismatch in the LCR"), 6,
+    CONTAINSSTRING([texto], "Other items in the LCR calculation"), 7,
     BLANK()
 )
