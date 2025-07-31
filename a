@@ -3,34 +3,41 @@ SWITCH([id],
     99, 1,    // Currency and units
     99, 2,    // Quarter ending on
     99, 3,    // Number of data points
-    18, 4,    // HIGH-QUALITY LIQUID ASSETS (título de sección)
-    39, 5,    // Total HQLA, after application of haircuts
-    45, 6,    // Retail deposits from small business customers
-    33, 7,    // Stable deposits
-    23, 8,    // Less stable deposits
-    41, 9,    // Unsecured wholesale funding
-    40, 10,   // Unsecured debt
-    32, 11,   // Secured wholesale funding
-    13, 12,   // Additional requirements
-    29, 13,   // Outflows related to derivatives and collateral
-    30, 14,   // Outflows related to loss of funding
-    16, 15,   // Credit and liquidity facilities
-    28, 16,   // Other contractual obligations
-    27, 17,   // Other contingent obligations
-    37, 18,   // TOTAL CASH OUTFLOWS
-    14, 19,   // CASH - INFLOWS
-    31, 20,   // Secured lending
-    19, 21,   // Inflows from fully performing exposures
-    26, 22,   // Other cash inflows
-    11, 23,   // Difference inflows/outflows in restricted countries
-    12, 24,   // Excess inflows from related institutions
-    36, 25,   // TOTAL CASH INFLOWS
-    17, 26,   // Fully exempt inflows
-    21, 27,   // Inflows subject to 90% cap
-    20, 28,   // Inflows subject to 75% cap
-    34, 29,   // TOTAL ADJUSTED VALUE
-    22, 30,   // LIQUIDITY BUFFER
-    38, 31,   // TOTAL NET CASH OUTFLOWS
-    4,  32,   // LIQUIDITY COVERAGE RATIO
+
+    18, 4,    // 🔷 HIGH-QUALITY LIQUID ASSETS (bloque)
+    39, 5,    // Total HQLA (con haircuts)
+
+    15, 6,    // 🔷 CASH - OUTFLOWS (bloque)
+    45, 7,    // Retail deposits
+    33, 8,    // Stable deposits
+    23, 9,    // Less stable deposits
+    41, 10,   // Unsecured wholesale funding
+    40, 11,   // Unsecured debt
+    32, 12,   // Secured wholesale funding
+    13, 13,   // Additional requirements
+    29, 14,   // Derivatives exposures
+    30, 15,   // Loss of funding on debt
+    16, 16,   // Credit and liquidity facilities
+    28, 17,   // Other contractual obligations
+    27, 18,   // Other contingent obligations
+    37, 19,   // TOTAL CASH OUTFLOWS
+
+    14, 20,   // 🔷 CASH - INFLOWS (bloque)
+    31, 21,   // Secured lending
+    19, 22,   // Inflows from fully performing
+    26, 23,   // Other cash inflows
+    11, 24,   // Difference inflows/outflows
+    12, 25,   // Excess inflows
+    36, 26,   // TOTAL CASH INFLOWS
+
+    17, 27,   // Fully exempt inflows
+    21, 28,   // Inflows subject to 90% cap
+    20, 29,   // Inflows subject to 75% cap
+
+    34, 30,   // TOTAL ADJUSTED VALUE
+    22, 31,   // LIQUIDITY BUFFER
+    38, 32,   // TOTAL NET CASH OUTFLOWS
+    4,  33,   // LIQUIDITY COVERAGE RATIO
+
     BLANK()
 )
