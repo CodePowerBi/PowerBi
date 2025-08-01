@@ -1,16 +1,16 @@
-orden_ppt_unidad =
+unidad_corr = 
 SWITCH([id],
-    45, 1,   // Parent Co
-    1,  2,   // Portugal
-    32, 3,   // Polonia
-    46, 4,   // UK
-    8,  5,   // Argentina
-    47, 6,   // Brazil
-    10, 7,   // Chile
-    42, 8,   // Uruguay
-    14, 9,   // Mexico
-    43, 10,  // USA
-    38, 11,  // SCF SA
-    48, 12,  // SCF Germany
-    BLANK()
+    45, "Parent Co",
+    1,  "Portugal",
+    32, "Poland",
+    46, "UK",
+    8,  "Argentina",
+    47, "Brazil",
+    10, "Chile",
+    42, "Uruguay",
+    14, "Mexico",
+    43, "USA",
+    38, "SCF SA",
+    48, "SCF Germany",
+    [Unidad]  // valor por defecto si no está en la lista
 )
