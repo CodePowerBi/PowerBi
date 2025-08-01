@@ -1,8 +1,16 @@
-categoria_metrica = 
-SWITCH(TRUE(),
-    [id] = 18, "HIGH-QUALITY LIQUID ASSETS",
-    [id] = 15, "CASH - OUTFLOWS",
-    [id] = 14, "CASH - INFLOWS",
-    NOT(ISBLANK([id])), "Métrica",
+orden_ppt_unidad =
+SWITCH([id],
+    45, 1,   // Parent Co
+    1,  2,   // Portugal
+    32, 3,   // Polonia
+    46, 4,   // UK
+    8,  5,   // Argentina
+    47, 6,   // Brazil
+    10, 7,   // Chile
+    42, 8,   // Uruguay
+    14, 9,   // Mexico
+    43, 10,  // USA
+    38, 11,  // SCF SA
+    48, 12,  // SCF Germany
     BLANK()
 )
