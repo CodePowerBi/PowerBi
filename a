@@ -11,24 +11,28 @@ IF(
 
 _________________________________
 
-MesValidoDinamico = 
+FaseMesValido = 
 VAR FechaMax = CALCULATE(MAX('TuTabla'[Fecha]))
-VAR FechaMin = EDATE(FechaMax, -108)  // 109 meses hacia atrás, incluyendo FechaMax
-VAR InicioFase2 = EDATE(FechaMax, -15)  // Los últimos 16 meses (incluye FechaMax)
+VAR FechaMin = EDATE(FechaMax, -108)  // Total de 109 meses
+VAR InicioFase2 = EDATE(FechaMax, -15)  // Últimos 16 meses
 VAR Fecha = 'TuTabla'[Fecha]
 VAR Mes = MONTH(Fecha)
 
 RETURN
-IF (
-    Fecha >= FechaMin && Fecha <= FechaMax &&
-    (
-        // Fase 1: meses antiguos, válidos solo junio y diciembre
-        (Fecha < InicioFase2 && (Mes = 6 || Mes = 12))
-        ||
-        // Fase 2: últimos 16 meses, válidos marzo, junio, septiembre y diciembre
-        (Fecha >= InicioFase2 && (Mes = 3 || Mes = 6 || Mes = 9 || Mes = 12))
-    ),
-    "Sí",
-    "No"
+SWITCH(
+    TRUE(),
+    
+    // Fuera del rango total
+    Fecha < FechaMin || Fecha > FechaMax, "No válido",
+    
+    // Fase 1: solo válidos junio y diciembre
+    Fecha < InicioFase2 && (Mes = 6 || Mes = 12), "Fase 1",
+    
+    // Fase 2: válidos marzo, junio, septiembre y diciembre
+    Fecha >= InicioFase2 && (Mes = 3 || Mes = 6 || Mes = 9 || Mes = 12), "Fase 2",
+    
+    // Dentro del rango pero en meses no válidos
+    "No válido"
 )
+
 
