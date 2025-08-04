@@ -35,6 +35,26 @@ SWITCH(
     "No válido"
 )
 
+_________________
+
+FechaMax = 
+INT(CALCULATE(MAX('TuTabla'[Fecha])))
+
+FechaMin = 
+EDATE([FechaMax], -108)  // 109 meses atrás
+
+FechaInicioFase2 = 
+EDATE([FechaMax], -11)   // últimos 12 meses
+
+FechaInicioFase1 = 
+[FechaMin]
+
+FechaFinFase1 = 
+EDATE([FechaInicioFase2], -1)  // el mes anterior a Fase 2
+
+FechaFinFase2 = 
+[FechaMax]
+
 
 
 
