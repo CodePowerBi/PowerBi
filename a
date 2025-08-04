@@ -7,3 +7,28 @@ IF(
     "Sí",
     "No"
 )
+
+
+_________________________________
+
+MesValidoDinamico = 
+VAR FechaMax = CALCULATE(MAX('TuTabla'[Fecha]))
+VAR FechaMin = EDATE(FechaMax, -108)  // 109 meses incluyendo el mes final
+VAR Fecha = 'TuTabla'[Fecha]
+VAR Mes = MONTH(Fecha)
+
+// Definimos el punto de corte: cuántos meses antes de la fecha máxima empieza la "fase 2"
+VAR InicioFase2 = EDATE(FechaMax, -23) // últimos 24 meses (mar, jun, sep, dic)
+RETURN
+IF (
+    Fecha >= FechaMin && Fecha <= FechaMax &&
+    (
+        // Fase antigua: solo jun y dic
+        (Fecha < InicioFase2 && (Mes = 6 || Mes = 12)) 
+        ||
+        // Fase reciente: mar, jun, sep, dic
+        (Fecha >= InicioFase2 && (Mes = 3 || Mes = 6 || Mes = 9 || Mes = 12))
+    ),
+    "Sí",
+    "No"
+)
