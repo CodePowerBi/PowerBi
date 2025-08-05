@@ -1,62 +1,36 @@
-DentroUltimos31Meses = 
-VAR FechaFin = CALCULATE(MAX('TuTabla'[Fecha]))
-VAR FechaInicio = EDATE(FechaFin, -31)
-RETURN
-IF(
-    'TuTabla'[Fecha] >= FechaInicio && 'TuTabla'[Fecha] <= FechaFin,
-    "Sí",
-    "No"
+entity_corr =
+SWITCH([ID],
+    8,  "CONSOLIDATED",
+    9,  "Parent",
+    999,"RFB",           // Cambiar por ID real cuando lo tengas
+    3,  "Brazil",
+    23, "USA",
+    17, "Mexico",
+    6,  "Chile",
+    21, "Portugal",
+    26, "SCF SA",
+    24, "SCF Alemania",
+    20, "Poland",
+    35, "UK",            // Aunque no aparece en la imagen 1, puedes dejarlo sin orden si es irrelevante
+    [Entity]  // Valor por defecto
 )
 
 
-_________________________________
+________
 
-FaseMesValido = 
-VAR FechaMax = CALCULATE(MAX('TuTabla'[Fecha]))
-VAR FechaMin = EDATE(FechaMax, -108)  // 109 meses = desde jun-2016
-VAR FechaInicioFase2 = EDATE(FechaMax, -11)  // últimos 12 meses exactos
-VAR Fecha = 'TuTabla'[Fecha]
-VAR Mes = MONTH(Fecha)
-
-RETURN
-SWITCH(
-    TRUE(),
-
-    // Si está fuera del rango general
-    Fecha < FechaMin || Fecha > FechaMax, "No válido",
-
-    // Fase 1: antes de Fase 2, y mes válido solo jun/dic
-    Fecha < FechaInicioFase2 && (Mes = 6 || Mes = 12), "Fase 1",
-
-    // Fase 2: últimos 12 meses, y mes válido trim (mar/jun/sep/dic)
-    Fecha >= FechaInicioFase2 && (Mes = 3 || Mes = 6 || Mes = 9 || Mes = 12), "Fase 2",
-
-    // Dentro del rango, pero en un mes no válido
-    "No válido"
+orden_ppt =
+SWITCH([ID],
+    8,  1,  // CONSOLIDADO → CONSOLIDATED
+    9,  2,  // ESPAÑA → Parent
+    999, 3, // RFB (falta ID real, poner 999 temporalmente)
+    3,  4,  // BRASIL
+    23, 5,  // SAN USA
+    17, 6,  // MÉXICO
+    6,  7,  // CHILE
+    21, 8,  // PORTUGAL
+    26, 9,  // SCF ESPAÑA → SCF SA
+    24,10,  // SCF ALEMANIA
+    20,11,  // POLONIA
+    BLANK()
 )
-
-_________________
-
-FechaMax = 
-INT(CALCULATE(MAX('TuTabla'[Fecha])))
-
-FechaMin = 
-EDATE([FechaMax], -108)  // 109 meses atrás
-
-FechaInicioFase2 = 
-EDATE([FechaMax], -11)   // últimos 12 meses
-
-FechaInicioFase1 = 
-[FechaMin]
-
-FechaFinFase1 = 
-EDATE([FechaInicioFase2], -1)  // el mes anterior a Fase 2
-
-FechaFinFase2 = 
-[FechaMax]
-
-
-
-
-
 
