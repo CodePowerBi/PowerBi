@@ -1,8 +1,8 @@
-entity_corr =
+nombre_corr = 
 SWITCH([ID],
     8,  "CONSOLIDATED",
     9,  "Parent",
-    999,"RFB",           // Cambiar por ID real cuando lo tengas
+    35, "RFB",           // UK = RFB
     3,  "Brazil",
     23, "USA",
     17, "Mexico",
@@ -11,8 +11,7 @@ SWITCH([ID],
     26, "SCF SA",
     24, "SCF Alemania",
     20, "Poland",
-    35, "UK",            // Aunque no aparece en la imagen 1, puedes dejarlo sin orden si es irrelevante
-    [Entity]  // Valor por defecto
+    [Entity]             // valor por defecto si no está mapeado
 )
 
 
