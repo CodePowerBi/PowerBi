@@ -1,35 +1,24 @@
-nombre_corr = 
-SWITCH([ID],
-    8,  "CONSOLIDATED",
-    9,  "Parent",
-    35, "RFB",           // UK = RFB
-    3,  "Brazil",
-    23, "USA",
-    17, "Mexico",
-    6,  "Chile",
-    21, "Portugal",
-    26, "SCF SA",
-    24, "SCF Alemania",
-    20, "Poland",
-    [Entity]             // valor por defecto si no está mapeado
-)
-
-
-________
-
-orden_ppt =
-SWITCH([ID],
-    8,  1,  // CONSOLIDADO → CONSOLIDATED
-    9,  2,  // ESPAÑA → Parent
-    999, 3, // RFB (falta ID real, poner 999 temporalmente)
-    3,  4,  // BRASIL
-    23, 5,  // SAN USA
-    17, 6,  // MÉXICO
-    6,  7,  // CHILE
-    21, 8,  // PORTUGAL
-    26, 9,  // SCF ESPAÑA → SCF SA
-    24,10,  // SCF ALEMANIA
-    20,11,  // POLONIA
+orden_ppt = 
+SWITCH(TRUE(),
+    [metrica_eng] = "Capital items and instruments", 1,
+    [metrica_eng] = "Own funds", 2,
+    [metrica_eng] = "Other capital instruments", 3,
+    
+    [metrica_eng] = "Retail deposits", 4,
+    [metrica_eng] = "Stable deposits", 5,
+    [metrica_eng] = "Less stable deposits", 6,
+    
+    [metrica_eng] = "Wholesale funding", 7,
+    [metrica_eng] = "Operational deposits", 8,
+    [metrica_eng] = "Other wholesale funding", 9,
+    
+    [metrica_eng] = "Interdependent liabilities", 10,
+    
+    [metrica_eng] = "Other liabilities", 11,
+    [metrica_eng] = "NSFR derivative liabilities", 12,
+    [metrica_eng] = "All other liabilities and capital instruments not included in the above categories", 13,
+    
+    [metrica_eng] = "Total available stable funding (ASF)", 14,
+    
     BLANK()
 )
-
