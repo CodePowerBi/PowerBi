@@ -1,28 +1,16 @@
-categoria_1 = 
-SWITCH(
-    TRUE(),
-    'tus_datos'[id] IN {4, 11, 17, 25}, "LIQUID ASSETS",
-    'tus_datos'[id] IN {47, 57, 59, 39}, "CASH OUTFLOWS",
-    'tus_datos'[id] IN {26, 52, 33}, "CASH INFLOWS",
-    BLANK()
-)
-
-____
-
-subcategoria_ppt = 
+orden_subcategoria_ppt = 
 SWITCH(
     'tus_datos'[id],
-    4, "LEVEL 1",
-    11, "LEVEL 2 A",
-    17, "LEVEL 2 B",
-    25, "LIQUID ASSETS",
-    47, "RETAIL DEPOSITS",
-    52, "SECURED LENDING ASSETS",
-    57, "SECURED LENDING LIABILITIES",
-    59, "DEPOSITS & OTHER LIABILITIES",
-    39, "OTHER OUTFLOWS",
-    26, "LOANS & CREDITS",
-    33, "OTHER INFLOWS",
+    25, 1,  // LIQUID ASSETS
+    4,  2,  // LEVEL 1
+    11, 3,  // LEVEL 2 A
+    17, 4,  // LEVEL 2 B
+    47, 5,  // RETAIL DEPOSITS
+    57, 6,  // SECURED LENDING LIABILITIES
+    59, 7,  // DEPOSITS & OTHER LIABILITIES
+    39, 8,  // OTHER OUTFLOWS
+    26, 9,  // LOANS & CREDITS
+    52, 10, // SECURED LENDING ASSETS
+    33, 11, // OTHER INFLOWS
     BLANK()
 )
-
