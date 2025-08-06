@@ -1,8 +1,24 @@
 orden_categoria_ppt =
 SWITCH(
     TRUE(),
-    'tus_datos'[metrica] = "LIQUID ASSETS", 1,
-    'tus_datos'[metrica] = "CASH OUTFLOWS", 2,
-    'tus_datos'[metrica] = "CASH INFLOWS", 3,
+    'tus_datos'[metrica] IN {
+        "LEVEL 1",
+        "LEVEL 2 A",
+        "LEVEL 2 B"
+    }, 1,
+
+    'tus_datos'[metrica] IN {
+        "RETAIL DEPOSITS",
+        "SECURED LENDING LIABILITIES",
+        "DEPOSITS & OTHER LIABILITIES",
+        "OTHER OUTFLOWS"
+    }, 2,
+
+    'tus_datos'[metrica] IN {
+        "LOANS & CREDITS",
+        "SECURED LENDING ASSETS",
+        "OTHER INFLOWS"
+    }, 3,
+
     BLANK()
 )
