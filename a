@@ -1,27 +1,17 @@
-orden_radar = 
+orden_paises_colores = 
 SWITCH(
-    TRUE(),
-    'TuTabla'[metrica] = "almm", 1,
-    'TuTabla'[metrica] = "lcr", 2,
-    'TuTabla'[metrica] = "nsfr", 3,
-    'TuTabla'[metrica] = "traceability", 4,
-    'TuTabla'[metrica] = "data_quality", 5,
+    [unidad],
+    "España", 1,
+    "UK", 2,
+    "Brasil", 3,
+    "SCF SA", 4,
+    "SCF ALEMANIA", 5,
+    "USA", 6,
+    "Mexico", 7,
+    "Chile", 8,
+    "PORTUGAL", 9,
+    "POLONIA", 10,
+    "Argentina", 11,
+    "URUGUAY", 12,
     BLANK()
 )
-
-
-_________________
-
-nombre_corregido = 
-SWITCH(
-    TRUE(),
-    'TuTabla'[metrica] = "almm", "ALMM",
-    'TuTabla'[metrica] = "lcr", "LCR",
-    'TuTabla'[metrica] = "nsfr", "NSFR",
-    'TuTabla'[metrica] = "traceability", "Traceability",
-    'TuTabla'[metrica] = "data_quality", "Data Quality",
-    BLANK()
-)
-
-
-_______________-
