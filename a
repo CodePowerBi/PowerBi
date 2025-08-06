@@ -1,16 +1,8 @@
-orden_subcategoria_ppt = 
+orden_categoria_ppt =
 SWITCH(
-    'tus_datos'[id],
-    25, 1,  // LIQUID ASSETS
-    4,  2,  // LEVEL 1
-    11, 3,  // LEVEL 2 A
-    17, 4,  // LEVEL 2 B
-    47, 5,  // RETAIL DEPOSITS
-    57, 6,  // SECURED LENDING LIABILITIES
-    59, 7,  // DEPOSITS & OTHER LIABILITIES
-    39, 8,  // OTHER OUTFLOWS
-    26, 9,  // LOANS & CREDITS
-    52, 10, // SECURED LENDING ASSETS
-    33, 11, // OTHER INFLOWS
+    TRUE(),
+    'tus_datos'[metrica] = "LIQUID ASSETS", 1,
+    'tus_datos'[metrica] = "CASH OUTFLOWS", 2,
+    'tus_datos'[metrica] = "CASH INFLOWS", 3,
     BLANK()
 )
