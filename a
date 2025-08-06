@@ -1,24 +1,28 @@
-orden_ppt = 
-SWITCH(TRUE(),
-    CONTAINSSTRING([metrica_eng], "Total high-quality liquid assets (HQLA)"), 1,
-    CONTAINSSTRING([metrica_eng], "Assets encumbered for more than 12m in cover pool"), 2,
-    CONTAINSSTRING([metrica_eng], "Deposits held at other financial institutions for operational purposes"), 3,
-    CONTAINSSTRING([metrica_eng], "Performing loans and securities"), 4,
-    CONTAINSSTRING([metrica_eng], "Performing securities financing transactions with financial customers collateralised by Level 1 HQLA sub"), 5,
-    CONTAINSSTRING([metrica_eng], "Performing securities financing transactions with financial customer collateralised by other assets and lo"), 6,
-    CONTAINSSTRING([metrica_eng], "Performing loans to non- financial corporate clients, loans to retail and small"), 7,
-    CONTAINSSTRING([metrica_eng], "With a risk weight of less than or equal to 35% under the Basel II Standardised Approach for credit risk"), 8,
-    CONTAINSSTRING([metrica_eng], "Performing residential mortgages, of which"), 9,
-    CONTAINSSTRING([metrica_eng], "With a risk weight of less than or equal to 35% under the Basel II Standardised"), 10,
-    CONTAINSSTRING([metrica_eng], "Other loans and securities that are not in default and do not qualify as HQLA"), 11,
-    CONTAINSSTRING([metrica_eng], "Interdependent assets"), 12,
-    CONTAINSSTRING([metrica_eng], "Other assets"), 13,
-    CONTAINSSTRING([metrica_eng], "Physical traded commodities"), 14,
-    CONTAINSSTRING([metrica_eng], "Assets posted as initial margin for derivative contracts and contributions"), 15,
-    CONTAINSSTRING([metrica_eng], "NSFR derivative assets"), 16,
-    CONTAINSSTRING([metrica_eng], "NSFR derivative liabilities before deduction of variation margin posted"), 17,
-    CONTAINSSTRING([metrica_eng], "All other assets not included in the above categories"), 18,
-    CONTAINSSTRING([metrica_eng], "Off-balance sheet items"), 19,
-    CONTAINSSTRING([metrica_eng], "Total RSF"), 20,
+categoria_1 = 
+SWITCH(
+    TRUE(),
+    'tus_datos'[id] IN {4, 11, 17, 25}, "LIQUID ASSETS",
+    'tus_datos'[id] IN {47, 57, 59, 39}, "CASH OUTFLOWS",
+    'tus_datos'[id] IN {26, 52, 33}, "CASH INFLOWS",
     BLANK()
 )
+
+____
+
+subcategoria_ppt = 
+SWITCH(
+    'tus_datos'[id],
+    4, "LEVEL 1",
+    11, "LEVEL 2 A",
+    17, "LEVEL 2 B",
+    25, "LIQUID ASSETS",
+    47, "RETAIL DEPOSITS",
+    52, "SECURED LENDING ASSETS",
+    57, "SECURED LENDING LIABILITIES",
+    59, "DEPOSITS & OTHER LIABILITIES",
+    39, "OTHER OUTFLOWS",
+    26, "LOANS & CREDITS",
+    33, "OTHER INFLOWS",
+    BLANK()
+)
+
