@@ -1,17 +1,27 @@
 orden_radar = 
 SWITCH(
-    'TuTabla'[NOMBRE CORREGIDO],
-    "UK", 1,
-    "Brasil", 2,
-    "SCF SA", 3,
-    "SCF ALEMANIA", 4,
-    "USA", 5,
-    "Mexico", 6,
-    "Chile", 7,
-    "Portugal", 8,
-    "Polonia", 9,
-    "Argentina", 10,
-    "Uruguay", 11,
-    "Parent Co", 12,
+    TRUE(),
+    'TuTabla'[metrica] = "almm", 1,
+    'TuTabla'[metrica] = "lcr", 2,
+    'TuTabla'[metrica] = "nsfr", 3,
+    'TuTabla'[metrica] = "traceability", 4,
+    'TuTabla'[metrica] = "data_quality", 5,
     BLANK()
 )
+
+
+_________________
+
+nombre_corregido = 
+SWITCH(
+    TRUE(),
+    'TuTabla'[metrica] = "almm", "ALMM",
+    'TuTabla'[metrica] = "lcr", "LCR",
+    'TuTabla'[metrica] = "nsfr", "NSFR",
+    'TuTabla'[metrica] = "traceability", "Traceability",
+    'TuTabla'[metrica] = "data_quality", "Data Quality",
+    BLANK()
+)
+
+
+_______________-
