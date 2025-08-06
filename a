@@ -1,17 +1,17 @@
 orden_radar = 
 SWITCH(
     'TuTabla'[NOMBRE CORREGIDO],
-    "Uruguay", 1,
-    "Argentina", 2,
-    "Polonia", 3,
-    "Portugal", 4,
-    "Chile", 5,
+    "UK", 1,
+    "Brasil", 2,
+    "SCF SA", 3,
+    "SCF ALEMANIA", 4,
+    "USA", 5,
     "Mexico", 6,
-    "USA", 7,
-    "SCF ALEMANIA", 8,
-    "SCF SA", 9,
-    "Brasil", 10,
-    "UK", 11,
+    "Chile", 7,
+    "Portugal", 8,
+    "Polonia", 9,
+    "Argentina", 10,
+    "Uruguay", 11,
     "Parent Co", 12,
     BLANK()
 )
