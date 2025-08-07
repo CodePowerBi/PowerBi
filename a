@@ -1,14 +1,13 @@
 CleanHighlights = 
 VAR txt = 'comment_js_vw'[comment_highlights]
 VAR salto = UNICHAR(10)
-VAR limpio = 
+VAR sinSaltosVacios =
     SUBSTITUTE(
         SUBSTITUTE(
             SUBSTITUTE(txt, salto & salto & salto, salto),
-            salto & salto,
-            salto
+            salto & salto, salto
         ),
-        salto & salto,
-        salto
+        salto & salto, salto
     )
+VAR limpio = SUBSTITUTE(sinSaltosVacios, "Highlights", "")
 RETURN limpio
