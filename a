@@ -1,15 +1,15 @@
-nombre_corregido = 
+orden_grafico = 
 SWITCH(
-    'tu_tabla'[unidad],
-    "España / Spain", "Parent Co",
-    "Reino Unido / UK", "UK",
-    "EEUU / USA", "USA",
-    "Consumer HQ", "Consumer",
-    "PORTUGAL", "Portugal",
-    "Polonia / Poland", "Polonia",
-    "México", "Mexico",
-    "Chile", "Chile",
-    "Brasil", "Brasil",
-    "Argentina", "Argentina",
+    'tu_tabla'[nombre_corregido],
+    "Parent Co", 1,
+    "UK", 2,
+    "Brasil", 3,
+    "Consumer", 4,
+    "USA", 5,
+    "Mexico", 6,
+    "Chile", 7,
+    "Portugal", 8,
+    "Polonia", 9,
+    "Argentina", 10,
     BLANK()
 )
