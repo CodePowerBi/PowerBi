@@ -1,23 +1,9 @@
 CleanHighlights =
 VAR txt = 'comment_js_vw'[comment_highlights]
-VAR salto = UNICHAR(10)
-
-// Si empieza por "Highlights ", lo quitamos
-VAR sinHighlightsInicio =
+VAR textoSinHighlights =
     IF(
-        LEFT(txt, 10) = "Highlights ",
-        MID(txt, 11, LEN(txt) - 10),
+        LEFT(txt, 9) = "Highlights",
+        MID(txt, 10, LEN(txt) - 9),
         txt
     )
-
-// Limpiar saltos de línea vacíos (por si acaso hay alguno)
-VAR limpio =
-    SUBSTITUTE(
-        SUBSTITUTE(
-            SUBSTITUTE(sinHighlightsInicio, salto & salto & salto, salto),
-            salto & salto, salto
-        ),
-        salto & salto, salto
-    )
-
-RETURN limpio
+RETURN TRIM(textoSinHighlights)
