@@ -1,17 +1,14 @@
-orden_paises_colores = 
-SWITCH(
-    TRUE(),
-    'tu_tabla'[id] = 45, 1,     // España → Parent Co
-    'tu_tabla'[id] = 46, 2,     // UK
-    'tu_tabla'[id] = 9,  3,     // Brasil
-    'tu_tabla'[id] = 38, 4,     // SCF SA
-    'tu_tabla'[id] = 33, 5,     // SCF ALEMANIA
-    'tu_tabla'[id] = 43, 6,     // USA
-    'tu_tabla'[id] = 14, 7,     // Mexico
-    'tu_tabla'[id] = 10, 8,     // Chile
-    'tu_tabla'[id] = 1,  9,     // Portugal
-    'tu_tabla'[id] = 32, 10,    // Polonia
-    'tu_tabla'[id] = 8,  11,    // Argentina
-    'tu_tabla'[id] = 42, 12,    // Uruguay
-    BLANK()
-)
+CleanHighlights = 
+VAR txt = 'comment_js_vw'[comment_highlights]
+VAR salto = UNICHAR(10)
+VAR limpio = 
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(txt, salto & salto & salto, salto),
+            salto & salto,
+            salto
+        ),
+        salto & salto,
+        salto
+    )
+RETURN limpio
