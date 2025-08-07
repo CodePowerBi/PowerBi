@@ -1,9 +1,5 @@
 CleanHighlights =
 VAR txt = 'comment_js_vw'[comment_highlights]
-VAR textoSinHighlights =
-    IF(
-        LEFT(txt, 9) = "Highlights",
-        MID(txt, 10, LEN(txt) - 9),
-        txt
-    )
+VAR textoSinHighlights = 
+    SUBSTITUTE(txt, "Highlights", "")
 RETURN TRIM(textoSinHighlights)
