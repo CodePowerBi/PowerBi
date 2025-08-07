@@ -1,15 +1,15 @@
 orden_grafico = 
 SWITCH(
-    'tu_tabla'[nombre_corregido],
-    "Parent Co", 1,
-    "UK", 2,
+    'tu_tabla'[unidad],
+    "España / Spain", 1,
+    "Reino Unido / UK", 2,
     "Brasil", 3,
-    "Consumer", 4,
-    "USA", 5,
-    "Mexico", 6,
+    "Consumer HQ", 4,
+    "EEUU / USA", 5,
+    "México", 6,
     "Chile", 7,
-    "Portugal", 8,
-    "Polonia", 9,
+    "PORTUGAL", 8,
+    "Polonia / Poland", 9,
     "Argentina", 10,
     BLANK()
 )
