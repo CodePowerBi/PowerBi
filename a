@@ -1,21 +1,15 @@
-Comentario limpio =
-VAR txt = 'comment_js_vw'[comment_highlights]
-VAR salto = UNICHAR(10)
-
-// 1. Eliminar la palabra "Highlights" y el salto de línea inmediatamente posterior (si lo hay)
-VAR sinHighlights =
-    SUBSTITUTE(txt, "Highlights" & salto, "")
-VAR sinHighlights2 =
-    SUBSTITUTE(sinHighlights, "Highlights", "")
-
-// 2. Eliminar saltos de línea vacíos (saltos múltiples → solo uno)
-VAR sinSaltosVacios =
-    SUBSTITUTE(
-        SUBSTITUTE(
-            SUBSTITUTE(sinHighlights2, salto & salto & salto, salto),
-            salto & salto, salto
-        ),
-        salto & salto, salto
-    )
-
-RETURN sinSaltosVacios
+nombre_corregido = 
+SWITCH(
+    'tu_tabla'[unidad],
+    "España / Spain", "Parent Co",
+    "Reino Unido / UK", "UK",
+    "EEUU / USA", "USA",
+    "Consumer HQ", "Consumer",
+    "PORTUGAL", "Portugal",
+    "Polonia / Poland", "Polonia",
+    "México", "Mexico",
+    "Chile", "Chile",
+    "Brasil", "Brasil",
+    "Argentina", "Argentina",
+    BLANK()
+)
