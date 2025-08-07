@@ -1,23 +1,7 @@
 Comentario eve nuevo = 
 VAR txt = 'comment_js_vw'[comment_eve]
 VAR salto = UNICHAR(10)
-
-// Paso 1: eliminar la palabra "Highlights" y lo que venga justo después (espacios o saltos)
-VAR sinHighlights = 
-    IF(
-        LEFT(TRIM(txt), 9) = "Highlights",
-        TRIM(MID(TRIM(txt), 10, LEN(txt))),
-        txt
-    )
-
-// Paso 2: limpiar líneas vacías (dobles y triples saltos)
-VAR sinSaltosVacios =
-    SUBSTITUTE(
-        SUBSTITUTE(
-            SUBSTITUTE(sinHighlights, salto & salto & salto, salto),
-            salto & salto, salto
-        ),
-        salto & salto, salto
-    )
-
-RETURN TRIM(sinSaltosVacios)
+VAR textoSinHighlights = SUBSTITUTE(txt, "Highlights", "")
+VAR textoSinSaltos = SUBSTITUTE(textoSinHighlights, salto, " ")
+VAR limpio = TRIM(textoSinSaltos)
+RETURN limpio
