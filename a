@@ -1,15 +1,17 @@
-orden_grafico = 
+nombre_corregido =
 SWITCH(
-    'tu_tabla'[unidad],
-    "España / Spain", 1,
-    "Reino Unido / UK", 2,
-    "Brasil", 3,
-    "Consumer HQ", 4,
-    "EEUU / USA", 5,
-    "México", 6,
-    "Chile", 7,
-    "PORTUGAL", 8,
-    "Polonia / Poland", 9,
-    "Argentina", 10,
+    TRUE(),
+    'TuTabla'[pais] = "Parent Co", "Parent Co",
+    'TuTabla'[pais] = "UK", "UK",
+    'TuTabla'[pais] = "Brasil", "Brasil",
+    'TuTabla'[pais] = "SCF SA", "SCF SA",
+    'TuTabla'[pais] = "SCF ALEMANIA", "SCF Alemania",
+    'TuTabla'[pais] = "USA", "USA",
+    'TuTabla'[pais] = "Mexico", "México",
+    'TuTabla'[pais] = "Chile", "Chile",
+    'TuTabla'[pais] = "PORTUGAL", "Portugal",
+    'TuTabla'[pais] = "POLONIA", "Polonia",
+    'TuTabla'[pais] = "Argentina", "Argentina",
+    'TuTabla'[pais] = "URUGUAY", "Uruguay",
     BLANK()
 )
