@@ -15,3 +15,26 @@ SWITCH(
     'TuTabla'[pais] = "URUGUAY", "Uruguay",
     BLANK()
 )
+
+
+_____________
+
+
+orden_paises_q4 =
+SWITCH(
+    TRUE(),
+    'TuTabla'[pais] = "Parent Co", 1,
+    'TuTabla'[pais] = "UK", 2,
+    'TuTabla'[pais] = "Brasil", 3,
+    'TuTabla'[pais] = "SCF SA", 4,
+    'TuTabla'[pais] = "SCF ALEMANIA", 5,
+    'TuTabla'[pais] = "USA", 6,
+    'TuTabla'[pais] = "Mexico", 7,
+    'TuTabla'[pais] = "Chile", 8,
+    'TuTabla'[pais] = "PORTUGAL", 9,
+    'TuTabla'[pais] = "POLONIA", 10,
+    'TuTabla'[pais] = "Argentina", 11,
+    'TuTabla'[pais] = "URUGUAY", 12,
+    BLANK()
+)
+
