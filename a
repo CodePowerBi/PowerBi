@@ -1,40 +1,43 @@
-nombre_corregido =
-SWITCH(
-    TRUE(),
-    'TuTabla'[pais] = "Parent Co", "Parent Co",
-    'TuTabla'[pais] = "UK", "UK",
-    'TuTabla'[pais] = "Brasil", "Brasil",
-    'TuTabla'[pais] = "SCF SA", "SCF SA",
-    'TuTabla'[pais] = "SCF ALEMANIA", "SCF Alemania",
-    'TuTabla'[pais] = "USA", "USA",
-    'TuTabla'[pais] = "Mexico", "México",
-    'TuTabla'[pais] = "Chile", "Chile",
-    'TuTabla'[pais] = "PORTUGAL", "Portugal",
-    'TuTabla'[pais] = "POLONIA", "Polonia",
-    'TuTabla'[pais] = "Argentina", "Argentina",
-    'TuTabla'[pais] = "URUGUAY", "Uruguay",
-    BLANK()
-)
+Hola [nombre de tu jefe],
 
+Te resumo los avances completados hasta el momento:
 
-_____________
+Monthly (Structural risk profile)
+Se ha actualizado cuando nos lo indicó el equipo.
 
+Se corrigió el signo.
 
-orden_paises_q4 =
-SWITCH(
-    TRUE(),
-    'TuTabla'[pais] = "Parent Co", 1,
-    'TuTabla'[pais] = "UK", 2,
-    'TuTabla'[pais] = "Brasil", 3,
-    'TuTabla'[pais] = "SCF SA", 4,
-    'TuTabla'[pais] = "SCF ALEMANIA", 5,
-    'TuTabla'[pais] = "USA", 6,
-    'TuTabla'[pais] = "Mexico", 7,
-    'TuTabla'[pais] = "Chile", 8,
-    'TuTabla'[pais] = "PORTUGAL", 9,
-    'TuTabla'[pais] = "POLONIA", 10,
-    'TuTabla'[pais] = "Argentina", 11,
-    'TuTabla'[pais] = "URUGUAY", 12,
-    BLANK()
-)
+Se nivelaron los gráficos por columnas.
+
+Se ajustaron los ejes de fecha y país.
+
+Se habilitó el scroll para que se visualice correctamente.
+
+Fair Value Hierarchy
+Se limitó la fecha en la gráfica.
+
+Se incluyó la columna “fase mes válido” con los valores correspondientes:
+
+6 → ✓
+
+9 → ✓
+
+10 → ✓
+
+11 → ✓
+
+12 → ✓
+
+Estructurales
+Diapo 15 (gráfico) y 18 completadas.
+
+Diapo 8 completada.
+
+Aprovecho también para desearos a todos unas muy felices vacaciones 🏖️🌞🌊
+Que podáis desconectar, descansar y recargar pilas para la vuelta. ¡Nos lo hemos ganado!
+
+Un abrazo y que lo disfrutéis mucho 🍹🌴
+Nos vemos pronto,
+
+[Tu nombre]
 
