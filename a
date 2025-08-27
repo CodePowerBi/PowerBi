@@ -1,43 +1,13 @@
-Hola [nombre de tu jefe],
-
-Te resumo los avances completados hasta el momento:
-
-Monthly (Structural risk profile)
-Se ha actualizado cuando nos lo indicó el equipo.
-
-Se corrigió el signo.
-
-Se nivelaron los gráficos por columnas.
-
-Se ajustaron los ejes de fecha y país.
-
-Se habilitó el scroll para que se visualice correctamente.
-
-Fair Value Hierarchy
-Se limitó la fecha en la gráfica.
-
-Se incluyó la columna “fase mes válido” con los valores correspondientes:
-
-6 → ✓
-
-9 → ✓
-
-10 → ✓
-
-11 → ✓
-
-12 → ✓
-
-Estructurales
-Diapo 15 (gráfico) y 18 completadas.
-
-Diapo 8 completada.
-
-Aprovecho también para desearos a todos unas muy felices vacaciones 🏖️🌞🌊
-Que podáis desconectar, descansar y recargar pilas para la vuelta. ¡Nos lo hemos ganado!
-
-Un abrazo y que lo disfrutéis mucho 🍹🌴
-Nos vemos pronto,
-
-[Tu nombre]
-
+ColorCategoria1 =
+VAR Cat1 = SELECTEDVALUE('Tabla'[Categoria1])
+VAR EsCategoria1 = NOT ISINSCOPE('Tabla'[Categoria2])   -- solo el nivel 1
+RETURN
+SWITCH(
+    TRUE(),
+    EsCategoria1 && Cat1 IN {
+        "ASSETS",
+        "LIABILITIES",
+        "TOTAL ASSETS & LIABILITIES"
+    }, "#C00000",   -- rojo
+    "#000000"       -- negro
+)
