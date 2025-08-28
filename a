@@ -1,8 +1,28 @@
-eve_high_SALTOS =
-VAR Eve = 'comment_js_vw'[eve_SALTOS]
-VAR High = 'comment_js_vw'[high_SALTOS]
+Comentario_TODO_EVE_LUEGO_HIGH :=
+VAR EveText =
+    CONCATENATEX (
+        FILTER (
+            'comment_js_vw',
+            NOT ISBLANK ( 'comment_js_vw'[eve_SALTOS] )
+                && LEN ( 'comment_js_vw'[eve_SALTOS] ) > 0
+        ),
+        'comment_js_vw'[eve_SALTOS],
+        UNICHAR(10)  -- separador entre filas
+        /* , 'comment_js_vw'[fecha], ASC  -- (opcional) ordena si tienes columna de orden */
+    )
+VAR HighText =
+    CONCATENATEX (
+        FILTER (
+            'comment_js_vw',
+            NOT ISBLANK ( 'comment_js_vw'[high_SALTOS] )
+                && LEN ( 'comment_js_vw'[high_SALTOS] ) > 0
+        ),
+        'comment_js_vw'[high_SALTOS],
+        UNICHAR(10)
+        /* , 'comment_js_vw'[fecha], ASC  -- (opcional) ordena si aplica */
+    )
 RETURN
 TRIM (
-    Eve &
-    IF( High <> "", UNICHAR(10) & High, "" )
+    EveText &
+    IF ( HighText <> "", UNICHAR(10) & HighText, "" )
 )
