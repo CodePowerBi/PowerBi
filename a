@@ -7,8 +7,8 @@ VAR EveText =
                 && LEN ( 'comment_js_vw'[eve_SALTOS] ) > 0
         ),
         'comment_js_vw'[eve_SALTOS],
-        UNICHAR(10)  -- separador entre filas
-        /* , 'comment_js_vw'[fecha], ASC  -- (opcional) ordena si tienes columna de orden */
+        UNICHAR(10),
+        'comment_js_vw'[fecha], ASC
     )
 VAR HighText =
     CONCATENATEX (
@@ -18,8 +18,8 @@ VAR HighText =
                 && LEN ( 'comment_js_vw'[high_SALTOS] ) > 0
         ),
         'comment_js_vw'[high_SALTOS],
-        UNICHAR(10)
-        /* , 'comment_js_vw'[fecha], ASC  -- (opcional) ordena si aplica */
+        UNICHAR(10),
+        'comment_js_vw'[fecha], ASC
     )
 RETURN
 TRIM (
