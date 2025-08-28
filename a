@@ -1,28 +1,30 @@
-Comentario_TODO_EVE_LUEGO_HIGH :=
-VAR EveText =
-    CONCATENATEX (
-        FILTER (
-            'comment_js_vw',
-            NOT ISBLANK ( 'comment_js_vw'[eve_SALTOS] )
-                && LEN ( 'comment_js_vw'[eve_SALTOS] ) > 0
-        ),
-        'comment_js_vw'[eve_SALTOS],
-        UNICHAR(10),
-        'comment_js_vw'[fecha], ASC
-    )
-VAR HighText =
-    CONCATENATEX (
+Tabla_Comentarios_Ordenada :=
+VAR HighBlock =
+    SELECTCOLUMNS (
         FILTER (
             'comment_js_vw',
             NOT ISBLANK ( 'comment_js_vw'[high_SALTOS] )
                 && LEN ( 'comment_js_vw'[high_SALTOS] ) > 0
         ),
-        'comment_js_vw'[high_SALTOS],
-        UNICHAR(10),
-        'comment_js_vw'[fecha], ASC
+        "Tipo",    "HIGH",
+        "Texto",   'comment_js_vw'[high_SALTOS],
+        "Fecha",   'comment_js_vw'[fecha],
+        "Unidad",  'comment_js_vw'[unidad]
+    )
+VAR EveBlock =
+    SELECTCOLUMNS (
+        FILTER (
+            'comment_js_vw',
+            NOT ISBLANK ( 'comment_js_vw'[eve_SALTOS] )
+                && LEN ( 'comment_js_vw'[eve_SALTOS] ) > 0
+        ),
+        "Tipo",    "EVE",
+        "Texto",   'comment_js_vw'[eve_SALTOS],
+        "Fecha",   'comment_js_vw'[fecha],
+        "Unidad",  'comment_js_vw'[unidad]
     )
 RETURN
-TRIM (
-    EveText &
-    IF ( HighText <> "", UNICHAR(10) & HighText, "" )
+ADDCOLUMNS (
+    UNION ( HighBlock, EveBlock ),
+    "OrdenTipo", IF ( [Tipo] = "HIGH", 0, 1 )
 )
