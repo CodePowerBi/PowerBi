@@ -1,15 +1,16 @@
-Comentarios_Unidos =
-VAR EveComentarios =
-    CONCATENATEX (
-        VALUES ( comment_js_vw[comentario eve] ),
-        comment_js_vw[comentario eve],
-        UNICHAR(13) & UNICHAR(10)
-    )
-VAR HighComentarios =
+Comentario_Unido =
+VAR Highs =
     CONCATENATEX (
         VALUES ( comment_js_vw[comentario high] ),
         comment_js_vw[comentario high],
         UNICHAR(13) & UNICHAR(10)
     )
+VAR Eves =
+    CONCATENATEX (
+        VALUES ( comment_js_vw[comentario eve] ),
+        comment_js_vw[comentario eve],
+        UNICHAR(13) & UNICHAR(10)
+    )
 RETURN
-EveComentarios & UNICHAR(13) & UNICHAR(10) & HighComentarios
+Highs & 
+IF ( Eves <> "", UNICHAR(13) & UNICHAR(10) & Eves, "" )
