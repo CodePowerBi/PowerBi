@@ -1,10 +1,12 @@
-Comentario_Unido :=
-VAR HighTxt =
-    FIRSTNONBLANK ( comment_js_vw[comentario high], LEN ( comment_js_vw[comentario high] ) )
-VAR EveTxt  =
-    FIRSTNONBLANK ( comment_js_vw[comentario eve] , LEN ( comment_js_vw[comentario eve]  ) )
+high_eve_SALTOS =
+VAR highTxt =
+    [high_SALTOS]   -- tu medida/columna ya limpia
+VAR eveTxt =
+    [eve_SALTOS]    -- tu medida/columna ya limpia
+VAR salto = UNICHAR(10) & UNICHAR(10)   -- doble salto de línea
 RETURN
-TRIM (
-    COALESCE ( HighTxt, "" )
-    & IF ( NOT ISBLANK ( EveTxt ), UNICHAR(13) & UNICHAR(10) & EveTxt, "" )
-)
+    TRIM (
+        highTxt
+        & salto &
+        eveTxt
+    )
