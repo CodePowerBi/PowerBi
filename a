@@ -1,12 +1,22 @@
 high_eve_SALTOS =
-VAR highTxt =
-    [high_SALTOS]   -- tu medida/columna ya limpia
-VAR eveTxt =
-    [eve_SALTOS]    -- tu medida/columna ya limpia
-VAR salto = UNICHAR(10) & UNICHAR(10)   -- doble salto de línea
+VAR salto = UNICHAR(10) & UNICHAR(10)
+VAR highRaw = 'comment_js_vw'[comment_highlights]
+VAR eveRaw  = 'comment_js_vw'[comment_eve]
+
+-- Limpieza básica (opcional: quita “Highlights” y colapsa saltos múltiples)
+VAR highClean1 = SUBSTITUTE(highRaw, "Highlights", "")
+VAR highClean2 = SUBSTITUTE(SUBSTITUTE(highClean1, UNICHAR(10)&UNICHAR(10)&UNICHAR(10), UNICHAR(10)), UNICHAR(10)&UNICHAR(10), UNICHAR(10))
+VAR highClean  = TRIM(highClean2)
+
+VAR eveClean1 = SUBSTITUTE(eveRaw, "Highlights", "")
+VAR eveClean2 = SUBSTITUTE(SUBSTITUTE(eveClean1, UNICHAR(10)&UNICHAR(10)&UNICHAR(10), UNICHAR(10)), UNICHAR(10)&UNICHAR(10), UNICHAR(10))
+VAR eveClean  = TRIM(eveClean2)
+
 RETURN
-    TRIM (
-        highTxt
-        & salto &
-        eveTxt
-    )
+IF (
+    LEN(highClean & eveClean) = 0,
+    BLANK(),
+    highClean &
+    IF( highClean <> "" && eveClean <> "", salto, "" ) &
+    eveClean
+)
