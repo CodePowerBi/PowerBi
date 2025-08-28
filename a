@@ -1,43 +1,39 @@
 Comentario_Full =
 VAR salto = UNICHAR(10)
 
-// --- HIGH ---
-VAR High_txt =
-    COALESCE ( 'comment_js_vw'[comment_highlights], "" )
-VAR High_colapsado =
-    SUBSTITUTE(
+// primero todos los high
+VAR TodosHigh =
+    CONCATENATEX (
+        FILTER ( 'comment_js_vw', NOT ISEMPTY ( 'comment_js_vw'[comment_highlights] ) ),
         SUBSTITUTE(
             SUBSTITUTE(
-                SUBSTITUTE( High_txt, salto & salto & salto & salto, salto ),
-                salto & salto & salto, salto
+                SUBSTITUTE(
+                    SUBSTITUTE('comment_js_vw'[comment_highlights], salto & salto & salto & salto, salto),
+                    salto & salto & salto, salto
+                ),
+                salto & salto, salto
             ),
-            salto & salto, salto
+            "Highlights", ""
         ),
-        salto & salto, salto
+        salto
     )
-VAR High_limpio =
-    SUBSTITUTE ( High_colapsado, "Highlights", "" )
 
-// --- EVE ---
-VAR Eve_txt =
-    COALESCE ( 'comment_js_vw'[comment_eve], "" )
-VAR Eve_colapsado =
-    SUBSTITUTE(
+// después todos los eve
+VAR TodosEve =
+    CONCATENATEX (
+        FILTER ( 'comment_js_vw', NOT ISEMPTY ( 'comment_js_vw'[comment_eve] ) ),
         SUBSTITUTE(
             SUBSTITUTE(
-                SUBSTITUTE( Eve_txt, salto & salto & salto & salto, salto ),
-                salto & salto & salto, salto
+                SUBSTITUTE(
+                    SUBSTITUTE('comment_js_vw'[comment_eve], salto & salto & salto & salto, salto),
+                    salto & salto & salto, salto
+                ),
+                salto & salto, salto
             ),
-            salto & salto, salto
+            "Highlights", ""
         ),
-        salto & salto, salto
+        salto
     )
-VAR Eve_limpio =
-    SUBSTITUTE ( Eve_colapsado, "Highlights", "" )
 
 RETURN
-    TRIM (
-        High_limpio
-            & IF ( High_limpio <> "" && Eve_limpio <> "", salto & salto, "" )
-            & Eve_limpio
-    )
+    TodosHigh & salto & salto & TodosEve
