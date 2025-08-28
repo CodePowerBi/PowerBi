@@ -1,16 +1,27 @@
-Comentario_Unido =
+Comentario_Unido :=
+VAR currPais  = SELECTEDVALUE( comment_js_vw[pais] )
+VAR currFecha = SELECTEDVALUE( comment_js_vw[fecha] )
 VAR HighBlock =
     CONCATENATEX (
-        FILTER ( comment_js_vw, NOT ISBLANK ( comment_js_vw[comentario high] ) ),
+        FILTER (
+            comment_js_vw,
+            comment_js_vw[pais] = currPais
+                && comment_js_vw[fecha] = currFecha
+                && NOT ISBLANK ( comment_js_vw[comentario high] )
+        ),
         comment_js_vw[comentario high],
         UNICHAR(13) & UNICHAR(10)
     )
-VAR EveBlock =
+VAR EveBlock  =
     CONCATENATEX (
-        FILTER ( comment_js_vw, NOT ISBLANK ( comment_js_vw[comentario eve] ) ),
+        FILTER (
+            comment_js_vw,
+            comment_js_vw[pais] = currPais
+                && comment_js_vw[fecha] = currFecha
+                && NOT ISBLANK ( comment_js_vw[comentario eve] )
+        ),
         comment_js_vw[comentario eve],
         UNICHAR(13) & UNICHAR(10)
     )
 RETURN
-HighBlock &
-IF ( EveBlock <> "", UNICHAR(13) & UNICHAR(10) & EveBlock, "" )
+HighBlock & IF ( EveBlock <> "", UNICHAR(13) & UNICHAR(10) & EveBlock, "" )
