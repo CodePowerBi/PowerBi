@@ -6,10 +6,11 @@ VAR HighBlock =
             NOT ISBLANK ( 'comment_js_vw'[high_SALTOS] )
                 && LEN ( 'comment_js_vw'[high_SALTOS] ) > 0
         ),
-        "Tipo",    "HIGH",
-        "Texto",   'comment_js_vw'[high_SALTOS],
-        "Fecha",   'comment_js_vw'[fecha],
-        "Unidad",  'comment_js_vw'[unidad]
+        "Fecha",       'comment_js_vw'[fecha],
+        "OrdenUnidad", 'comment_js_vw'[ordenunidad],
+        "Unidad",      'comment_js_vw'[unidad],
+        "Tipo",        "HIGH",
+        "Texto",       'comment_js_vw'[high_SALTOS]
     )
 VAR EveBlock =
     SELECTCOLUMNS (
@@ -18,10 +19,11 @@ VAR EveBlock =
             NOT ISBLANK ( 'comment_js_vw'[eve_SALTOS] )
                 && LEN ( 'comment_js_vw'[eve_SALTOS] ) > 0
         ),
-        "Tipo",    "EVE",
-        "Texto",   'comment_js_vw'[eve_SALTOS],
-        "Fecha",   'comment_js_vw'[fecha],
-        "Unidad",  'comment_js_vw'[unidad]
+        "Fecha",       'comment_js_vw'[fecha],
+        "OrdenUnidad", 'comment_js_vw'[ordenunidad],
+        "Unidad",      'comment_js_vw'[unidad],
+        "Tipo",        "EVE",
+        "Texto",       'comment_js_vw'[eve_SALTOS]
     )
 RETURN
 ADDCOLUMNS (
