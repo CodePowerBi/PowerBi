@@ -1,4 +1,16 @@
 Comentario_Unido =
-COALESCE(comment_js_vw[comentario high], "") &
-UNICHAR(13) & UNICHAR(10) &
-COALESCE(comment_js_vw[comentario eve], "")
+VAR HighBlock =
+    CONCATENATEX (
+        FILTER ( comment_js_vw, NOT ISBLANK ( comment_js_vw[comentario high] ) ),
+        comment_js_vw[comentario high],
+        UNICHAR(13) & UNICHAR(10)
+    )
+VAR EveBlock =
+    CONCATENATEX (
+        FILTER ( comment_js_vw, NOT ISBLANK ( comment_js_vw[comentario eve] ) ),
+        comment_js_vw[comentario eve],
+        UNICHAR(13) & UNICHAR(10)
+    )
+RETURN
+HighBlock &
+IF ( EveBlock <> "", UNICHAR(13) & UNICHAR(10) & EveBlock, "" )
