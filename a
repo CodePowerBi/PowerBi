@@ -1,22 +1,12 @@
 high_eve_SALTOS =
-VAR salto = UNICHAR(10) & UNICHAR(10)
-VAR highRaw = 'comment_js_vw'[comment_highlights]
-VAR eveRaw  = 'comment_js_vw'[comment_eve]
+VAR salto = UNICHAR(10) & UNICHAR(10)  -- doble salto entre bloques
+VAR high  = COALESCE([high_SALTOS], "")
+VAR eve   = COALESCE([eve_SALTOS], "")
 
--- Limpieza básica (opcional: quita “Highlights” y colapsa saltos múltiples)
-VAR highClean1 = SUBSTITUTE(highRaw, "Highlights", "")
-VAR highClean2 = SUBSTITUTE(SUBSTITUTE(highClean1, UNICHAR(10)&UNICHAR(10)&UNICHAR(10), UNICHAR(10)), UNICHAR(10)&UNICHAR(10), UNICHAR(10))
-VAR highClean  = TRIM(highClean2)
+VAR unido =
+    high &
+    IF(high <> "" && eve <> "", salto, "") &
+    eve
 
-VAR eveClean1 = SUBSTITUTE(eveRaw, "Highlights", "")
-VAR eveClean2 = SUBSTITUTE(SUBSTITUTE(eveClean1, UNICHAR(10)&UNICHAR(10)&UNICHAR(10), UNICHAR(10)), UNICHAR(10)&UNICHAR(10), UNICHAR(10))
-VAR eveClean  = TRIM(eveClean2)
-
-RETURN
-IF (
-    LEN(highClean & eveClean) = 0,
-    BLANK(),
-    highClean &
-    IF( highClean <> "" && eveClean <> "", salto, "" ) &
-    eveClean
-)
+-- Quita espacios y evita devolver cadena vacía
+RETURN IF(LEN(TRIM(unido)) = 0, BLANK(), TRIM(unido))
