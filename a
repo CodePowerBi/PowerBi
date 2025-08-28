@@ -1,13 +1,15 @@
-ColorCategoria1 =
-VAR Cat1 = SELECTEDVALUE('Tabla'[Categoria1])
-VAR EsCategoria1 = NOT ISINSCOPE('Tabla'[Categoria2])   -- solo el nivel 1
+Comentarios_Unidos =
+VAR EveComentarios =
+    CONCATENATEX (
+        VALUES ( comment_js_vw[comentario eve] ),
+        comment_js_vw[comentario eve],
+        UNICHAR(13) & UNICHAR(10)
+    )
+VAR HighComentarios =
+    CONCATENATEX (
+        VALUES ( comment_js_vw[comentario high] ),
+        comment_js_vw[comentario high],
+        UNICHAR(13) & UNICHAR(10)
+    )
 RETURN
-SWITCH(
-    TRUE(),
-    EsCategoria1 && Cat1 IN {
-        "ASSETS",
-        "LIABILITIES",
-        "TOTAL ASSETS & LIABILITIES"
-    }, "#C00000",   -- rojo
-    "#000000"       -- negro
-)
+EveComentarios & UNICHAR(13) & UNICHAR(10) & HighComentarios
