@@ -1,12 +1,43 @@
-high_eve_SALTOS =
-VAR salto = UNICHAR(10) & UNICHAR(10)  -- doble salto entre bloques
-VAR high  = COALESCE([high_SALTOS], "")
-VAR eve   = COALESCE([eve_SALTOS], "")
+Comentario_Full =
+VAR salto = UNICHAR(10)
 
-VAR unido =
-    high &
-    IF(high <> "" && eve <> "", salto, "") &
-    eve
+// --- HIGH ---
+VAR High_txt =
+    COALESCE ( 'comment_js_vw'[comment_highlights], "" )
+VAR High_colapsado =
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE( High_txt, salto & salto & salto & salto, salto ),
+                salto & salto & salto, salto
+            ),
+            salto & salto, salto
+        ),
+        salto & salto, salto
+    )
+VAR High_limpio =
+    SUBSTITUTE ( High_colapsado, "Highlights", "" )
 
--- Quita espacios y evita devolver cadena vacía
-RETURN IF(LEN(TRIM(unido)) = 0, BLANK(), TRIM(unido))
+// --- EVE ---
+VAR Eve_txt =
+    COALESCE ( 'comment_js_vw'[comment_eve], "" )
+VAR Eve_colapsado =
+    SUBSTITUTE(
+        SUBSTITUTE(
+            SUBSTITUTE(
+                SUBSTITUTE( Eve_txt, salto & salto & salto & salto, salto ),
+                salto & salto & salto, salto
+            ),
+            salto & salto, salto
+        ),
+        salto & salto, salto
+    )
+VAR Eve_limpio =
+    SUBSTITUTE ( Eve_colapsado, "Highlights", "" )
+
+RETURN
+    TRIM (
+        High_limpio
+            & IF ( High_limpio <> "" && Eve_limpio <> "", salto & salto, "" )
+            & Eve_limpio
+    )
