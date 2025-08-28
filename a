@@ -1,39 +1,8 @@
-Comentario_Full =
-VAR salto = UNICHAR(10)
-
-// primero todos los high
-VAR TodosHigh =
-    CONCATENATEX (
-        FILTER ( 'comment_js_vw', NOT ISEMPTY ( 'comment_js_vw'[comment_highlights] ) ),
-        SUBSTITUTE(
-            SUBSTITUTE(
-                SUBSTITUTE(
-                    SUBSTITUTE('comment_js_vw'[comment_highlights], salto & salto & salto & salto, salto),
-                    salto & salto & salto, salto
-                ),
-                salto & salto, salto
-            ),
-            "Highlights", ""
-        ),
-        salto
-    )
-
-// después todos los eve
-VAR TodosEve =
-    CONCATENATEX (
-        FILTER ( 'comment_js_vw', NOT ISEMPTY ( 'comment_js_vw'[comment_eve] ) ),
-        SUBSTITUTE(
-            SUBSTITUTE(
-                SUBSTITUTE(
-                    SUBSTITUTE('comment_js_vw'[comment_eve], salto & salto & salto & salto, salto),
-                    salto & salto & salto, salto
-                ),
-                salto & salto, salto
-            ),
-            "Highlights", ""
-        ),
-        salto
-    )
-
+eve_high_SALTOS =
+VAR Eve = 'comment_js_vw'[eve_SALTOS]
+VAR High = 'comment_js_vw'[high_SALTOS]
 RETURN
-    TodosHigh & salto & salto & TodosEve
+TRIM (
+    Eve &
+    IF( High <> "", UNICHAR(10) & High, "" )
+)
