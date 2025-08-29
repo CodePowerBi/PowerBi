@@ -1,6 +1,20 @@
-EsUltimoAnio =
-VAR MaxFecha =
-    CALCULATE ( MAX ( 'DimDate'[Date] ), ALL ( 'DimDate' ) )
-RETURN
-    'DimDate'[Date] >= EDATE ( MaxFecha, -12 )
-        && 'DimDate'[Date] <= MaxFecha
+OrdenBalance =
+SWITCH (
+    [id_metrica_balance],
+    12, 1,
+    1, 2,
+    2, 3,
+    3, 4,
+    4, 5,
+    16, 6,
+    15, 7,
+    5, 8,
+    6, 9,
+    7, 10,
+    17, 11,
+    8, 12,
+    14, 13,
+    9, 14,
+    10, 15,
+    BLANK()
+)
