@@ -1,52 +1,6 @@
-Tabla_Executive_Overview =
-VAR HighBlock =
-    SELECTCOLUMNS (
-        FILTER (
-            'comment_js_vw',
-            NOT ISBLANK ( 'comment_js_vw'[comment_jst_balance] )
-                && LEN ( 'comment_js_vw'[comment_jst_balance] ) > 0
-        ),
-        "Fecha", 'comment_js_vw'[fecha],
-        "OrdenUnidad", 'comment_js_vw'[ordenunidad],
-        "Unidad", 'comment_js_vw'[unidad],
-        "Tipo", "HIGH",
-        "Texto", 'comment_js_vw'[comment_jst_balance]
-    )
-VAR EveBlock =
-    SELECTCOLUMNS (
-        FILTER (
-            'comment_js_vw',
-            NOT ISBLANK ( 'comment_js_vw'[comment_jst_eve] )
-                && LEN ( 'comment_js_vw'[comment_jst_eve] ) > 0
-        ),
-        "Fecha", 'comment_js_vw'[fecha],
-        "OrdenUnidad", 'comment_js_vw'[ordenunidad],
-        "Unidad", 'comment_js_vw'[unidad],
-        "Tipo", "EVE",
-        "Texto", 'comment_js_vw'[comment_jst_eve]
-    )
-VAR NiiBlock =
-    SELECTCOLUMNS (
-        FILTER (
-            'comment_js_vw',
-            NOT ISBLANK ( 'comment_js_vw'[comment_jst_nii] )
-                && LEN ( 'comment_js_vw'[comment_jst_nii] ) > 0
-        ),
-        "Fecha", 'comment_js_vw'[fecha],
-        "OrdenUnidad", 'comment_js_vw'[ordenunidad],
-        "Unidad", 'comment_js_vw'[unidad],
-        "Tipo", "NII",
-        "Texto", 'comment_js_vw'[comment_jst_nii]
-    )
+EsUltimoAnio =
+VAR MaxFecha =
+    CALCULATE ( MAX ( 'DimDate'[Date] ), ALL ( 'DimDate' ) )
 RETURN
-    ADDCOLUMNS (
-        UNION ( HighBlock, EveBlock, NiiBlock ),
-        "OrdenTipo", 
-            SWITCH (
-                [Tipo],
-                "HIGH", 0,
-                "EVE", 1,
-                "NII", 2,
-                99
-            )
-    )
+    'DimDate'[Date] >= EDATE ( MaxFecha, -12 )
+        && 'DimDate'[Date] <= MaxFecha
