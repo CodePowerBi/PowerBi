@@ -1,32 +1,52 @@
-Tabla_Comentarios_Ordenada :=
+Tabla_Executive_Overview =
 VAR HighBlock =
     SELECTCOLUMNS (
         FILTER (
             'comment_js_vw',
-            NOT ISBLANK ( 'comment_js_vw'[high_SALTOS] )
-                && LEN ( 'comment_js_vw'[high_SALTOS] ) > 0
+            NOT ISBLANK ( 'comment_js_vw'[comment_jst_balance] )
+                && LEN ( 'comment_js_vw'[comment_jst_balance] ) > 0
         ),
-        "Fecha",       'comment_js_vw'[fecha],
+        "Fecha", 'comment_js_vw'[fecha],
         "OrdenUnidad", 'comment_js_vw'[ordenunidad],
-        "Unidad",      'comment_js_vw'[unidad],
-        "Tipo",        "HIGH",
-        "Texto",       'comment_js_vw'[high_SALTOS]
+        "Unidad", 'comment_js_vw'[unidad],
+        "Tipo", "HIGH",
+        "Texto", 'comment_js_vw'[comment_jst_balance]
     )
 VAR EveBlock =
     SELECTCOLUMNS (
         FILTER (
             'comment_js_vw',
-            NOT ISBLANK ( 'comment_js_vw'[eve_SALTOS] )
-                && LEN ( 'comment_js_vw'[eve_SALTOS] ) > 0
+            NOT ISBLANK ( 'comment_js_vw'[comment_jst_eve] )
+                && LEN ( 'comment_js_vw'[comment_jst_eve] ) > 0
         ),
-        "Fecha",       'comment_js_vw'[fecha],
+        "Fecha", 'comment_js_vw'[fecha],
         "OrdenUnidad", 'comment_js_vw'[ordenunidad],
-        "Unidad",      'comment_js_vw'[unidad],
-        "Tipo",        "EVE",
-        "Texto",       'comment_js_vw'[eve_SALTOS]
+        "Unidad", 'comment_js_vw'[unidad],
+        "Tipo", "EVE",
+        "Texto", 'comment_js_vw'[comment_jst_eve]
+    )
+VAR NiiBlock =
+    SELECTCOLUMNS (
+        FILTER (
+            'comment_js_vw',
+            NOT ISBLANK ( 'comment_js_vw'[comment_jst_nii] )
+                && LEN ( 'comment_js_vw'[comment_jst_nii] ) > 0
+        ),
+        "Fecha", 'comment_js_vw'[fecha],
+        "OrdenUnidad", 'comment_js_vw'[ordenunidad],
+        "Unidad", 'comment_js_vw'[unidad],
+        "Tipo", "NII",
+        "Texto", 'comment_js_vw'[comment_jst_nii]
     )
 RETURN
-ADDCOLUMNS (
-    UNION ( HighBlock, EveBlock ),
-    "OrdenTipo", IF ( [Tipo] = "HIGH", 0, 1 )
-)
+    ADDCOLUMNS (
+        UNION ( HighBlock, EveBlock, NiiBlock ),
+        "OrdenTipo", 
+            SWITCH (
+                [Tipo],
+                "HIGH", 0,
+                "EVE", 1,
+                "NII", 2,
+                99
+            )
+    )
