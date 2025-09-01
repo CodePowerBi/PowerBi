@@ -1,13 +1,18 @@
 SELECT
-    id_unit,
-    DATE_TRUNC('month', fecha)::date AS mes,
-    ROUND(SUM(valor_metrica)::numeric, 2) AS sum_valor_metrica
-FROM tablones_des_salida_buffer_hqla_vw
-WHERE fecha >= '2025-03-01' 
-  AND fecha < '2025-04-01'
+    a.id_unit,
+    DATE_TRUNC('month', a.fecha)::date AS mes,
+    b.metrica,
+    ROUND(SUM(a.valor_metrica)::numeric, 2) AS sum_valor_metrica
+FROM tablones_des_salida_buffer_hqla_vw a
+INNER JOIN dicc_metrica_buffer_hqla b 
+    ON a.metrica = b.id
+WHERE a.fecha >= '2025-03-01'
+  AND a.fecha < '2025-04-01'
 GROUP BY
-    id_unit,
-    DATE_TRUNC('month', fecha)::date
+    a.id_unit,
+    DATE_TRUNC('month', a.fecha)::date,
+    b.metrica
 ORDER BY
-    id_unit,
-    mes;
+    a.id_unit,
+    mes,
+    b.metrica;
