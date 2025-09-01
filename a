@@ -1,20 +1,20 @@
-OrdenBalance =
-SWITCH (
-    [id_metrica_balance],
-    12, 1,
-    1, 2,
-    2, 3,
-    3, 4,
-    4, 5,
-    16, 6,
-    15, 7,
-    5, 8,
-    6, 9,
-    7, 10,
-    17, 11,
-    8, 12,
-    14, 13,
-    9, 14,
-    10, 15,
-    BLANK()
-)
+SELECT
+    EXTRACT(YEAR FROM date) AS anio,
+    EXTRACT(MONTH FROM date) AS mes,
+    id_unit,
+    SUM(daily_lcr) AS sum_daily_lcr,
+    MAX(limit_daily_lcr) AS max_limit_daily_lcr,
+    MAX(lcr_mensual) AS lcr_mensual,  -- o SUM(), según definas
+    SUM(daily_surplus_tc) AS sum_daily_surplus_tc,
+    SUM(lcr_surplus_mensual) AS sum_lcr_surplus_mensual,
+    SUM(net_outflows_tc) AS sum_net_outflows_tc
+FROM vista_salida_diario_mensual
+WHERE date >= '2024-04-01'
+GROUP BY
+    EXTRACT(YEAR FROM date),
+    EXTRACT(MONTH FROM date),
+    id_unit
+ORDER BY
+    anio,
+    mes,
+    id_unit;
