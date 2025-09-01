@@ -1,17 +1,13 @@
 SELECT
-    DATE_TRUNC('month', date) AS mes,
     id_unit,
-    ROUND(SUM(daily_lcr)::numeric, 2) AS sum_daily_lcr,
-    ROUND(MAX(limit_daily_lcr)::numeric, 2) AS max_limit_daily_lcr,
-    ROUND(MAX(lcr_mensual)::numeric, 2) AS lcr_mensual,  -- o SUM() según corresponda
-    ROUND(SUM(daily_surplus_tc)::numeric, 2) AS sum_daily_surplus_tc,
-    ROUND(SUM(lcr_surplus_mensual)::numeric, 2) AS sum_lcr_surplus_mensual,
-    ROUND(SUM(net_outflows_tc)::numeric, 2) AS sum_net_outflows_tc
-FROM vista_salida_diario_mensual
-WHERE date >= '2024-04-01'
+    DATE_TRUNC('month', fecha)::date AS mes,
+    ROUND(SUM(valor_metrica)::numeric, 2) AS sum_valor_metrica
+FROM tablones_des_salida_buffer_hqla_vw
+WHERE fecha >= '2025-03-01' 
+  AND fecha < '2025-04-01'
 GROUP BY
-    DATE_TRUNC('month', date),
-    id_unit
+    id_unit,
+    DATE_TRUNC('month', fecha)::date
 ORDER BY
-    mes,
-    id_unit;
+    id_unit,
+    mes;
