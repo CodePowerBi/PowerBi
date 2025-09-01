@@ -1,20 +1,17 @@
 SELECT
-    EXTRACT(YEAR FROM date) AS anio,
-    EXTRACT(MONTH FROM date) AS mes,
+    DATE_TRUNC('month', date) AS mes,
     id_unit,
-    SUM(daily_lcr) AS sum_daily_lcr,
-    MAX(limit_daily_lcr) AS max_limit_daily_lcr,
-    MAX(lcr_mensual) AS lcr_mensual,  -- o SUM(), según definas
-    SUM(daily_surplus_tc) AS sum_daily_surplus_tc,
-    SUM(lcr_surplus_mensual) AS sum_lcr_surplus_mensual,
-    SUM(net_outflows_tc) AS sum_net_outflows_tc
+    ROUND(SUM(daily_lcr)::numeric, 2) AS sum_daily_lcr,
+    ROUND(MAX(limit_daily_lcr)::numeric, 2) AS max_limit_daily_lcr,
+    ROUND(MAX(lcr_mensual)::numeric, 2) AS lcr_mensual,  -- o SUM() según corresponda
+    ROUND(SUM(daily_surplus_tc)::numeric, 2) AS sum_daily_surplus_tc,
+    ROUND(SUM(lcr_surplus_mensual)::numeric, 2) AS sum_lcr_surplus_mensual,
+    ROUND(SUM(net_outflows_tc)::numeric, 2) AS sum_net_outflows_tc
 FROM vista_salida_diario_mensual
 WHERE date >= '2024-04-01'
 GROUP BY
-    EXTRACT(YEAR FROM date),
-    EXTRACT(MONTH FROM date),
+    DATE_TRUNC('month', date),
     id_unit
 ORDER BY
-    anio,
     mes,
     id_unit;
