@@ -1,19 +1,27 @@
+📊 Elementos principales
+
 Balance Sheet (MM EUR): matriz con valores contables y duración media por tipo de instrumento (activos, pasivos, equity, derivados).
 
-Gráficos de sensibilidad (parte superior):
-Muestran el impacto de shocks de tipos de interés:
+Columnas verticales de composición:
+Dos bloques visuales que separan el balance en:
 
-EVE +100bp / –100bp
+Activos: Loan Portfolio, Bond Portfolio, Other Assets, Money Market A…
 
-NII +100bp / –100bp
+Pasivos y capital: Money Market B, Deposits, Issuances, Equity, Other Liabilities.
 
-Gráficos de evolución temporal (parte inferior):
-Visualizan la evolución en el tiempo de los impactos anteriores:
+Gráficos de sensibilidad (EVE y NII Risk Profile):
+Muestran el impacto de shocks de tipos de interés (±100bp) en:
 
-EVE Evolution
+EVE (valor económico del equity)
 
-NII Evolution
+NII (margen financiero)
 
-Todos los gráficos incluyen líneas de límite y de valor observado.
+Indicadores SOT (rosados):
+
+SOT E y Limit SOT E
+
+SOT N, Limit SOT N
+
+Representan los valores observados frente a sus límites definidos.
 
 Comentarios automáticos: tabla inferior con explicaciones generadas desde backend, adaptadas por unidad y periodo.
