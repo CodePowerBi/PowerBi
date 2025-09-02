@@ -1,39 +1,51 @@
-3. Executive Overview
-
-La sección Executive Overview ofrece una visión ejecutiva del perfil de riesgo estructural de cada unidad, mediante tablas, gráficos y comentarios interpretativos.
+La sección Executive Overview proporciona una visión ejecutiva del perfil de riesgo estructural de cada unidad, incluyendo métricas clave, análisis gráfico y comentarios automatizados. Está diseñada para un consumo rápido, pero con suficiente profundidad para detectar desviaciones relevantes.
 
 🧩 Versiones disponibles
 
-Esta página está disponible en dos formatos:
+Funcional (interactiva): permite seleccionar la unidad desde el filtro Select Unit, y ajustar el periodo con Select Date.
 
-Versión funcional (interactiva): incluye un filtro desplegable Select Unit para seleccionar la unidad (país o filial) que se desea analizar. También incorpora el filtro Select Date para cambiar la fecha de análisis.
-
-Versión de extracción (por país): cada página muestra una unidad específica. No incluye filtros de fecha ni unidad, ya que la información está predefinida para cada slide.
+De extracción: cada slide muestra una única unidad fija, sin filtros interactivos.
 
 📊 Elementos principales
 
-Balance Sheet: matriz con el desglose del balance en millones de euros (MM EUR), incluyendo:
+A. Matriz – Balance Sheet (MM EUR)
+Tabla ubicada a la izquierda, muestra el desglose del balance por componente (activos, pasivos, equity y derivados), con dos métricas asociadas en el eje Y:
 
-Activos, Pasivos, Equity (recursos propios) y Derivados.
+Book Value: valor contable actual de cada categoría.
 
-Cada componente muestra su valor contable (Book Value) y su duración media (Duration).
+Duration: duración media ponderada, útil para entender la sensibilidad al tipo de interés.
 
-Gráficos IRRBB:
+B. Columnas laterales
+A la derecha de la matriz se presentan dos gráficos de columnas verticales con leyenda métrica_balance. Aunque no se interactivan directamente desde la matriz, complementan la visión del balance con perspectiva visual.
 
-EVE Risk Profile (Economic Value of Equity): muestra el impacto en el valor económico del equity ante distintos shocks de tipos de interés (de -100bp a +100bp).
+C. EVE Risk Profile y NII Risk Profile
+Dos gráficos de columnas apiladas, situados en la parte central:
 
-NII Risk Profile (Net Interest Income): refleja cómo varía el margen financiero ante los mismos escenarios de tipos.
+EVE Risk Profile (Economic Value of Equity): muestra el impacto en el valor económico del equity bajo diferentes shocks paralelos de tipos de interés (de -100bp a +100bp).
 
-Indicadores clave:
+NII Risk Profile (Net Interest Income): indica la sensibilidad del margen financiero ante los mismos escenarios.
 
-SOT EVE (%) (Sensitivity Outlier Test - Economic Value of Equity): representa el impacto máximo del EVE en porcentaje del capital regulatorio, frente al límite establecido.
+D. Indicadores SOT – Gráficos rosados
 
-SOT NII (%) (Sensitivity Outlier Test - Net Interest Income): muestra la sensibilidad máxima del NII a shocks de tipo de interés, también en porcentaje, respecto a su límite interno.
+SOT EVE % (Sensitivity Outlier Test – EVE):
 
-Límites (Thresholds): valores de referencia que permiten evaluar si el impacto se encuentra dentro de los márgenes de tolerancia definidos.
+Muestra el impacto en porcentaje del capital regulatorio.
 
-Comentarios analíticos: texto explicativo al pie de página, que resume los principales movimientos, drivers de cambio, efectos regulatorios y decisiones estratégicas (por ejemplo, ALCO, duración del balance, decisiones de cobertura, etc.).
+Incluye líneas de referencia para:
 
-🔙 Navegación
+Limit SOT E: umbral máximo permitido.
 
-En la parte superior derecha se incluye un botón Home que permite volver al menú principal del informe.
+SOT NII % (Sensitivity Outlier Test – NII):
+
+Representa el impacto en NII sobre el capital, también en %.
+
+Incluye:
+
+Limit SOT N: límite definido.
+
+SOT N: valor actual observado.
+
+Ambos gráficos están en tonos rosados para facilitar su identificación visual.
+
+E. Tabla de Comentarios (predefinida + dinámica)
+En la parte inferior aparece una tabla con comentarios generados automáticamente desde el sistema backend. Estos comentarios combinan texto preestablecido con partes dinámicas según unidad, fecha y evolución de los indicadores.
