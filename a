@@ -1,7 +1,33 @@
-La pantalla inicial del informe Structural Risk Profile actúa como menú principal y permite acceder rápidamente a las dos secciones clave del análisis:
+3. Executive Overview
 
-01. Executive Overview: resumen ejecutivo con los principales indicadores de riesgo estructural.
+La sección Executive Overview presenta un resumen ejecutivo del perfil de riesgo estructural de la unidad seleccionada. Está diseñada para ofrecer una visión clara e inmediata de los principales indicadores, a través de gráficos, tablas e insights interpretativos.
 
-02. IRRBB Quarter JST: análisis trimestral detallado con evolución de métricas IRRBB.
+🔧 Versión funcional vs. versión de extracción
 
-Cada sección se puede abrir mediante un botón interactivo. En la parte inferior también se incluyen accesos directos a Home y More Detail, facilitando la navegación dentro del informe.
+Existen dos versiones de esta página, adaptadas a distintos casos de uso:
+
+Funcional / interactiva: incluye un filtro desplegable llamado “Select Unit” que permite cambiar dinámicamente entre distintas unidades (países o filiales) del grupo. El resto de los gráficos y comentarios se actualizan automáticamente según la unidad seleccionada.
+
+Extracción / presentación fija: cada página corresponde a una única unidad. No incluye el filtro de unit, ya que está predefinido. Esta versión está optimizada para presentaciones o reporting consolidado.
+
+Ambas versiones cuentan con un filtro adicional para seleccionar la fecha de análisis (Select Date), normalmente un cierre mensual o trimestral.
+
+🧩 Elementos visuales
+
+Balance Sheet: matriz con el desglose del balance de la unidad en millones de euros (MM EUR), incluyendo activos, pasivos, equity y derivados. Se incluye el valor contable y duración media por componente.
+
+IRRBB Risk Profiles:
+
+EVE Risk Profile (gráfico de barras): muestra el impacto sobre el valor económico del equity bajo distintos shocks de tipos de interés (de -100bp a +100bp).
+
+NII Risk Profile (gráfico de barras): indica el impacto en el margen financiero (Net Interest Income) ante los mismos escenarios.
+
+Indicadores clave:
+
+SOT EVE %, SOT NII % y límites respectivos (visuales en rojo/rosado para facilitar la comparación contra límites regulatorios internos).
+
+Comentarios analíticos: texto interpretativo al pie de página, con explicaciones específicas por unidad sobre los principales drivers de cambio, decisiones ALCO, impacto de mercado y evolución esperada.
+
+🔙 Navegación
+
+En la parte superior derecha se encuentra el botón “Home”, que permite volver al menú principal desde cualquier punto del informe.
