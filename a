@@ -1,33 +1,34 @@
 3. Executive Overview
 
-La sección Executive Overview presenta un resumen ejecutivo del perfil de riesgo estructural de la unidad seleccionada. Está diseñada para ofrecer una visión clara e inmediata de los principales indicadores, a través de gráficos, tablas e insights interpretativos.
+La sección Executive Overview ofrece una visión ejecutiva del perfil de riesgo estructural de cada unidad, a través de tablas, gráficos y comentarios interpretativos.
 
-🔧 Versión funcional vs. versión de extracción
+🧩 Versiones disponibles
 
-Existen dos versiones de esta página, adaptadas a distintos casos de uso:
+Esta página está disponible en dos formatos, según el tipo de uso:
 
-Funcional / interactiva: incluye un filtro desplegable llamado “Select Unit” que permite cambiar dinámicamente entre distintas unidades (países o filiales) del grupo. El resto de los gráficos y comentarios se actualizan automáticamente según la unidad seleccionada.
+Versión funcional (interactiva): permite seleccionar la unidad (unit) desde un filtro desplegable (Select Unit) para analizar distintos países o filiales dentro de una misma vista.
+También incluye un selector de fecha (Select Date) para cambiar el corte temporal del análisis.
 
-Extracción / presentación fija: cada página corresponde a una única unidad. No incluye el filtro de unit, ya que está predefinido. Esta versión está optimizada para presentaciones o reporting consolidado.
+Versión de extracción (por país): cada página corresponde a una unidad específica, sin filtros. Esta versión se utiliza para exportaciones o presentaciones estáticas, y no permite seleccionar unidad ni fecha.
 
-Ambas versiones cuentan con un filtro adicional para seleccionar la fecha de análisis (Select Date), normalmente un cierre mensual o trimestral.
+📊 Elementos principales
 
-🧩 Elementos visuales
+Balance Sheet: tabla con el desglose del balance en millones de euros (MM EUR), incluyendo activos, pasivos, derivados y equity. Se muestra también la duración media por componente.
 
-Balance Sheet: matriz con el desglose del balance de la unidad en millones de euros (MM EUR), incluyendo activos, pasivos, equity y derivados. Se incluye el valor contable y duración media por componente.
+Gráficos IRRBB:
 
-IRRBB Risk Profiles:
+EVE Risk Profile: impacto en el valor económico del equity ante distintos shocks de tipos de interés.
 
-EVE Risk Profile (gráfico de barras): muestra el impacto sobre el valor económico del equity bajo distintos shocks de tipos de interés (de -100bp a +100bp).
-
-NII Risk Profile (gráfico de barras): indica el impacto en el margen financiero (Net Interest Income) ante los mismos escenarios.
+NII Risk Profile: impacto en el margen financiero (Net Interest Income) bajo los mismos escenarios.
 
 Indicadores clave:
 
-SOT EVE %, SOT NII % y límites respectivos (visuales en rojo/rosado para facilitar la comparación contra límites regulatorios internos).
+Porcentajes de SOT EVE y SOT NII.
 
-Comentarios analíticos: texto interpretativo al pie de página, con explicaciones específicas por unidad sobre los principales drivers de cambio, decisiones ALCO, impacto de mercado y evolución esperada.
+Comparación frente a límites definidos.
+
+Comentarios analíticos: texto explicativo con las claves del periodo, drivers relevantes y observaciones específicas por unidad.
 
 🔙 Navegación
 
-En la parte superior derecha se encuentra el botón “Home”, que permite volver al menú principal desde cualquier punto del informe.
+En la parte superior derecha se encuentra el botón Home, que permite volver al menú principal del informe en cualquier momento.
