@@ -1,4 +1,4 @@
-📊 Elementos principales
+Elementos principales
 
 Balance Sheet (MM EUR): matriz con valores contables y duración media por tipo de instrumento (activos, pasivos, equity, derivados).
 
@@ -21,7 +21,3 @@ Indicadores SOT (rosados):
 SOT E y Limit SOT E
 
 SOT N, Limit SOT N
-
-Representan los valores observados frente a sus límites definidos.
-
-Comentarios automáticos: tabla inferior con explicaciones generadas desde backend, adaptadas por unidad y periodo.
