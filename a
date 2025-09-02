@@ -1,51 +1,21 @@
-La sección Executive Overview proporciona una visión ejecutiva del perfil de riesgo estructural de cada unidad, incluyendo métricas clave, análisis gráfico y comentarios automatizados. Está diseñada para un consumo rápido, pero con suficiente profundidad para detectar desviaciones relevantes.
-
-🧩 Versiones disponibles
-
-Funcional (interactiva): permite seleccionar la unidad desde el filtro Select Unit, y ajustar el periodo con Select Date.
-
-De extracción: cada slide muestra una única unidad fija, sin filtros interactivos.
-
-📊 Elementos principales
-
-A. Matriz – Balance Sheet (MM EUR)
-Tabla ubicada a la izquierda, muestra el desglose del balance por componente (activos, pasivos, equity y derivados), con dos métricas asociadas en el eje Y:
-
-Book Value: valor contable actual de cada categoría.
-
-Duration: duración media ponderada, útil para entender la sensibilidad al tipo de interés.
-
-B. Columnas laterales
-A la derecha de la matriz se presentan dos gráficos de columnas verticales con leyenda métrica_balance. Aunque no se interactivan directamente desde la matriz, complementan la visión del balance con perspectiva visual.
-
-C. EVE Risk Profile y NII Risk Profile
-Dos gráficos de columnas apiladas, situados en la parte central:
-
-EVE Risk Profile (Economic Value of Equity): muestra el impacto en el valor económico del equity bajo diferentes shocks paralelos de tipos de interés (de -100bp a +100bp).
-
-NII Risk Profile (Net Interest Income): indica la sensibilidad del margen financiero ante los mismos escenarios.
-
-D. Indicadores SOT – Gráficos rosados
-
 SOT EVE % (Sensitivity Outlier Test – EVE):
 
-Muestra el impacto en porcentaje del capital regulatorio.
-
-Incluye líneas de referencia para:
-
-Limit SOT E: umbral máximo permitido.
-
-SOT NII % (Sensitivity Outlier Test – NII):
-
-Representa el impacto en NII sobre el capital, también en %.
+Representa el impacto máximo en el valor económico del equity (EVE) frente a shocks de tipos, expresado como porcentaje del capital regulatorio.
 
 Incluye:
 
-Limit SOT N: límite definido.
+SOT E: valor observado del impacto.
 
-SOT N: valor actual observado.
+Limit SOT E: límite máximo definido internamente o por regulación.
 
-Ambos gráficos están en tonos rosados para facilitar su identificación visual.
+SOT NII % (Sensitivity Outlier Test – NII):
 
-E. Tabla de Comentarios (predefinida + dinámica)
-En la parte inferior aparece una tabla con comentarios generados automáticamente desde el sistema backend. Estos comentarios combinan texto preestablecido con partes dinámicas según unidad, fecha y evolución de los indicadores.
+Representa el impacto máximo en el Net Interest Income (NII) ante shocks de tipos, también como porcentaje del capital.
+
+Incluye:
+
+SOT N: valor observado.
+
+Limit SOT N: umbral permitido para la métrica.
+
+Ambos gráficos están diseñados con tonos rosados y líneas de referencia que permiten comparar visualmente los valores observados frente a sus respectivos límites.
