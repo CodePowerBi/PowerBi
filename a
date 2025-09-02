@@ -1,34 +1,39 @@
 3. Executive Overview
 
-La sección Executive Overview ofrece una visión ejecutiva del perfil de riesgo estructural de cada unidad, a través de tablas, gráficos y comentarios interpretativos.
+La sección Executive Overview ofrece una visión ejecutiva del perfil de riesgo estructural de cada unidad, mediante tablas, gráficos y comentarios interpretativos.
 
 🧩 Versiones disponibles
 
-Esta página está disponible en dos formatos, según el tipo de uso:
+Esta página está disponible en dos formatos:
 
-Versión funcional (interactiva): permite seleccionar la unidad (unit) desde un filtro desplegable (Select Unit) para analizar distintos países o filiales dentro de una misma vista.
-También incluye un selector de fecha (Select Date) para cambiar el corte temporal del análisis.
+Versión funcional (interactiva): incluye un filtro desplegable Select Unit para seleccionar la unidad (país o filial) que se desea analizar. También incorpora el filtro Select Date para cambiar la fecha de análisis.
 
-Versión de extracción (por país): cada página corresponde a una unidad específica, sin filtros. Esta versión se utiliza para exportaciones o presentaciones estáticas, y no permite seleccionar unidad ni fecha.
+Versión de extracción (por país): cada página muestra una unidad específica. No incluye filtros de fecha ni unidad, ya que la información está predefinida para cada slide.
 
 📊 Elementos principales
 
-Balance Sheet: tabla con el desglose del balance en millones de euros (MM EUR), incluyendo activos, pasivos, derivados y equity. Se muestra también la duración media por componente.
+Balance Sheet: matriz con el desglose del balance en millones de euros (MM EUR), incluyendo:
+
+Activos, Pasivos, Equity (recursos propios) y Derivados.
+
+Cada componente muestra su valor contable (Book Value) y su duración media (Duration).
 
 Gráficos IRRBB:
 
-EVE Risk Profile: impacto en el valor económico del equity ante distintos shocks de tipos de interés.
+EVE Risk Profile (Economic Value of Equity): muestra el impacto en el valor económico del equity ante distintos shocks de tipos de interés (de -100bp a +100bp).
 
-NII Risk Profile: impacto en el margen financiero (Net Interest Income) bajo los mismos escenarios.
+NII Risk Profile (Net Interest Income): refleja cómo varía el margen financiero ante los mismos escenarios de tipos.
 
 Indicadores clave:
 
-Porcentajes de SOT EVE y SOT NII.
+SOT EVE (%) (Sensitivity Outlier Test - Economic Value of Equity): representa el impacto máximo del EVE en porcentaje del capital regulatorio, frente al límite establecido.
 
-Comparación frente a límites definidos.
+SOT NII (%) (Sensitivity Outlier Test - Net Interest Income): muestra la sensibilidad máxima del NII a shocks de tipo de interés, también en porcentaje, respecto a su límite interno.
 
-Comentarios analíticos: texto explicativo con las claves del periodo, drivers relevantes y observaciones específicas por unidad.
+Límites (Thresholds): valores de referencia que permiten evaluar si el impacto se encuentra dentro de los márgenes de tolerancia definidos.
+
+Comentarios analíticos: texto explicativo al pie de página, que resume los principales movimientos, drivers de cambio, efectos regulatorios y decisiones estratégicas (por ejemplo, ALCO, duración del balance, decisiones de cobertura, etc.).
 
 🔙 Navegación
 
-En la parte superior derecha se encuentra el botón Home, que permite volver al menú principal del informe en cualquier momento.
+En la parte superior derecha se incluye un botón Home que permite volver al menú principal del informe.
