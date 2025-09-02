@@ -1,18 +1,21 @@
-SELECT
-    a.id_unit,
-    DATE_TRUNC('month', a.fecha)::date AS mes,
-    b.metrica,
-    ROUND(SUM(a.valor_metrica)::numeric, 2) AS sum_valor_metrica
-FROM tablones_des_salida_buffer_hqla_vw a
-INNER JOIN dicc_metrica_buffer_hqla b 
-    ON a.metrica = b.id
-WHERE a.fecha >= '2025-03-01'
-  AND a.fecha < '2025-04-01'
-GROUP BY
-    a.id_unit,
-    DATE_TRUNC('month', a.fecha)::date,
-    b.metrica
-ORDER BY
-    a.id_unit,
-    mes,
-    b.metrica;
+Al acceder al informe, el usuario se encuentra con una pantalla inicial de navegación titulada "Structural Risk Profile". Esta pantalla funciona como menú principal, desde el cual se puede acceder a las secciones clave del informe de forma rápida e intuitiva.
+
+🧭 Secciones disponibles
+
+El menú está compuesto por dos bloques principales, numerados y dispuestos horizontalmente, cada uno con un botón interactivo de navegación:
+
+Nº	Sección	Descripción breve
+01	Executive Overview	Vista ejecutiva con los principales KPIs del riesgo estructural de balance.
+02	IRRBB Quarter JST	Análisis trimestral detallado de métricas IRRBB, con evolución y escenarios.
+
+Ambas secciones están diseñadas con una estructura visual limpia y corporativa, siguiendo la línea gráfica de la entidad (Santander). Los botones de navegación están representados por iconos circulares tipo "play", que permiten moverse entre páginas de manera fluida.
+
+🏠 Navegación adicional
+
+En la parte inferior izquierda de la pantalla, se encuentran accesos directos adicionales:
+
+Home: regresa en cualquier momento al menú principal.
+
+More Detail: acceso directo a secciones con información ampliada o específica según el análisis.
+
+Este menú inicial facilita una experiencia de usuario sencilla y estructurada, permitiendo que cualquier perfil —desde analistas hasta perfiles directivos— pueda comenzar la navegación por el informe desde un punto claro y bien definido.
