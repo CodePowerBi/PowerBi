@@ -1,21 +1,7 @@
-Al acceder al informe, el usuario se encuentra con una pantalla inicial de navegación titulada "Structural Risk Profile". Esta pantalla funciona como menú principal, desde el cual se puede acceder a las secciones clave del informe de forma rápida e intuitiva.
+La pantalla inicial del informe Structural Risk Profile actúa como menú principal y permite acceder rápidamente a las dos secciones clave del análisis:
 
-🧭 Secciones disponibles
+01. Executive Overview: resumen ejecutivo con los principales indicadores de riesgo estructural.
 
-El menú está compuesto por dos bloques principales, numerados y dispuestos horizontalmente, cada uno con un botón interactivo de navegación:
+02. IRRBB Quarter JST: análisis trimestral detallado con evolución de métricas IRRBB.
 
-Nº	Sección	Descripción breve
-01	Executive Overview	Vista ejecutiva con los principales KPIs del riesgo estructural de balance.
-02	IRRBB Quarter JST	Análisis trimestral detallado de métricas IRRBB, con evolución y escenarios.
-
-Ambas secciones están diseñadas con una estructura visual limpia y corporativa, siguiendo la línea gráfica de la entidad (Santander). Los botones de navegación están representados por iconos circulares tipo "play", que permiten moverse entre páginas de manera fluida.
-
-🏠 Navegación adicional
-
-En la parte inferior izquierda de la pantalla, se encuentran accesos directos adicionales:
-
-Home: regresa en cualquier momento al menú principal.
-
-More Detail: acceso directo a secciones con información ampliada o específica según el análisis.
-
-Este menú inicial facilita una experiencia de usuario sencilla y estructurada, permitiendo que cualquier perfil —desde analistas hasta perfiles directivos— pueda comenzar la navegación por el informe desde un punto claro y bien definido.
+Cada sección se puede abrir mediante un botón interactivo. En la parte inferior también se incluyen accesos directos a Home y More Detail, facilitando la navegación dentro del informe.
