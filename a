@@ -1,21 +1,19 @@
-SOT EVE % (Sensitivity Outlier Test – EVE):
+Balance Sheet (MM EUR): matriz con valores contables y duración media por tipo de instrumento (activos, pasivos, equity, derivados).
 
-Representa el impacto máximo en el valor económico del equity (EVE) frente a shocks de tipos, expresado como porcentaje del capital regulatorio.
+Gráficos de sensibilidad (parte superior):
+Muestran el impacto de shocks de tipos de interés:
 
-Incluye:
+EVE +100bp / –100bp
 
-SOT E: valor observado del impacto.
+NII +100bp / –100bp
 
-Limit SOT E: límite máximo definido internamente o por regulación.
+Gráficos de evolución temporal (parte inferior):
+Visualizan la evolución en el tiempo de los impactos anteriores:
 
-SOT NII % (Sensitivity Outlier Test – NII):
+EVE Evolution
 
-Representa el impacto máximo en el Net Interest Income (NII) ante shocks de tipos, también como porcentaje del capital.
+NII Evolution
 
-Incluye:
+Todos los gráficos incluyen líneas de límite y de valor observado.
 
-SOT N: valor observado.
-
-Limit SOT N: umbral permitido para la métrica.
-
-Ambos gráficos están diseñados con tonos rosados y líneas de referencia que permiten comparar visualmente los valores observados frente a sus respectivos límites.
+Comentarios automáticos: tabla inferior con explicaciones generadas desde backend, adaptadas por unidad y periodo.
