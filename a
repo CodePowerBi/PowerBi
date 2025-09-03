@@ -1,23 +1,56 @@
-Elementos principales
+fecha
+surplus_60_days
+survival_days
+limit
+apetite
 
-Balance Sheet (MM EUR): matriz con valores contables y duración media por tipo de instrumento (activos, pasivos, equity, derivados).
+fecha
+liquidity_buffer
+total_liquidity_needs
+retail_deposits
+wholesale_deposits
+issuances
+other_outflows
+off_balance_and_contingent
+inflows
+net_position
+var
+60_day_t_minus_3
+60_day_t_minus_2
+60_day_t_minus_1
+60_day_t
+var
 
-Columnas verticales de composición:
-Dos bloques visuales que separan el balance en:
 
-Activos: Loan Portfolio, Bond Portfolio, Other Assets, Money Market A…
+bucket_dias          -- ejemplo: 30 o 60
+liquidity_buffer
+total_liquidity_needs
+retail_deposits
+wholesale_deposits
+issuances
+other_outflows
+off_balance_and_contingent
+inflows
+net_position
+porcentaje_retail_deposits
+porcentaje_wholesale_deposits
+porcentaje_issuances
+porcentaje_other_outflows
+porcentaje_off_balance_and_contingent
+porcentaje_inflows
+30_day
+percent_30_day
+60_day
+percent_60_day
 
-Pasivos y capital: Money Market B, Deposits, Issuances, Equity, Other Liabilities.
+_______________
 
-Gráficos de sensibilidad (EVE y NII Risk Profile):
-Muestran el impacto de shocks de tipos de interés (±100bp) en:
+fecha
+nsfr_surplus
+nsfr
+limit
+apetite
 
-EVE (valor económico del equity)
 
-NII (margen financiero)
 
-Indicadores SOT (rosados):
 
-SOT E y Limit SOT E
-
-SOT N, Limit SOT N
