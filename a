@@ -1,56 +1,21 @@
-fecha
-surplus_60_days
-survival_days
-limit
-apetite
+Level 1 | Cash and Reserves at CB
+Level 1 | Sovereign Bonds
+Level 1 | Covered / SSA bonds and others
 
-fecha
-liquidity_buffer
-total_liquidity_needs
-retail_deposits
-wholesale_deposits
-issuances
-other_outflows
-off_balance_and_contingent
-inflows
-net_position
-var
-60_day_t_minus_3
-60_day_t_minus_2
-60_day_t_minus_1
-60_day_t
-var
+Level 2A + Level 2B | Covered Bonds
+Level 2A + Level 2B | Corporate Bonds
+Level 2A + Level 2B | Other
 
+____________
 
-bucket_dias          -- ejemplo: 30 o 60
-liquidity_buffer
-total_liquidity_needs
-retail_deposits
-wholesale_deposits
-issuances
-other_outflows
-off_balance_and_contingent
-inflows
-net_position
-porcentaje_retail_deposits
-porcentaje_wholesale_deposits
-porcentaje_issuances
-porcentaje_other_outflows
-porcentaje_off_balance_and_contingent
-porcentaje_inflows
-30_day
-percent_30_day
-60_day
-percent_60_day
+Level A | Cash and Reserves at CB
+Level A | Sovereign Bonds
+Level A | Covered / SSA bonds and others
 
-_______________
+Level B | Covered Bonds
+Level B | Corporate Bonds
+Level B | Others
 
-fecha
-nsfr_surplus
-nsfr
-limit
-apetite
+Level C | (sin desglose)
 
-
-
-
+TOTAL BUFFER | (total)
