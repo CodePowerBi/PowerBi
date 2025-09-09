@@ -1,12 +1,5 @@
-OrdenItem = 
-SWITCH(
-    TRUE(),
-    'pag5'[Item] = "(SUP/DEF)", 1,
-    'pag5'[Item] = "HQLA", 2,
-    'pag5'[Item] = "CASH FLOWS", 3,
-    'pag5'[Item] = "(SUP/DEF)_", 4,
-    'pag5'[Item] = "RATIO", 5,
-    'pag5'[Item] = "RATIO2", 6,
-    'pag5'[Item] = "(SUP/DEF) RESTANDO", 7,
-    99
+Medida_Suma_Metricas =
+CALCULATE(
+    SUM(mrf_sociedades_no_incluidas[cantidad]),
+    mrf_sociedades_no_incluidas[metrica] IN {23, 16, 17}
 )
