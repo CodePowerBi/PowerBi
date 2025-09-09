@@ -1,5 +1,4 @@
-Medida_Suma_Metricas =
-CALCULATE(
-    SUM(mrf_sociedades_no_incluidas[cantidad]),
-    mrf_sociedades_no_incluidas[metrica] IN {23, 16, 17}
-)
+Excluido =
+[Total_Activos_(MM_EUR)] 
+- [TOTAL COLUMNA CELESTE] 
+- [Sociedades_incluidas_ADD_ON]
