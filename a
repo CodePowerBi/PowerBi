@@ -1,4 +1,8 @@
-Excluido =
-[Total_Activos_(MM_EUR)] 
-- [TOTAL COLUMNA CELESTE] 
-- [Sociedades_incluidas_ADD_ON]
+Nueva_Medida :=
+VAR metric = SELECTEDVALUE ( mrf_resumen_evolutivo[metrica] )
+RETURN
+    SWITCH (
+        TRUE(),
+        metric IN { "almm", "lcr", "nsfr", "data_quality", "traceability" }, 0.5,
+        BLANK()
+    )
