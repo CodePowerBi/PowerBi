@@ -1,8 +1,36 @@
-Nueva_Medida :=
-VAR metric = SELECTEDVALUE ( mrf_resumen_evolutivo[metrica] )
-RETURN
-    SWITCH (
-        TRUE(),
-        metric IN { "almm", "lcr", "nsfr", "data_quality", "traceability" }, 0.5,
-        BLANK()
+mrf_resumen_evolutivo_largo :=
+VAR Base =
+    SELECTCOLUMNS (
+        mrf_resumen_evolutivo_transpuesto,
+        "effective_date", [effective_date],
+        "metrica_nombre", [metrica nombre],
+        "parent_co", [parent_co], "uk", [uk], "brasil", [brasil],
+        "scf_alemania", [scf_alemania], "usa", [usa], "mexico", [mexico], "chile", [chile]
     )
+VAR Paises =
+    DATATABLE (
+        "pais", STRING,
+        { {"parent_co"}, {"uk"}, {"brasil"}, {"scf_alemania"}, {"usa"}, {"mexico"}, {"chile"} }
+    )
+VAR Expandida =
+    ADDCOLUMNS (
+        CROSSJOIN ( Base, Paises ),
+        "valor",
+            SWITCH ( [pais],
+                "parent_co", [parent_co],
+                "uk", [uk],
+                "brasil", [brasil],
+                "scf_alemania", [scf_alemania],
+                "usa", [usa],
+                "mexico", [mexico],
+                "chile", [chile]
+            )
+    )
+RETURN
+SELECTCOLUMNS (
+    FILTER ( Expandida, NOT ISBLANK ( [valor] ) ),
+    "effective_date", [effective_date],
+    "pais", [pais],
+    "metrica_nombre", [metrica_nombre],
+    "valor", [valor]
+)
