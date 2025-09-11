@@ -1,12 +1,14 @@
 Delta_vs_LastDec =
-VAR CurrentDate = 'bank_ratio_cire_capital_vw'[date]
+VAR CurrentDate = 'bank_ratio_cire_capital_vw'[effective_date]
+VAR CurrentCurrency = 'bank_ratio_cire_capital_vw'[currency]
 VAR LastDecValue =
     CALCULATE (
-        MAX ( 'bank_ratio_cire_capital_vw'[gross_poss_cc] ),
+        SUM ( 'bank_ratio_cire_capital_vw'[gross_poss_cc] ),
         FILTER (
             ALL ( 'bank_ratio_cire_capital_vw' ),
-            YEAR ( 'bank_ratio_cire_capital_vw'[date] ) = YEAR ( CurrentDate ) - 1
-                && MONTH ( 'bank_ratio_cire_capital_vw'[date] ) = 12
+            'bank_ratio_cire_capital_vw'[currency] = CurrentCurrency
+                && YEAR ( 'bank_ratio_cire_capital_vw'[effective_date] ) = YEAR ( CurrentDate ) - 1
+                && MONTH ( 'bank_ratio_cire_capital_vw'[effective_date] ) = 12
         )
     )
 RETURN
