@@ -1,13 +1,17 @@
-Gross_diff_vs_lastDec =
-VAR CurrentYear = YEAR ( 'bank_ratio_cire_capital_vw'[date] )
+Gross_poss_cc_YTD_Diff =
 VAR LastDecValue =
     CALCULATE (
         MAX ( 'bank_ratio_cire_capital_vw'[gross_poss_cc] ),
         FILTER (
-            'bank_ratio_cire_capital_vw',
-            YEAR ( 'bank_ratio_cire_capital_vw'[date] ) = CurrentYear - 1
+            ALL ( 'bank_ratio_cire_capital_vw' ),
+            YEAR ( 'bank_ratio_cire_capital_vw'[date] ) = YEAR ( MAX ( 'bank_ratio_cire_capital_vw'[date] ) ) - 1
                 && MONTH ( 'bank_ratio_cire_capital_vw'[date] ) = 12
         )
     )
+VAR CurrentYTD =
+    CALCULATE (
+        SUM ( 'bank_ratio_cire_capital_vw'[gross_poss_cc] ),
+        DATESYTD ( 'bank_ratio_cire_capital_vw'[date] )
+    )
 RETURN
-'bank_ratio_cire_capital_vw'[gross_poss_cc] - LastDecValue
+CurrentYTD - LastDecValue
