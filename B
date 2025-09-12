@@ -1,0 +1,13 @@
+Regulatory Agg :=
+VAR Negativos :=
+    SUMX(
+        FILTER( 'tablones_des_calculo_consolidado_vw', NOT ISBLANK('tablones_des_calculo_consolidado_vw'[suma]) ),
+        IF ( 'tablones_des_calculo_consolidado_vw'[suma] < 0, 'tablones_des_calculo_consolidado_vw'[suma], 0 )
+    )
+VAR Positivos :=
+    SUMX(
+        FILTER( 'tablones_des_calculo_consolidado_vw', NOT ISBLANK('tablones_des_calculo_consolidado_vw'[suma]) ),
+        IF ( 'tablones_des_calculo_consolidado_vw'[suma] >= 0, 'tablones_des_calculo_consolidado_vw'[suma], 0 )
+    )
+RETURN
+    Negativos + 0.5 * Positivos
