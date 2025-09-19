@@ -1,15 +1,16 @@
-Delta_vs_LastDec =
-VAR CurrentDate = 'bank_ratio_cire_capital_vw'[effective_date]
-VAR CurrentCurrency = 'bank_ratio_cire_capital_vw'[currency]
-VAR LastDecValue =
-    CALCULATE (
-        SUM ( 'bank_ratio_cire_capital_vw'[gross_poss_cc] ),
-        FILTER (
-            ALL ( 'bank_ratio_cire_capital_vw' ),
-            'bank_ratio_cire_capital_vw'[currency] = CurrentCurrency
-                && YEAR ( 'bank_ratio_cire_capital_vw'[effective_date] ) = YEAR ( CurrentDate ) - 1
-                && MONTH ( 'bank_ratio_cire_capital_vw'[effective_date] ) = 12
-        )
-    )
-RETURN
-'bank_ratio_cire_capital_vw'[gross_poss_cc] - LastDecValue
+orden_pais =
+SWITCH (
+    [pais],
+    "parent_co", 1,
+    "uk", 2,
+    "brasil", 3,
+    "scf_sa", 4,
+    "scf_alemania", 5,
+    "usa", 6,
+    "mexico", 7,
+    "chile", 8,
+    "portugal", 9,
+    "polonia", 10,
+    "argentina", 11,
+    "uruguay", 12
+)
