@@ -1,8 +1,8 @@
-Titulo Fecha :=
-VAR FechaSeleccionada =
+Titulo Stress Fecha Max :=
+VAR FechaMax =
     CALCULATE (
-        MAX ( Dates[Date] ),
-        Dates[M] = TRUE()
+        MAX ( escenarios_stress[fecha] ),
+        ALLEXCEPT ( escenarios_stress, escenarios_stress[cc] )
     )
 RETURN
-    FORMAT ( FechaSeleccionada, "MMM yy" )
+    FORMAT ( FechaMax, "MMM yy" )
