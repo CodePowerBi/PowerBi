@@ -1,16 +1,8 @@
-orden_pais =
-SWITCH (
-    [pais],
-    "parent_co", 1,
-    "uk", 2,
-    "brasil", 3,
-    "scf_sa", 4,
-    "scf_alemania", 5,
-    "usa", 6,
-    "mexico", 7,
-    "chile", 8,
-    "portugal", 9,
-    "polonia", 10,
-    "argentina", 11,
-    "uruguay", 12
-)
+Titulo Fecha :=
+VAR FechaSeleccionada =
+    CALCULATE (
+        MAX ( Dates[Date] ),
+        Dates[M] = TRUE()
+    )
+RETURN
+    FORMAT ( FechaSeleccionada, "MMM yy" )
