@@ -1,8 +1,25 @@
-Titulo Stress Fecha Max :=
-VAR FechaMax =
-    CALCULATE (
-        MAX ( escenarios_stress[fecha] ),
-        ALLEXCEPT ( escenarios_stress, escenarios_stress[cc] )
+UltimaFechaPorPais =
+CALCULATE(
+    MAX ( 'vista_salida_escenario_stress'[fecha] ),
+    ALLEXCEPT(
+        'vista_salida_escenario_stress',
+        'vista_salida_escenario_stress'[pais]
     )
+)
+
+UltimaFechaPorPais_Label =
+VAR d = [UltimaFechaPorPais]
+VAR y = YEAR(d)
+VAR m = MONTH(d)
+VAR labelMes =
+    SWITCH(
+        TRUE(),
+        m IN { 3, 4, 5 }, "Mar",
+        m IN { 6, 7, 8 }, "Jun",
+        m IN { 9, 10, 11 }, "Sep",
+        m IN { 12, 1, 2 }, "Dec"
+    )
+VAR labelAnio =
+    IF( m IN { 1, 2 }, y - 1, y )  -- Ene/Feb pertenecen a Dic del año anterior
 RETURN
-    FORMAT ( FechaMax, "MMM yy" )
+labelMes & " " & FORMAT( DATE(labelAnio, 1, 1), "yy" )
