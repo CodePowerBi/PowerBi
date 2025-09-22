@@ -1,25 +1,24 @@
-UltimaFechaPorPais =
-CALCULATE(
-    MAX ( 'vista_salida_escenario_stress'[fecha] ),
-    ALLEXCEPT(
-        'vista_salida_escenario_stress',
-        'vista_salida_escenario_stress'[pais]
+Columna_FechaTrimestreAnterior = 
+VAR FechaActualPais = 
+    CALCULATE(
+        MAX('tablones_des_vista_salida_daily_lcr_ddbb'[date]),
+        ALLEXCEPT('tablones_des_vista_salida_daily_lcr_ddbb', 'tablones_des_vista_salida_daily_lcr_ddbb'[pais])
     )
-)
+VAR MesActual = MONTH(FechaActualPais)
+VAR AnioActual = YEAR(FechaActualPais)
+VAR TrimestreActual = INT((MesActual - 1) / 3) + 1
 
-UltimaFechaPorPais_Label =
-VAR d = [UltimaFechaPorPais]
-VAR y = YEAR(d)
-VAR m = MONTH(d)
-VAR labelMes =
+VAR PrimerMesTrimestreActual =
     SWITCH(
-        TRUE(),
-        m IN { 3, 4, 5 }, "Mar",
-        m IN { 6, 7, 8 }, "Jun",
-        m IN { 9, 10, 11 }, "Sep",
-        m IN { 12, 1, 2 }, "Dec"
+        TrimestreActual,
+        1, 1,
+        2, 4,
+        3, 7,
+        4, 10
     )
-VAR labelAnio =
-    IF( m IN { 1, 2 }, y - 1, y )  -- Ene/Feb pertenecen a Dic del año anterior
+
+VAR MesAnterior = IF(PrimerMesTrimestreActual = 1, 12, PrimerMesTrimestreActual - 1)
+VAR AnioAnterior = IF(PrimerMesTrimestreActual = 1, AnioActual - 1, AnioActual)
+
 RETURN
-labelMes & " " & FORMAT( DATE(labelAnio, 1, 1), "yy" )
+    FORMAT(DATE(AnioAnterior, MesAnterior, 1), "MMM YY", "en-US")
