@@ -1,10 +1,41 @@
-Fecha M (texto, "jun 24") =
-VAR F =
-    CALCULATE(
-        MAX( Dates[Date] ),
-        ALL( Dates ),          -- o quita ALL( Dates ) si quieres que respete filtros
-        Dates[M] = TRUE()
+MaxFechaVálida_formateada = 
+VAR MaxFechaValida =
+    CALCULATE (
+        MAX ( 'vista_salida_nsfr'[fecha] ),
+        FILTER (
+            ALL ( 'vista_salida_nsfr' ),
+            'vista_salida_nsfr'[nsfr] <> 0
+                && 'vista_salida_nsfr'[id_unit] = PaisActual
+        )
     )
-VAR T = IF( NOT( ISBLANK( F ) ), FORMAT( F, "MMM yy" ), BLANK() )
+
+VAR MesVal = MONTH ( MaxFechaValida )
+VAR AnioVal = YEAR ( MaxFechaValida )
+VAR Trime = INT ( ( MesVal - 1 ) / 3 ) + 1
+
+VAR MesFinalTrim =
+    SWITCH (
+        Trime,
+        1, 3,
+        2, 6,
+        3, 9,
+        4, 12,
+        BLANK ()
+    )
+
+VAR FechaTrim =
+    IF (
+        NOT ISBLANK ( MaxFechaValida ),
+        DATE ( AnioVal, MesFinalTrim, 1 ),
+        BLANK ()
+    )
+
+VAR TextoFormateado =
+    IF (
+        NOT ISBLANK ( FechaTrim ),
+        FORMAT ( FechaTrim, "MMM yy", "en-US" ),
+        BLANK ()
+    )
+
 RETURN
-IF( NOT( ISBLANK( T ) ), LOWER( SUBSTITUTE( T, ".", "" ) ), BLANK() )
+    TextoFormateado
