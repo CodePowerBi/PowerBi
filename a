@@ -1,6 +1,10 @@
-Fecha M (Date, global) =
-CALCULATE(
-    MAX( Dates[Date] ),
-    ALL( Dates ),
-    Dates[M] = TRUE()
-)
+Fecha M (texto, "jun 24") =
+VAR F =
+    CALCULATE(
+        MAX( Dates[Date] ),
+        ALL( Dates ),          -- o quita ALL( Dates ) si quieres que respete filtros
+        Dates[M] = TRUE()
+    )
+VAR T = IF( NOT( ISBLANK( F ) ), FORMAT( F, "MMM yy" ), BLANK() )
+RETURN
+IF( NOT( ISBLANK( T ) ), LOWER( SUBSTITUTE( T, ".", "" ) ), BLANK() )
