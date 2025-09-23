@@ -1,4 +1,4 @@
-MaxFecha_Válida_NSFR_PorPais =
+MaxFecha_Válida_NSFR_PorPais_Texto =
 VAR PaisActual = 'vista_salida_nsfr'[pais]
 
 VAR MaxFechaValida =
@@ -25,8 +25,21 @@ VAR MesFinalTrim =
         BLANK()
     )
 
+VAR FechaTrim =
+    IF( NOT( ISBLANK( MaxFechaValida ) ),
+        DATE( AnioVal, MesFinalTrim, 1 ),
+        BLANK()
+    )
+
+VAR TextoFormateado =
+    IF( NOT( ISBLANK( FechaTrim ) ),
+        FORMAT( FechaTrim, "MMM yy" ),
+        BLANK()
+    )
+
 RETURN
-IF( NOT( ISBLANK( MaxFechaValida ) ),
-    DATE( AnioVal, MesFinalTrim, 1 ),
+IF(
+    NOT( ISBLANK( TextoFormateado ) ),
+    LOWER( SUBSTITUTE( TextoFormateado, ".", "" ) ),  -- quita posibles puntos y pasa a minúsculas
     BLANK()
 )
