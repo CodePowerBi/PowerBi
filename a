@@ -1,5 +1,32 @@
-Fecha T (texto) =
-FORMAT(
-    CALCULATE( MAX( Dates[Date] ), Dates[M] = TRUE() ),
-    "MMM yy"
+MaxFecha_Válida_NSFR_PorPais =
+VAR PaisActual = 'vista_salida_nsfr'[pais]
+
+VAR MaxFechaValida =
+    CALCULATE(
+        MAX( 'vista_salida_nsfr'[fecha] ),
+        FILTER(
+            ALL( 'vista_salida_nsfr' ),
+            'vista_salida_nsfr'[nsfr] <> 0
+            && 'vista_salida_nsfr'[pais] = PaisActual
+        )
+    )
+
+VAR MesVal  = MONTH( MaxFechaValida )
+VAR AnioVal = YEAR(  MaxFechaValida )
+VAR Trime   = INT( ( MesVal - 1 ) / 3 ) + 1
+
+VAR MesFinalTrim =
+    SWITCH(
+        Trime,
+        1, 3,
+        2, 6,
+        3, 9,
+        4, 12,
+        BLANK()
+    )
+
+RETURN
+IF( NOT( ISBLANK( MaxFechaValida ) ),
+    DATE( AnioVal, MesFinalTrim, 1 ),
+    BLANK()
 )
