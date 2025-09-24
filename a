@@ -1,41 +1,20 @@
-MaxFechaVálida_formateada = 
-VAR MaxFechaValida =
-    CALCULATE (
-        MAX ( 'vista_salida_nsfr'[fecha] ),
-        FILTER (
-            ALL ( 'vista_salida_nsfr' ),
-            'vista_salida_nsfr'[nsfr] <> 0
-                && 'vista_salida_nsfr'[id_unit] = PaisActual
-        )
+Over Outflows media porcentaje = 
+DIVIDE(
+    CALCULATE(
+        SUM('tablones_des mrf_comprobaciones_eba_hbla'[three_notches]) +
+        SUM('tablones_des mrf_comprobaciones_eba_hbla'[hlba])
+    ),
+    CALCULATE(
+        SUM('tablones_des mrf_comprobaciones_eba'[outflows]),
+        'tablones_des mrf_comprobaciones_eba'[MONEDA] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" },
+        TREATAS(
+            VALUES('tablones_des mrf_comprobaciones_eba_hbla'[effective_date]),
+            'tablones_des mrf_comprobaciones_eba'[effective_date]
+        ),
+        TREATAS(
+            VALUES('tablones_des mrf_comprobaciones_eba_hbla'[pais]),
+            'tablones_des mrf_comprobaciones_eba'[pais]
+        ),
+        'tablones_des mrf_comprobaciones_eba'[sheet] = 1
     )
-
-VAR MesVal = MONTH ( MaxFechaValida )
-VAR AnioVal = YEAR ( MaxFechaValida )
-VAR Trime = INT ( ( MesVal - 1 ) / 3 ) + 1
-
-VAR MesFinalTrim =
-    SWITCH (
-        Trime,
-        1, 3,
-        2, 6,
-        3, 9,
-        4, 12,
-        BLANK ()
-    )
-
-VAR FechaTrim =
-    IF (
-        NOT ISBLANK ( MaxFechaValida ),
-        DATE ( AnioVal, MesFinalTrim, 1 ),
-        BLANK ()
-    )
-
-VAR TextoFormateado =
-    IF (
-        NOT ISBLANK ( FechaTrim ),
-        FORMAT ( FechaTrim, "MMM yy", "en-US" ),
-        BLANK ()
-    )
-
-RETURN
-    TextoFormateado
+)
