@@ -2,7 +2,11 @@ informe_regulatorio_copy =
 VAR MaxEffDate =
     MAXX( 'datos_manuales_ajustados', 'datos_manuales_ajustados'[effective_date] )
 RETURN
-FILTER(
-    'informe_regulatorio',
-    'informe_regulatorio'[fecha] <= MaxEffDate
+ADDCOLUMNS(
+    FILTER(
+        'informe_regulatorio',
+        'informe_regulatorio'[fecha] <= MaxEffDate
+    ),
+    "MaxEffectiveDate", MaxEffDate,
+    "MaxEffectiveLabel", FORMAT( MaxEffDate, "yyyy-MM-dd" )
 )
