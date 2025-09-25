@@ -1,20 +1,46 @@
-Over Outflows media porcentaje = 
-DIVIDE(
+ValorUltMesTrimestre =
+VAR ThisDate     = 'Tabla'[Fecha]
+VAR ThisYear     = YEAR( ThisDate )
+VAR ThisQuarter  = QUARTER( ThisDate )
+VAR TargetMonth  = SWITCH( ThisQuarter, 1, 3, 2, 6, 3, 9, 4, 12 )
+
+VAR MaxDateTarget =
     CALCULATE(
-        SUM('tablones_des mrf_comprobaciones_eba_hbla'[three_notches]) +
-        SUM('tablones_des mrf_comprobaciones_eba_hbla'[hlba])
-    ),
-    CALCULATE(
-        SUM('tablones_des mrf_comprobaciones_eba'[outflows]),
-        'tablones_des mrf_comprobaciones_eba'[MONEDA] IN { "USD", "MXN", "GBP", "EUR", "CLP", "BRL" },
-        TREATAS(
-            VALUES('tablones_des mrf_comprobaciones_eba_hbla'[effective_date]),
-            'tablones_des mrf_comprobaciones_eba'[effective_date]
-        ),
-        TREATAS(
-            VALUES('tablones_des mrf_comprobaciones_eba_hbla'[pais]),
-            'tablones_des mrf_comprobaciones_eba'[pais]
-        ),
-        'tablones_des mrf_comprobaciones_eba'[sheet] = 1
+        MAX( 'Tabla'[Fecha] ),
+        FILTER(
+            ALL( 'Tabla' ),
+            YEAR( 'Tabla'[Fecha] ) = ThisYear
+            && MONTH( 'Tabla'[Fecha] ) = TargetMonth
+        )
     )
-)
+
+VAR ValorTarget =
+    IF(
+        NOT( ISBLANK( MaxDateTarget ) ),
+        CALCULATE( SUM( 'Tabla'[Valor] ), 'Tabla'[Fecha] = MaxDateTarget ),
+        BLANK()
+    )
+
+VAR PrevQuarter  = ThisQuarter - 1
+VAR PrevYear     = IF( PrevQuarter = 0, ThisYear - 1, ThisYear )
+VAR PrevTargetMonth = SWITCH( PrevQuarter, 1, 3, 2, 6, 3, 9, 4, 12 )
+
+VAR MaxDatePrev =
+    CALCULATE(
+        MAX( 'Tabla'[Fecha] ),
+        FILTER(
+            ALL( 'Tabla' ),
+            YEAR( 'Tabla'[Fecha] ) = PrevYear
+            && MONTH( 'Tabla'[Fecha] ) = PrevTargetMonth
+        )
+    )
+
+VAR ValorPrev =
+    IF(
+        NOT( ISBLANK( MaxDatePrev ) ),
+        CALCULATE( SUM( 'Tabla'[Valor] ), 'Tabla'[Fecha] = MaxDatePrev ),
+        BLANK()
+    )
+
+RETURN
+COALESCE( ValorTarget, ValorPrev )
