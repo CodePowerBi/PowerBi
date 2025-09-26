@@ -1,8 +1,7 @@
-TOTAL COLUMNA Celeste prueba :=
+Titulo Fecha Usada :=
 VAR FechaCtx = EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
-VAR ValorCtx = [Total NSFR RSF Num]
 
--- Último fin de trimestre con datos en informe_regulatorio <= FechaCtx
+-- Fecha que realmente se está usando (con fallback)
 VAR FechaObjetivoIR =
     CALCULATE (
         MAX ( 'informe_regulatorio'[fecha] ),
@@ -14,14 +13,5 @@ VAR FechaObjetivoIR =
         )
     )
 
--- Recalcula la medida numérica en la fecha objetivo (ej. septiembre)
-VAR ValorFallback =
-    CALCULATE (
-        [Total NSFR RSF Num],
-        REMOVEFILTERS ( 'Dates' ),
-        TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )
-    )
-
-VAR ValorFinal = COALESCE ( ValorCtx, ValorFallback )
 RETURN
-FORMAT ( ValorFinal, "0.0" ) & " bn NSFR RSF"
+FORMAT ( FechaObjetivoIR, "mmm yy" )
