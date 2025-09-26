@@ -1,17 +1,8 @@
-Titulo Fecha Usada :=
-VAR FechaCtx = EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
-
--- Fecha que realmente se está usando (con fallback)
-VAR FechaObjetivoIR =
-    CALCULATE (
-        MAX ( 'informe_regulatorio'[fecha] ),
-        REMOVEFILTERS ( 'informe_regulatorio' ),
-        FILTER (
-            ALL ( 'informe_regulatorio'[fecha] ),
-            'informe_regulatorio'[fecha] <= FechaCtx
-                && MONTH ( 'informe_regulatorio'[fecha] ) IN { 3, 6, 9, 12 }
-        )
-    )
-
+Titulo_Mes_ENG :=
+VAR _fecha = MAX( 'mrf_backtesting'[fecha] )
 RETURN
-FORMAT ( FechaObjetivoIR, "mmm yy" )
+IF(
+    NOT( ISBLANK( _fecha ) ),
+    FORMAT( _fecha, "MMMM yyyy", "en-US" ),
+    BLANK()
+)
