@@ -1,27 +1,16 @@
+-- Reutiliza tu medida base
 TOTAL COLUMNA Celeste prueba :=
-VAR FechaMaxDates =
-    CALCULATE ( MAX ( 'Dates'[Date] ), ALL ( 'Dates' ) )
-
--- Intento en la fecha máxima del calendario
-VAR ValorEnFechaMax =
-    CALCULATE ( [MiMedidaBase], TREATAS ( { FechaMaxDates }, 'Dates'[Date] ) )
-
--- Último fin de trimestre con datos en informe_regulatorio <= FechaMaxDates
-VAR FechaObjetivoIR =
+VAR FechaCtx -- fin de mes según el contexto del calendario (p.ej., 31/12/2024 si seleccionas dic-24)
+    = EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
+VAR FechaObjetivoIR -- último cierre de trimestre con datos ≤ FechaCtx (mar/jun/sep/dic)
+    =
     CALCULATE (
         MAX ( 'informe_regulatorio'[fecha] ),
         FILTER (
             ALL ( 'informe_regulatorio'[fecha] ),
-            'informe_regulatorio'[fecha] <= FechaMaxDates
+            'informe_regulatorio'[fecha] <= FechaCtx
                 && MONTH ( 'informe_regulatorio'[fecha] ) IN { 3, 6, 9, 12 }
         )
     )
-
--- Evalúa la medida base en esa fecha objetivo
-VAR ValorEnFechaObjetivo =
-    CALCULATE (
-        [MiMedidaBase],
-        KEEPFILTERS ( 'informe_regulatorio'[fecha] = FechaObjetivoIR )
-    )
 RETURN
-COALESCE ( ValorEnFechaMax, ValorEnFechaObjetivo )
+CALCULATE ( [MiMedidaBase], KEEPFILTERS ( 'informe_regulatorio'[fecha] = FechaObjetivoIR ) )
