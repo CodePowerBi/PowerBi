@@ -1,13 +1,13 @@
--- Factor común (opcional)
-_Base Celeste :=
-DIVIDE ( [Conjunto_1] + [Conjunto_2] + [Conjunto_3] + [Conjunto_4] + [Conjunto_5], 1000 )
-
 TOTAL COLUMNA Celeste prueba :=
 VAR FechaMaxDates =
     CALCULATE ( MAX ( 'Dates'[Date] ), ALL ( 'Dates' ) )
 
--- Último fin de trimestre con datos en la tabla de hechos, no posterior a FechaMaxDates
-VAR FechaObjetivo :=
+-- Intento en la fecha máxima del calendario
+VAR ValorEnFechaMax =
+    CALCULATE ( [MiMedidaBase], TREATAS ( { FechaMaxDates }, 'Dates'[Date] ) )
+
+-- Último fin de trimestre con datos en informe_regulatorio <= FechaMaxDates
+VAR FechaObjetivoIR =
     CALCULATE (
         MAX ( 'informe_regulatorio'[fecha] ),
         FILTER (
@@ -16,6 +16,12 @@ VAR FechaObjetivo :=
                 && MONTH ( 'informe_regulatorio'[fecha] ) IN { 3, 6, 9, 12 }
         )
     )
+
+-- Evalúa la medida base en esa fecha objetivo
+VAR ValorEnFechaObjetivo =
+    CALCULATE (
+        [MiMedidaBase],
+        KEEPFILTERS ( 'informe_regulatorio'[fecha] = FechaObjetivoIR )
+    )
 RETURN
--- Evalúa la medida en esa fecha objetivo (p.ej., septiembre)
-CALCULATE ( [_Base Celeste], TREATAS ( { FechaObjetivo }, 'Dates'[Date] ) )
+COALESCE ( ValorEnFechaMax, ValorEnFechaObjetivo )
