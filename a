@@ -1,15 +1,12 @@
--- Usa tu medida base existente
 TOTAL COLUMNA Celeste prueba :=
-VAR FechaCtx =
-    EOMONTH ( MAX ( 'Dates'[Date] ), 0 )                 -- p.ej. 31/dic/2024
-VAR ValorCtx =
-    [MiMedidaBase]                                       -- lo que ya tienes
+VAR FechaCtx = EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
+VAR ValorCtx = [Total NSFR RSF Num]
 
--- Buscar en la tabla de hechos el último fin de trimestre <= FechaCtx
+-- Último fin de trimestre con datos en informe_regulatorio <= FechaCtx
 VAR FechaObjetivoIR =
     CALCULATE (
         MAX ( 'informe_regulatorio'[fecha] ),
-        REMOVEFILTERS ( 'informe_regulatorio' ),         -- evita herencia del slicer
+        REMOVEFILTERS ( 'informe_regulatorio' ),
         FILTER (
             ALL ( 'informe_regulatorio'[fecha] ),
             'informe_regulatorio'[fecha] <= FechaCtx
@@ -17,12 +14,14 @@ VAR FechaObjetivoIR =
         )
     )
 
--- Fallback: evaluar la medida como si el calendario estuviera en FechaObjetivoIR (sep)
-VAR ValorFallback :=
+-- Recalcula la medida numérica en la fecha objetivo (ej. septiembre)
+VAR ValorFallback =
     CALCULATE (
-        [MiMedidaBase],
-        REMOVEFILTERS ( 'Dates' ),                        -- ignora el slicer de diciembre
-        TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )    -- fija el contexto a sep con datos
+        [Total NSFR RSF Num],
+        REMOVEFILTERS ( 'Dates' ),
+        TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )
     )
+
+VAR ValorFinal = COALESCE ( ValorCtx, ValorFallback )
 RETURN
-COALESCE ( ValorCtx, ValorFallback )
+FORMAT ( ValorFinal, "0.0" ) & " bn NSFR RSF"
