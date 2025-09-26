@@ -1,26 +1,21 @@
-TOTAL COLUMNA Celeste prueba =
-VAR ResultadoActual =
-    DIVIDE (
-        [Conjunto_1] + [Conjunto_2] + [Conjunto_3] + [Conjunto_4] + [Conjunto_5],
-        1000
-    )
-VAR FechaActual = MAX ( 'TuTabla'[Fecha] )
-VAR TrimestreAnterior =
-    EOMONTH ( FechaActual, -3 )   -- último mes del trimestre anterior
-VAR ResultadoAnterior =
+-- Factor común (opcional)
+_Base Celeste :=
+DIVIDE ( [Conjunto_1] + [Conjunto_2] + [Conjunto_3] + [Conjunto_4] + [Conjunto_5], 1000 )
+
+TOTAL COLUMNA Celeste prueba :=
+VAR FechaMaxDates =
+    CALCULATE ( MAX ( 'Dates'[Date] ), ALL ( 'Dates' ) )
+
+-- Último fin de trimestre con datos en la tabla de hechos, no posterior a FechaMaxDates
+VAR FechaObjetivo :=
     CALCULATE (
-        DIVIDE (
-            [Conjunto_1] + [Conjunto_2] + [Conjunto_3] + [Conjunto_4] + [Conjunto_5],
-            1000
-        ),
+        MAX ( 'informe_regulatorio'[fecha] ),
         FILTER (
-            ALL ( 'TuTabla' ),
-            'TuTabla'[Fecha] = TrimestreAnterior
+            ALL ( 'informe_regulatorio'[fecha] ),
+            'informe_regulatorio'[fecha] <= FechaMaxDates
+                && MONTH ( 'informe_regulatorio'[fecha] ) IN { 3, 6, 9, 12 }
         )
     )
 RETURN
-IF (
-    ISBLANK ( ResultadoActual ),
-    ResultadoAnterior,
-    ResultadoActual
-)
+-- Evalúa la medida en esa fecha objetivo (p.ej., septiembre)
+CALCULATE ( [_Base Celeste], TREATAS ( { FechaObjetivo }, 'Dates'[Date] ) )
