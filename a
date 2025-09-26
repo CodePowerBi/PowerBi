@@ -1,16 +1,28 @@
--- Reutiliza tu medida base
+-- Usa tu medida base existente
 TOTAL COLUMNA Celeste prueba :=
-VAR FechaCtx -- fin de mes según el contexto del calendario (p.ej., 31/12/2024 si seleccionas dic-24)
-    = EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
-VAR FechaObjetivoIR -- último cierre de trimestre con datos ≤ FechaCtx (mar/jun/sep/dic)
-    =
+VAR FechaCtx =
+    EOMONTH ( MAX ( 'Dates'[Date] ), 0 )                 -- p.ej. 31/dic/2024
+VAR ValorCtx =
+    [MiMedidaBase]                                       -- lo que ya tienes
+
+-- Buscar en la tabla de hechos el último fin de trimestre <= FechaCtx
+VAR FechaObjetivoIR =
     CALCULATE (
         MAX ( 'informe_regulatorio'[fecha] ),
+        REMOVEFILTERS ( 'informe_regulatorio' ),         -- evita herencia del slicer
         FILTER (
             ALL ( 'informe_regulatorio'[fecha] ),
             'informe_regulatorio'[fecha] <= FechaCtx
                 && MONTH ( 'informe_regulatorio'[fecha] ) IN { 3, 6, 9, 12 }
         )
     )
+
+-- Fallback: evaluar la medida como si el calendario estuviera en FechaObjetivoIR (sep)
+VAR ValorFallback :=
+    CALCULATE (
+        [MiMedidaBase],
+        REMOVEFILTERS ( 'Dates' ),                        -- ignora el slicer de diciembre
+        TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )    -- fija el contexto a sep con datos
+    )
 RETURN
-CALCULATE ( [MiMedidaBase], KEEPFILTERS ( 'informe_regulatorio'[fecha] = FechaObjetivoIR ) )
+COALESCE ( ValorCtx, ValorFallback )
