@@ -1,12 +1,26 @@
-informe_regulatorio_copy =
-VAR MaxEffDate =
-    MAXX( 'datos_manuales_ajustados', 'datos_manuales_ajustados'[effective_date] )
+TOTAL COLUMNA Celeste prueba =
+VAR ResultadoActual =
+    DIVIDE (
+        [Conjunto_1] + [Conjunto_2] + [Conjunto_3] + [Conjunto_4] + [Conjunto_5],
+        1000
+    )
+VAR FechaActual = MAX ( 'TuTabla'[Fecha] )
+VAR TrimestreAnterior =
+    EOMONTH ( FechaActual, -3 )   -- último mes del trimestre anterior
+VAR ResultadoAnterior =
+    CALCULATE (
+        DIVIDE (
+            [Conjunto_1] + [Conjunto_2] + [Conjunto_3] + [Conjunto_4] + [Conjunto_5],
+            1000
+        ),
+        FILTER (
+            ALL ( 'TuTabla' ),
+            'TuTabla'[Fecha] = TrimestreAnterior
+        )
+    )
 RETURN
-ADDCOLUMNS(
-    FILTER(
-        'informe_regulatorio',
-        'informe_regulatorio'[fecha] <= MaxEffDate
-    ),
-    "MaxEffectiveDate", MaxEffDate,
-    "MaxEffectiveLabel", FORMAT( MaxEffDate, "yyyy-MM-dd" )
+IF (
+    ISBLANK ( ResultadoActual ),
+    ResultadoAnterior,
+    ResultadoActual
 )
