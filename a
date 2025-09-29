@@ -1,8 +1,13 @@
-Titulo_Mes_ENG :=
-VAR _fecha = MAX( 'mrf_backtesting'[fecha] )
+Valor Año Anterior (misma fecha) :=
+VAR d  = 'main_sheet'[Fecha]
+VAR m  = 'main_sheet'[Metric]
+VAR d_prev = EDATE(d, -12)       -- desplaza 12 meses (mejor que construir DATE(YEAR-1,...))
 RETURN
-IF(
-    NOT( ISBLANK( _fecha ) ),
-    FORMAT( _fecha, "MMMM yyyy", "en-US" ),
-    BLANK()
+CALCULATE(
+    MAX('main_sheet'[Valor]),     -- usa MAX si hay 1 fila por (Fecha, Metric); si no, cambia a SUM
+    FILTER(
+        ALL('main_sheet'),
+        'main_sheet'[Metric] = m
+            && 'main_sheet'[Fecha] = d_prev
+    )
 )
