@@ -1,10 +1,5 @@
-Valor PY (Año anterior completo) :=
-VAR YActual =
-    YEAR ( MAX ( 'DimFecha'[Fecha] ) )
-VAR InicioPY = DATE ( YActual - 1, 1, 1 )
-VAR FinPY    = DATE ( YActual - 1, 12, 31 )
+Título Valor PY :=
+VAR YearCtx =
+    COALESCE( SELECTEDVALUE('DimFecha'[Año]), YEAR ( MAX ( 'DimFecha'[Fecha] ) ) )
 RETURN
-CALCULATE (
-    SUM ( 'main_sheet'[Valor] ),
-    DATESBETWEEN ( 'DimFecha'[Fecha], InicioPY, FinPY )
-)
+IF ( ISBLANK(YearCtx), "Año anterior completo", "Año anterior completo (" & YearCtx - 1 & ")" )
