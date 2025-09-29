@@ -1,5 +1,17 @@
-Título Valor PY :=
-VAR YearCtx =
-    COALESCE( SELECTEDVALUE('DimFecha'[Año]), YEAR ( MAX ( 'DimFecha'[Fecha] ) ) )
+Acumulado YTD (columna) :=
+VAR d = 'main_sheet'[Fecha]
 RETURN
-IF ( ISBLANK(YearCtx), "Año anterior completo", "Año anterior completo (" & YearCtx - 1 & ")" )
+CALCULATE(
+    SUM ( 'main_sheet'[Valor] ),
+    FILTER(
+        ALLEXCEPT(
+            'main_sheet',
+            'main_sheet'[Metric],
+            'main_sheet'[id_unit_curr],
+            'main_sheet'[id_segment_aggr],
+            'main_sheet'[id_source_currency]
+        ),
+        YEAR ( 'main_sheet'[Fecha] ) = YEAR ( d )     -- mismo año
+            && 'main_sheet'[Fecha] <= d               -- hasta la fecha actual
+    )
+)
