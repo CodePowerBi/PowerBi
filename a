@@ -1,7 +1,10 @@
-Título Valor Año Anterior :=
-VAR d = MAX('main_sheet'[Fecha])         -- fecha en el contexto del visual
-VAR d_prev = EDATE(d, -12)               -- 12 meses atrás
+Valor PY (Año anterior completo) :=
+VAR YActual =
+    YEAR ( MAX ( 'DimFecha'[Fecha] ) )
+VAR InicioPY = DATE ( YActual - 1, 1, 1 )
+VAR FinPY    = DATE ( YActual - 1, 12, 31 )
 RETURN
-"Valor Año Anterior (" 
-    & FORMAT(d_prev, "mmm yy")           -- Ejemplo: Sep 24
-    & ")"
+CALCULATE (
+    SUM ( 'main_sheet'[Valor] ),
+    DATESBETWEEN ( 'DimFecha'[Fecha], InicioPY, FinPY )
+)
