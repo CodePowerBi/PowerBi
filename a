@@ -1,17 +1,8 @@
-Acumulado YTD (columna) :=
-VAR d = 'main_sheet'[Fecha]
+Título Acumulado YTD :=
+VAR FechaMax   = MAX ( 'DimFecha'[Fecha] )
+VAR Año        = YEAR ( FechaMax )
+VAR InicioAño  = DATE ( Año, 1, 1 )
 RETURN
-CALCULATE(
-    SUM ( 'main_sheet'[Valor] ),
-    FILTER(
-        ALLEXCEPT(
-            'main_sheet',
-            'main_sheet'[Metric],
-            'main_sheet'[id_unit_curr],
-            'main_sheet'[id_segment_aggr],
-            'main_sheet'[id_source_currency]
-        ),
-        YEAR ( 'main_sheet'[Fecha] ) = YEAR ( d )     -- mismo año
-            && 'main_sheet'[Fecha] <= d               -- hasta la fecha actual
-    )
-)
+"Acumulado YTD (" 
+    & FORMAT ( InicioAño, "dd MMM yy" ) & " – " 
+    & FORMAT ( FechaMax,   "dd MMM yy" ) & ")"
