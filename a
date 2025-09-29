@@ -1,13 +1,7 @@
-Valor Año Anterior (misma fecha) :=
-VAR d  = 'main_sheet'[Fecha]
-VAR m  = 'main_sheet'[Metric]
-VAR d_prev = EDATE(d, -12)       -- desplaza 12 meses (mejor que construir DATE(YEAR-1,...))
+Título Valor Año Anterior :=
+VAR d = MAX('main_sheet'[Fecha])         -- fecha en el contexto del visual
+VAR d_prev = EDATE(d, -12)               -- 12 meses atrás
 RETURN
-CALCULATE(
-    MAX('main_sheet'[Valor]),     -- usa MAX si hay 1 fila por (Fecha, Metric); si no, cambia a SUM
-    FILTER(
-        ALL('main_sheet'),
-        'main_sheet'[Metric] = m
-            && 'main_sheet'[Fecha] = d_prev
-    )
-)
+"Valor Año Anterior (" 
+    & FORMAT(d_prev, "mmm yy")           -- Ejemplo: Sep 24
+    & ")"
