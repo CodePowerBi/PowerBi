@@ -1,8 +1,11 @@
-Título Acumulado YTD :=
-VAR FechaMax   = MAX ( 'DimFecha'[Fecha] )
-VAR Año        = YEAR ( FechaMax )
-VAR InicioAño  = DATE ( Año, 1, 1 )
+Valor YTD :=
+VAR LastDate = MAX ( 'DimFecha'[Fecha] )
 RETURN
-"Acumulado YTD (" 
-    & FORMAT ( InicioAño, "dd MMM yy" ) & " – " 
-    & FORMAT ( FechaMax,   "dd MMM yy" ) & ")"
+CALCULATE(
+    SUM ( 'main_sheet'[Valor] ),
+    FILTER(
+        ALL ( 'DimFecha' ),                         -- ignora el filtro de mes del slicer
+        'DimFecha'[Fecha] <= LastDate
+            && YEAR ( 'DimFecha'[Fecha] ) = YEAR ( LastDate )   -- mismo año
+    )
+)
