@@ -1,8 +1,6 @@
-ValorMetrica =
-SWITCH (
-    SELECTEDVALUE ( 'DiccMetricas'[metric] ),
-    "num_crsp_ytd", SUM ( 'Hechos'[num_crsp_ytd] ),
-    "num_ncl_ytd",  SUM ( 'Hechos'[num_ncl_ytd] ),
-    "num_depsp_ytd", SUM ( 'Hechos'[num_depsp_ytd] ),
-    BLANK()
-)
+Metric_Base =
+VAR s = 'DiccMetricas'[metric]
+VAR pos1 = SEARCH("_", s, 1, 0)
+VAR pos2 = SEARCH("_", s, pos1 + 1, 0)
+RETURN
+MID(s, pos1 + 1, pos2 - pos1 - 1)
