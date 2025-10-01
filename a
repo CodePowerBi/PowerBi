@@ -1,17 +1,5 @@
-Acumulado YTD (columna) :=
-VAR d = 'main_sheet'[Fecha]
+Metric_Base =
+VAR pos1 = SEARCH("_", 'TuTabla'[Metric], 1, -1)
+VAR pos2 = SEARCH("_", 'TuTabla'[Metric], pos1 + 1, -1)
 RETURN
-CALCULATE(
-    SUM ( 'main_sheet'[Valor] ),
-    FILTER(
-        ALLEXCEPT(
-            'main_sheet',
-            'main_sheet'[Metric],
-            'main_sheet'[id_unit_curr],
-            'main_sheet'[id_segment_aggr],
-            'main_sheet'[id_source_currency]
-        ),
-        YEAR ( 'main_sheet'[Fecha] ) = YEAR ( d )
-            && 'main_sheet'[Fecha] <= d
-    )
-)
+MID ( 'TuTabla'[Metric], pos1 + 1, pos2 - pos1 - 1 )
