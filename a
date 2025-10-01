@@ -1,37 +1,29 @@
--- 1) Parte fija de la métrica (fila: ncl, lcl, etc.)
 Metric_Base =
-VAR s    = 'bbdd'[Metric] & ""          -- fuerza a texto y evita errores con BLANK
-VAR pos1 = SEARCH("_", s, 1, 0)         -- 0 si no encuentra
+VAR s    = 'bbdd'[Metric] & ""
+VAR pos1 = SEARCH("_", s, 1, 0)
 VAR pos2 = IF(pos1 > 0, SEARCH("_", s, pos1 + 1, 0), 0)
 RETURN
 IF(pos1 > 0 && pos2 > pos1,
-    MID(s, pos1 + 1, pos2 - pos1 - 1),  -- ejemplo: num_ncl_ytd -> ncl
-    BLANK()
+    MID(s, pos1 + 1, pos2 - pos1 - 1),     -- ejemplo: num_ncl_ytd → ncl
+    IF(pos1 > 0,
+        RIGHT(s, LEN(s) - pos1),           -- si solo tiene un “_” (ej: num_capital → capital)
+        s                                  -- si no tiene ninguno, se queda entero
+    )
 )
 
 
-______________
-
--- 3) (Opcional) Normalizar etiquetas para usarlas como encabezados
-Period_Group_Norm =
-VAR p = LOWER('bbdd'[Period_Group])
-RETURN
-SWITCH(TRUE(),
-    p = "m",    "M",
-    p = "ytd",  "YTD",
-    p = "12m",  "12M",
-    'bbdd'[Period_Group]               -- por si aparece algo distinto
-)
-
-
-___________
+____
 
 Period_Group =
-VAR s      = 'bbdd'[Metric] & ""
-VAR pos1   = SEARCH("_", s, 1, 0)
-VAR pos2   = IF(pos1 > 0, SEARCH("_", s, pos1 + 1, 0), 0)
+VAR s    = 'bbdd'[Metric] & ""
+VAR pos1 = SEARCH("_", s, 1, 0)
+VAR pos2 = IF(pos1 > 0, SEARCH("_", s, pos1 + 1, 0), 0)
 RETURN
 IF(pos2 > 0,
-    RIGHT(s, LEN(s) - pos2),            -- ejemplo: num_ncl_ytd -> ytd
-    BLANK()
+    RIGHT(s, LEN(s) - pos2),   -- ejemplo: num_ncl_ytd → ytd
+    "Sin Grupo"                -- aquí entran las que no tengan sufijo
 )
+
+
+______
+
