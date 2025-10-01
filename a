@@ -1,9 +1,8 @@
-Period_Order =
+ValorMetrica =
 SWITCH (
-    TRUE(),
-    LOWER('bbdd'[Period_Group]) = "12m", 1,
-    LOWER('bbdd'[Period_Group]) = "ytd", 2,
-    LOWER('bbdd'[Period_Group]) = "m",   3,
-    'bbdd'[Period_Group] = "Sin Grupo",  4,
-    5   -- por si aparece algo distinto
+    SELECTEDVALUE ( 'DiccMetricas'[metric] ),
+    "num_crsp_ytd", SUM ( 'Hechos'[num_crsp_ytd] ),
+    "num_ncl_ytd",  SUM ( 'Hechos'[num_ncl_ytd] ),
+    "num_depsp_ytd", SUM ( 'Hechos'[num_depsp_ytd] ),
+    BLANK()
 )
