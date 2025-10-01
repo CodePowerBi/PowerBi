@@ -1,6 +1,11 @@
 Metric_Base =
-VAR s = 'DiccMetricas'[metric]
-VAR pos1 = SEARCH("_", s, 1, 0)
-VAR pos2 = SEARCH("_", s, pos1 + 1, 0)
+VAR s     = TRIM ( 'DiccMetricas'[metric] & "" )
+VAR core  = IF ( LEFT ( s, 4 ) = "num_", MID ( s, 5, LEN ( s ) - 4 ), s )
+VAR cnt   = LEN ( core ) - LEN ( SUBSTITUTE ( core, "_", "" ) )
+VAR posLast =
+    IF ( cnt > 0, FIND ( "¤", SUBSTITUTE ( core, "_", "¤", cnt ), 1, 0 ), 0 )
 RETURN
-MID(s, pos1 + 1, pos2 - pos1 - 1)
+IF ( cnt = 0,
+     core,                               -- ej: "wroff"  -> base = "wroff"
+     LEFT ( core, posLast - 1 )          -- ej: "ncl_ytd" -> base = "ncl"
+)
