@@ -1,29 +1,9 @@
-Metric_Base =
-VAR s    = 'bbdd'[Metric] & ""
-VAR pos1 = SEARCH("_", s, 1, 0)
-VAR pos2 = IF(pos1 > 0, SEARCH("_", s, pos1 + 1, 0), 0)
-RETURN
-IF(pos1 > 0 && pos2 > pos1,
-    MID(s, pos1 + 1, pos2 - pos1 - 1),     -- ejemplo: num_ncl_ytd → ncl
-    IF(pos1 > 0,
-        RIGHT(s, LEN(s) - pos1),           -- si solo tiene un “_” (ej: num_capital → capital)
-        s                                  -- si no tiene ninguno, se queda entero
-    )
+Period_Order =
+SWITCH (
+    TRUE(),
+    LOWER('bbdd'[Period_Group]) = "12m", 1,
+    LOWER('bbdd'[Period_Group]) = "ytd", 2,
+    LOWER('bbdd'[Period_Group]) = "m",   3,
+    'bbdd'[Period_Group] = "Sin Grupo",  4,
+    5   -- por si aparece algo distinto
 )
-
-
-____
-
-Period_Group =
-VAR s    = 'bbdd'[Metric] & ""
-VAR pos1 = SEARCH("_", s, 1, 0)
-VAR pos2 = IF(pos1 > 0, SEARCH("_", s, pos1 + 1, 0), 0)
-RETURN
-IF(pos2 > 0,
-    RIGHT(s, LEN(s) - pos2),   -- ejemplo: num_ncl_ytd → ytd
-    "Sin Grupo"                -- aquí entran las que no tengan sufijo
-)
-
-
-______
-
