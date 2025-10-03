@@ -1,11 +1,22 @@
-Metric_Base =
-VAR s     = TRIM ( 'DiccMetricas'[metric] & "" )
-VAR core  = IF ( LEFT ( s, 4 ) = "num_", MID ( s, 5, LEN ( s ) - 4 ), s )
-VAR cnt   = LEN ( core ) - LEN ( SUBSTITUTE ( core, "_", "" ) )
-VAR posLast =
-    IF ( cnt > 0, FIND ( "¤", SUBSTITUTE ( core, "_", "¤", cnt ), 1, 0 ), 0 )
-RETURN
-IF ( cnt = 0,
-     core,                               -- ej: "wroff"  -> base = "wroff"
-     LEFT ( core, posLast - 1 )          -- ej: "ncl_ytd" -> base = "ncl"
+dicc_metrica_ext =
+UNION (
+    // Copia de todas las filas del diccionario original
+    SELECTCOLUMNS (
+        dicc_metrica,
+        "id", dicc_metrica[id],
+        "txt_field_bbdd", dicc_metrica[txt_field_bbdd],
+        "txt_period", dicc_metrica[txt_period],
+        "txt_calculation", dicc_metrica[txt_calculation]
+    ),
+    // Métricas calculadas añadidas manualmente
+    DATATABLE (
+        "id", INTEGER,
+        "txt_field_bbdd", STRING,
+        "txt_period", STRING,
+        "txt_calculation", STRING,
+        {
+            { 9001, "ncl_custom", "YTD", "Calculadas" },
+            { 9002, "otra_metrica", "M", "Calculadas" }
+        }
+    )
 )
