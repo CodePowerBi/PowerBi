@@ -1,23 +1,35 @@
-metric_ppt =
-VAR m = 'main_sheet'[metric]
-RETURN
+orden_country =
 SWITCH (
     TRUE(),
-    m IN {"Total Risk"},                                    "Total Risk",
-    m IN {"T. Risk in Stage 1","Total Risk S1"},            "Stage 1",
-    m IN {"T. Risk in Stage 2"},                            "Stage 2",
-    m IN {"T. Risk in Stage 3"},                            "Stage 3",
-    m IN {"% NPL (S3)","%NPL (S3)","% NPL(S3)"},            "% NPL (S3)",
-    m IN {"NPL (S3)"},                                      "NPL (S3)",
-    m IN {"NWO (mes)","NWO mes","Net Write Offs (Month)"},  "Net Write Offs (Month)",
-    m IN {"NWO 12M","NWO [12M]","Net Write Offs (12M)"},    "Net Write Offs (12M)",
-    m IN {"COC [12M]","COC 12M","CoR 12M","Cost of Credit (12M)"}, "COC (12M)",
-    m IN {"Total Coverage","Total Cov"},                    "Total Cov",
-    m IN {"S1 Coverage","S1 Cov"},                          "S1 Cov",
-    m IN {"S2 Coverage","S2 Cov"},                          "S2 Cov",
-    m IN {"S3 Coverage","S3 Cov"},                          "S3 Cov",
-    m IN {"Reserves"},                                      "Reserves",
-    m IN {"Reserves / Total Risk"},                         "Reserves / Total Risk",
-    /* Resto: lo dejo tal cual */
-    m
+    'main_sheet'[country] = "Total Grupo",                    1,
+    'main_sheet'[country] = "Spain",                          2,
+    'main_sheet'[country] = "UK",                             3,
+    'main_sheet'[country] = "Portugal",                       4,
+    'main_sheet'[country] = "Poland",                         5,
+    'main_sheet'[country] = "Other Europe",                   6,
+
+    'main_sheet'[country] = "Brazil",                         7,
+    'main_sheet'[country] = "Chile",                          8,
+    'main_sheet'[country] = "Argentina",                      9,
+    'main_sheet'[country] = "Uruguay",                       10,
+    'main_sheet'[country] = "Peru",                          11,
+    'main_sheet'[country] = "Colombia",                      12,
+    'main_sheet'[country] = "Other S. America",              13,
+
+    'main_sheet'[country] = "Total USA",                     14,
+    'main_sheet'[country] = "SBNA",                          15,
+    'main_sheet'[country] = "SCUSA",                         16,
+    'main_sheet'[country] = "Mexico",                        17,
+    'main_sheet'[country] = "New York",                      18,
+    'main_sheet'[country] = "Miami",                         19,
+    'main_sheet'[country] = "Corporate Center",              20,
+
+    /* No aparecen en la PPT → 99 */
+    'main_sheet'[country] IN {
+        "Open Bank","Other N. America","Puerto Rico","Rest USA",
+        "Resto Grupo","SCF","SCIB Europe","Total Grupo Sin Brasil",
+        "Other Europe","Other S. America"  /* (si tuvieras duplicados, quita uno de arriba) */
+    }, 99,
+
+    99
 )
