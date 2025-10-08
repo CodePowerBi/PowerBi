@@ -1,22 +1,39 @@
-Dim_Level = DATATABLE(
-    "Nivel", STRING,
+OrdenMetricas = 
+DATATABLE (
+    "metric", STRING,
+    "orden_metric", INTEGER,
     {
-        {"Group"},
-        {"Region"},
-        {"Countries"},
-        {"Unit"}
+        {"Total Risk", 1},
+        {"T. Risk in Stage 1", 2},
+        {"T. Risk in Stage 2", 3},
+        {"T. Risk in Stage 3", 4},
+        {"% NPL (S3)", 5},
+        {"NPL (S3)", 6},
+        {"NWO (mes)", 7},
+        {"NWO 12M", 8},
+        {"COC [12M]", 9},
+        {"Total Coverage", 10},
+        {"S1 Coverage", 11},
+        {"S2 Coverage", 12},
+        {"S3 Coverage", 13},
+        {"Reserves", 14},
+        {"Reserves / Total Risk", 15},
+        {"%S1", 99},
+        {"%S2", 99},
+        {"%S3", 99},
+        {"Denominador COC (Credit Risk Avg [12M])", 99},
+        {"Denominador del NPL%", 99},
+        {"NCLs", 99},
+        {"NCLs [12M]", 99},
+        {"NCLs YTD", 99},
+        {"NWO [12M] / Total Risk", 99},
+        {"O/w S1", 99},
+        {"O/w S2", 99},
+        {"O/w S3", 99},
+        {"Pase a Fallidos", 99},
+        {"Recoveries", 99},
+        {"Tasa de Recuperacion [12M]", 99},
+        {"Total Risk S1", 99},
+        {"Write Offs", 99}
     }
-)
-
-_________________
-
-Valor dinámico =
-VAR _nivel = SELECTEDVALUE(Dim_Level[Nivel])
-RETURN
-SWITCH(
-    _nivel,
-    "Group", CALCULATE(SUM('vision fact_main_sheet'[valor]), 'vision_dim_entity'[Level] = "Group"),
-    "Region", CALCULATE(SUM('vision fact_main_sheet'[valor]), 'vision_dim_entity'[Level] = "Region"),
-    "Countries", CALCULATE(SUM('vision fact_main_sheet'[valor]), 'vision_dim_entity'[Level] = "Country"),
-    "Unit", CALCULATE(SUM('vision fact_main_sheet'[valor]), 'vision_dim_entity'[Level] = "Unit")
 )
