@@ -24,12 +24,6 @@ SWITCH (
     'main_sheet'[country] = "Miami",                         19,
     'main_sheet'[country] = "Corporate Center",              20,
 
-    /* No aparecen en la PPT → 99 */
-    'main_sheet'[country] IN {
-        "Open Bank","Other N. America","Puerto Rico","Rest USA",
-        "Resto Grupo","SCF","SCIB Europe","Total Grupo Sin Brasil",
-        "Other Europe","Other S. America"  /* (si tuvieras duplicados, quita uno de arriba) */
-    }, 99,
-
+    /* Todo lo demás (no aparece en la PPT) → 99 */
     99
 )
