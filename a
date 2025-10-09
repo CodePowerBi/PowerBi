@@ -1,16 +1,11 @@
-Valor Formateado =
-SWITCH(
-    TRUE(),
-    'main_sheet'[metric_ppt] IN {
-        "Total Risk", "Stage 1", "Stage 2", "Stage 3",
-        "Net Write Offs (Month)", "Net Write Offs (12M)", "Reserves"
-    },
-        FORMAT('main_sheet'[valor_metric], "0"),
-
-    'main_sheet'[metric_ppt] IN {
-        "% NPL (S3)", "COC (12M)", "Total Cov", "S1 Cov", "S2 Cov", "S3 Cov"
-    },
-        FORMAT('main_sheet'[valor_metric], "0.00") & " %",
-
-    BLANK()
+Ultimos_2_Anios =
+VAR f = 'main_sheet'[fecha]
+VAR umbral = EDATE( TODAY(), -24 )   -- hoy menos 24 meses
+RETURN
+IF(
+    NOT ISBLANK(f) &&
+    f >= umbral &&
+    f <= TODAY(),
+    1,
+    0
 )
