@@ -1,4 +1,4 @@
-Valor Formateado = 
+Valor Formateado =
 SWITCH(
     TRUE(),
     'main_sheet'[metric_ppt] IN {
@@ -10,7 +10,7 @@ SWITCH(
     'main_sheet'[metric_ppt] IN {
         "% NPL (S3)", "COC (12M)", "Total Cov", "S1 Cov", "S2 Cov", "S3 Cov"
     },
-        FORMAT('main_sheet'[valor_metric], "0.00%"),
+        FORMAT('main_sheet'[valor_metric], "0.00") & " %",
 
     BLANK()
 )
