@@ -1,11 +1,8 @@
-Ultimos_2_Anios =
-VAR f = 'main_sheet'[fecha]
-VAR umbral = EDATE( TODAY(), -24 )   -- hoy menos 24 meses
-RETURN
-IF(
-    NOT ISBLANK(f) &&
-    f >= umbral &&
-    f <= TODAY(),
-    1,
-    0
+Orden_Fecha_Desc =
+RANKX (
+    ALL ( 'TuTabla'[Fecha] ),
+    'TuTabla'[Fecha],
+    ,
+    DESC,
+    DENSE
 )
