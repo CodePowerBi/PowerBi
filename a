@@ -1,8 +1,7 @@
-Orden_Fecha_Desc =
-RANKX (
-    ALL ( 'TuTabla'[Fecha] ),
-    'TuTabla'[Fecha],
-    ,
-    DESC,
-    DENSE
+Valor_Metrica =
+VAR nombre = 'main_sheet'[metric_ppt]
+RETURN
+LOOKUPVALUE(
+    dicc_metrica[valor],
+    dicc_metrica[nombre_metrica], nombre
 )
