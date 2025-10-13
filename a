@@ -1,7 +1,52 @@
-Valor_Metrica =
-VAR nombre = 'main_sheet'[metric_ppt]
+Calculate_Result_Metric_Value_v3 =
+VAR selg = SELECTEDVALUE ( dicc_pais[Tipo] )
+VAR sels = SELECTEDVALUE ( dicc_segmento[Tipo] )
+VAR selp = SELECTEDVALUE ( dicc_producto[Tipo] )
+
+--------------------------------------------
+-- NIVEL jerárquico (según tus slicers)
+--------------------------------------------
+VAR nivel =
+    SWITCH (
+        TRUE(),
+        selg IN { "Countries", "Group" } && sels = "Aggregate" && selp = "Aggregate", "country",
+        selg IN { "Countries", "Group" } && sels = "Global Business" && selp = "Aggregate", "global_business",
+        selg IN { "Countries", "Group" } && sels = "Segment" && selp = "Aggregate", "segment",
+        selg IN { "Countries", "Group" } && sels = "Subsegment" && selp = "Aggregate", "subsegment",
+        selg = "Unit" && sels = "Aggregate" && selp = "Aggregate", "unit",
+        selg = "Region" && sels = "Aggregate" && selp = "Aggregate", "region",
+        selp = "Product" && sels = "Aggregate", "product",
+        "other"
+    )
+
+--------------------------------------------
+-- CÁLCULO principal (una única tabla base)
+--------------------------------------------
+VAR total =
+    SWITCH (
+        nivel,
+        "country",          SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ),
+        "global_business",  CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Global Business" ),
+        "segment",          CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Segment" ),
+        "subsegment",       CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Subsegment" ),
+        "unit",             CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Unit" ),
+        "region",           CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Region" ),
+        "product",          CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Product" ),
+        BLANK()
+    )
+
+--------------------------------------------
+-- FORMATOS (según metstr_hierarchy[type])
+--------------------------------------------
+VAR tipo = MAX ( 'Data_vw_rva_provisions_forum'[metstr_hierarchy.type] )
+
+VAR resultado =
+    SWITCH (
+        TRUE(),
+        tipo = "percentage", FORMAT ( total / 100, "0.00 %" ),
+        tipo = "decimal", FORMAT ( total, "#,##0" ),
+        FORMAT ( total, "#,##0" )
+    )
+
 RETURN
-LOOKUPVALUE(
-    dicc_metrica[valor],
-    dicc_metrica[nombre_metrica], nombre
-)
+COALESCE ( resultado, "0" )
