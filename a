@@ -1,33 +1,22 @@
-Calculate_Result_Metric_Value_v3 =
-VAR selg = SELECTEDVALUE ( dicc_pais[Tipo] )
-VAR sels = SELECTEDVALUE ( dicc_segmento[Tipo] )
-VAR selp = SELECTEDVALUE ( dicc_producto[Tipo] )
+Test_Context :=
+VAR selg = COALESCE(SELECTEDVALUE(dicc_pais[Tipo]), "Countries")
+VAR sels = COALESCE(SELECTEDVALUE(dicc_segmento[Tipo]), "Aggregate")
+VAR selp = COALESCE(SELECTEDVALUE(dicc_producto[Tipo]), "Aggregate")
 
 VAR nivel =
-    SWITCH (
+    SWITCH(
         TRUE(),
-        selg IN { "Countries", "Group" } && sels = "Aggregate" && selp = "Aggregate", "Country",
-        selg IN { "Countries", "Group" } && sels = "Segment" && selp = "Aggregate", "Segment",
-        selg IN { "Countries", "Group" } && sels = "Subsegment" && selp = "Aggregate", "Subsegment",
-        selg IN { "Countries", "Group" } && sels = "Global Business" && selp = "Aggregate", "Global Business",
+        selg IN {"Countries", "Group"} && sels = "Aggregate" && selp = "Aggregate", "Country",
+        selg IN {"Countries", "Group"} && sels = "Segment" && selp = "Aggregate", "Segment",
+        selg IN {"Countries", "Group"} && sels = "Subsegment" && selp = "Aggregate", "Subsegment",
         selg = "Region" && sels = "Aggregate" && selp = "Aggregate", "Region",
         selg = "Unit" && sels = "Aggregate" && selp = "Aggregate", "Unit",
         selp = "Product", "Product",
         "Other"
     )
 
-VAR total =
-    SWITCH (
-        TRUE(),
-        nivel = "Country",         CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Country" ),
-        nivel = "Region",          CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Region" ),
-        nivel = "Segment",         CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Segment" ),
-        nivel = "Subsegment",      CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Subsegment" ),
-        nivel = "Global Business", CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Global Business" ),
-        nivel = "Unit",            CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Unit" ),
-        nivel = "Product",         CALCULATE ( SUM ( 'Data_vw_rva_provisions_forum'[metric_value] ), 'Data_vw_rva_provisions_forum'[nivel] = "Product" ),
-        BLANK()
-    )
-
 RETURN
-total
+"Pais: " & selg &
+" | Segmento: " & sels &
+" | Producto: " & selp &
+" | Nivel detectado: " & nivel
