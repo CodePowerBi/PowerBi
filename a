@@ -1,27 +1,12 @@
-[Total Risk] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Total Risk") )
--- Formato: #,##0
-
-[Stage 1] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Stage 1") )
--- Formato: #,##0
-
-[Stage 2] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Stage 2") )
--- Formato: #,##0
-
-[Stage 3] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Stage 3") )
--- Formato: #,##0
-
-[% NPL (S3)] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "% NPL (S3)") )
--- Formato: 0.00 %
-
-[COC (12M)] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "COC (12M)") )
--- Formato: 0.00 %
-
-[Reserves] =
-CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Reserves") )
--- Formato: #,##0
+Valor con Duplicado =
+VAR paisActual = SELECTEDVALUE('Duplicado_TotalGrupo'[Pais])
+RETURN
+SWITCH(
+    TRUE(),
+    paisActual = "Total Grupo (Duplicado)",
+        CALCULATE(
+            [Valor Formateado],
+            KEEPFILTERS('dicc_pais'[Pais] = "Total Grupo")
+        ),
+    [Valor Formateado]
+)
