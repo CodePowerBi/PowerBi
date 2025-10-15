@@ -1,22 +1,27 @@
-Test_Context :=
-VAR selg = COALESCE(SELECTEDVALUE(dicc_pais[Tipo]), "Countries")
-VAR sels = COALESCE(SELECTEDVALUE(dicc_segmento[Tipo]), "Aggregate")
-VAR selp = COALESCE(SELECTEDVALUE(dicc_producto[Tipo]), "Aggregate")
+[Total Risk] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Total Risk") )
+-- Formato: #,##0
 
-VAR nivel =
-    SWITCH(
-        TRUE(),
-        selg IN {"Countries", "Group"} && sels = "Aggregate" && selp = "Aggregate", "Country",
-        selg IN {"Countries", "Group"} && sels = "Segment" && selp = "Aggregate", "Segment",
-        selg IN {"Countries", "Group"} && sels = "Subsegment" && selp = "Aggregate", "Subsegment",
-        selg = "Region" && sels = "Aggregate" && selp = "Aggregate", "Region",
-        selg = "Unit" && sels = "Aggregate" && selp = "Aggregate", "Unit",
-        selp = "Product", "Product",
-        "Other"
-    )
+[Stage 1] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Stage 1") )
+-- Formato: #,##0
 
-RETURN
-"Pais: " & selg &
-" | Segmento: " & sels &
-" | Producto: " & selp &
-" | Nivel detectado: " & nivel
+[Stage 2] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Stage 2") )
+-- Formato: #,##0
+
+[Stage 3] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Stage 3") )
+-- Formato: #,##0
+
+[% NPL (S3)] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "% NPL (S3)") )
+-- Formato: 0.00 %
+
+[COC (12M)] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "COC (12M)") )
+-- Formato: 0.00 %
+
+[Reserves] =
+CALCULATE( [Valor], KEEPFILTERS('Data_vw_rva_provisions_forum'[metric_ppt] = "Reserves") )
+-- Formato: #,##0
