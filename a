@@ -1,16 +1,9 @@
-Color_Fondo_TotalGrupo :=
-IF(
-    SELECTEDVALUE('dicc_pais'[Pais]) = "Total Grupo",
-    "#FF0000",   -- rojo intenso
-    "#FFFFFF"    -- blanco (color normal)
-)
-
-
-______________
-
-Color_Texto_TotalGrupo :=
-IF(
-    SELECTEDVALUE('dicc_pais'[Pais]) = "Total Grupo",
-    "#FFFFFF",   -- blanco
-    "#000000"    -- negro (o gris oscuro)
+Valor_Con_CountryNuevo :=
+VAR paisOriginal = SELECTEDVALUE('dicc_pais'[Pais])
+VAR paisNuevo    = SELECTEDVALUE('dicc_pais'[Country_Nuevo])
+VAR paisUsado    = COALESCE(paisNuevo, paisOriginal)
+RETURN
+CALCULATE(
+    [Valor],
+    KEEPFILTERS('dicc_pais'[Pais] = paisUsado)
 )
