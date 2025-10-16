@@ -4,3 +4,13 @@ IF(
     "#FF0000",   -- rojo intenso
     "#FFFFFF"    -- blanco (color normal)
 )
+
+
+______________
+
+Color_Texto_TotalGrupo :=
+IF(
+    SELECTEDVALUE('dicc_pais'[Pais]) = "Total Grupo",
+    "#FFFFFF",   -- blanco
+    "#000000"    -- negro (o gris oscuro)
+)
