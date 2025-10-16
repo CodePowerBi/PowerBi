@@ -1,12 +1,6 @@
-Valor con Duplicado =
-VAR paisActual = SELECTEDVALUE('Duplicado_TotalGrupo'[Pais])
-RETURN
-SWITCH(
-    TRUE(),
-    paisActual = "Total Grupo (Duplicado)",
-        CALCULATE(
-            [Valor Formateado],
-            KEEPFILTERS('dicc_pais'[Pais] = "Total Grupo")
-        ),
-    [Valor Formateado]
+Color_Fondo_TotalGrupo :=
+IF(
+    SELECTEDVALUE('dicc_pais'[Pais]) = "Total Grupo",
+    "#FF0000",   -- rojo intenso
+    "#FFFFFF"    -- blanco (color normal)
 )
