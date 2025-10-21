@@ -1,12 +1,17 @@
-UltimaFechaMesFinTrimestre_porPais =
-VAR LimiteMesCerrado = EOMONTH ( TODAY(), -1 )   -- evita el mes en curso
-RETURN
-CALCULATE (
-    MAX ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ),
-    ALLEXCEPT ( 'tablones_des vista_salida_daily_lcr_ddbb', 'tablones_des vista_salida_daily_lcr_ddbb'[pais] ),
-    FILTER (
-        ALL ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ),
-        'tablones_des vista_salida_daily_lcr_ddbb'[date] <= LimiteMesCerrado
-            && MONTH ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ) IN { 3, 6, 9, 12 }
+UltimaFechaPorPais_lcr_ddbb =
+VAR LimiteMesCerrado = EOMONTH ( TODAY(), -1 )   // evita el mes actual
+VAR UltimaFechaTrim =
+    CALCULATE (
+        MAX ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ),
+        ALLEXCEPT (
+            'tablones_des vista_salida_daily_lcr_ddbb',
+            'tablones_des vista_salida_daily_lcr_ddbb'[pais]
+        ),
+        FILTER (
+            ALL ( 'tablones_des vista_salida_daily_lcr_ddbb' ),
+            'tablones_des vista_salida_daily_lcr_ddbb'[date] <= LimiteMesCerrado
+                && MONTH ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ) IN { 3, 6, 9, 12 }
+        )
     )
-)
+RETURN
+FORMAT ( UltimaFechaTrim, "mmm yy" )
