@@ -1,17 +1,2 @@
-UltimaFechaPorPais_lcr_ddbb =
-VAR LimiteMesCerrado = EOMONTH ( TODAY(), -1 )   // evita el mes actual
-VAR UltimaFechaTrim =
-    CALCULATE (
-        MAX ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ),
-        ALLEXCEPT (
-            'tablones_des vista_salida_daily_lcr_ddbb',
-            'tablones_des vista_salida_daily_lcr_ddbb'[pais]
-        ),
-        FILTER (
-            ALL ( 'tablones_des vista_salida_daily_lcr_ddbb' ),
-            'tablones_des vista_salida_daily_lcr_ddbb'[date] <= LimiteMesCerrado
-                && MONTH ( 'tablones_des vista_salida_daily_lcr_ddbb'[date] ) IN { 3, 6, 9, 12 }
-        )
-    )
-RETURN
-FORMAT ( UltimaFechaTrim, "mmm yy" )
+Te comparto esta imagen como ejemplo. Escuché que comentabais que algunos nombres venían distintos según el diccionario, y me acordé de que a nosotros también nos estaban llegando así. Por eso preparé una tabla principal que los unifica para trabajar con un único nombre.
+Los diccionarios siguen enlazados a sus tablas de hechos, pero desde nuestro lado utilizamos solo la de Countries.
