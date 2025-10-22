@@ -1,2 +1,8 @@
-Te comparto esta imagen como ejemplo. Escuché que comentabais que algunos nombres venían distintos según el diccionario, y me acordé de que a nosotros también nos estaban llegando así. Por eso preparé una tabla principal que los unifica para trabajar con un único nombre.
-Los diccionarios siguen enlazados a sus tablas de hechos, pero desde nuestro lado utilizamos solo la de Countries.
+Public Ratio :=
+VAR _metrics =
+    { "COC [12M]", "COC 12M", "CoR 12M", "Cost of Credit (12M)" }
+RETURN
+CALCULATE(
+    [Probando Valor.],                                 -- tu medida numérica base
+    KEEPFILTERS ( 'Data_vw_rva_provisions_forum'[metric] IN _metrics )
+)
