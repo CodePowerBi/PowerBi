@@ -1,10 +1,5 @@
-Public Ratio :=
-VAR _metrics =
-    { "COC [12M]", "COC 12M", "CoR 12M", "Cost of Credit (12M)" }
-VAR v =
-    CALCULATE(
-        [Probando Valor.],
-        KEEPFILTERS ( 'Data_vw_rva_provisions_forum'[metric] IN _metrics )
-    )
+EsFechaMax :=
+VAR _maxDate =
+    CALCULATE( MAX('Data_vw_rva_provisions_forum'[Monthly]), ALL('Data_vw_rva_provisions_forum') )
 RETURN
-IF( ISBLANK(v), BLANK(), v / 100 )   -- tu fuente viene en base 100 (2.12 → 0.0212)
+IF( 'Data_vw_rva_provisions_forum'[Monthly] = _maxDate, TRUE(), BLANK() )
