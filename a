@@ -1,35 +1,30 @@
-Descripción =
-SWITCH(
-    'TABLA MEDIDAS'[TABLA MEDIDAS],
-    "Loon book value", 
-        "Valor contable bruto del préstamo (loan book value), antes de provisiones. Representa el saldo total vivo en balance.",
-    "No signal of deterioration (Stage 1)", 
-        "Exposición sin señales de deterioro crediticio. Corresponde a activos clasificados en Stage 1 bajo IFRS 9 (riesgo normal).",
-    "Significant increase in Risk (Stage 2)", 
-        "Exposición con incremento significativo de riesgo de crédito desde el reconocimiento inicial. Stage 2 bajo IFRS 9.",
-    "Default (Stage 3)", 
-        "Exposición considerada en situación de impago o default crediticio. Stage 3 bajo IFRS 9.",
-    "Public Ratio ESTA", 
-        "Ratio público de provisiones o cobertura según estándar interno o país (por ejemplo, % de NPL cubierto por provisiones).",
-    "Month NCL", 
-        "Net Credit Losses mensual: pérdidas netas por crédito reconocidas durante el mes (altas – recuperaciones).",
-    "12 Month (CoC input)", 
-        "Pérdida esperada a 12 meses (12-month Expected Credit Loss), usada como Cost of Credit (CoC) input.",
-    "Public Ratio", 
-        "Ratio público de provisiones o cobertura (versión general o consolidada del anterior).",
-    "Month", 
-        "Mes de referencia de la métrica. Se usa como eje temporal en informes.",
-    "12Month", 
-        "Pérdida esperada o provisión calculada a horizonte de 12 meses, sin contexto de CoC.",
-    "(for the future)", 
-        "Campo reservado para cálculos o ampliaciones futuras. Mantiene la estructura y el orden visual.",
-    "Total Cov", 
-        "Cobertura total (%): proporción del valor provisionado sobre el saldo bruto total (todas las stages).",
-    "S1 Cov", 
-        "Cobertura de Stage 1: provisiones Stage 1 / exposición Stage 1.",
-    "S2 Cov", 
-        "Cobertura de Stage 2: provisiones Stage 2 / exposición Stage 2.",
-    "S3 Cov", 
-        "Cobertura de Stage 3: provisiones Stage 3 / exposición Stage 3.",
-    BLANK()
+Valor_INTRA3_visual :=
+IF(
+    HASONEVALUE('salida_intragrupo_3_vw TRANSPASO'[Country])  -- o el campo que tengas en filas
+        && [Valor_INTRA3] = 0,
+    BLANK(),
+    [Valor_INTRA3]
+)
+
+____________________
+
+Valor_INTRA3 :=
+VAR UltimaFechaCompleta =
+    CALCULATE(
+        MAX('salida_intragrupo_3_vw TRANSPASO'[process_date]),
+        FILTER(
+            'salida_intragrupo_3_vw TRANSPASO',
+            MONTH('salida_intragrupo_3_vw TRANSPASO'[process_date]) IN { 3, 6, 9, 12 }
+        )
+    )
+VAR UltimaMes = MONTH(UltimaFechaCompleta)
+VAR UltimoAnio = YEAR(UltimaFechaCompleta)
+RETURN
+CALCULATE(
+    SUM('salida_intragrupo_3_vw TRANSPASO'[recop_max_eur]),
+    FILTER(
+        'salida_intragrupo_3_vw TRANSPASO',
+        MONTH('salida_intragrupo_3_vw TRANSPASO'[process_date]) = UltimaMes &&
+        YEAR('salida_intragrupo_3_vw TRANSPASO'[process_date]) = UltimoAnio
+    )
 )
