@@ -1,10 +1,13 @@
-Dim_Cols =
-SUMMARIZE(
-    'Tabla medidas',
-    'Tabla medidas'[CATEGORIA 1],
-    'Tabla medidas'[Categoria 2],
-    "Cat1_ORD", MAX('Tabla medidas'[Categoria 1 - Visual]),
-    "Cat2_ORD", MAX('Tabla medidas'[ID ORDEN]),
-    "Cat2_ORD_GLOBAL", MAX('Tabla medidas'[Categoria 1 - Visual]) * 1000 + MAX('Tabla medidas'[ID ORDEN]),
-    "Cat2_Key", MAX('Tabla medidas'[Categoria 2]) & REPT( UNICHAR(8203), MAX('Tabla medidas'[Categoria 1 - Visual]) )
-)
+Categoria 2 =
+VAR vRaw = 'Tabla medidas'[campo]
+VAR vNorm1 =
+    SUBSTITUTE ( SUBSTITUTE ( SUBSTITUTE ( SUBSTITUTE ( SUBSTITUTE (
+        vRaw,
+        UNICHAR(160), " "      -- NBSP
+    ), UNICHAR(8203), ""       -- zero-width space
+    ), UNICHAR(8239), ""       -- narrow no-break
+    ), UNICHAR(65279), ""      -- BOM
+    ), UNICHAR(9), " " )       -- tab
+VAR vClean = TRIM ( CLEAN ( vNorm1 ) )
+RETURN
+IF ( ISBLANK ( vRaw ) || vClean = "", 'Tabla medidas'[Categoria 1], vClean )
