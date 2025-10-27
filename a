@@ -1,30 +1,14 @@
-Valor_INTRA3_visual :=
-IF(
-    HASONEVALUE('salida_intragrupo_3_vw TRANSPASO'[Country])  -- o el campo que tengas en filas
-        && [Valor_INTRA3] = 0,
-    BLANK(),
-    [Valor_INTRA3]
-)
-
-____________________
-
-Valor_INTRA3 :=
-VAR UltimaFechaCompleta =
-    CALCULATE(
-        MAX('salida_intragrupo_3_vw TRANSPASO'[process_date]),
-        FILTER(
-            'salida_intragrupo_3_vw TRANSPASO',
-            MONTH('salida_intragrupo_3_vw TRANSPASO'[process_date]) IN { 3, 6, 9, 12 }
-        )
+Dim_Cols =
+VAR T =
+    SELECTCOLUMNS(
+        'Tabla Param',
+        "Cat1",      'Tabla Param'[CATEGORIA 1],
+        "Cat1_ORD",  'Tabla Param'[Categoria 1 - Visual],
+        "Cat2",      'Tabla Param'[Categoria 2],
+        "Cat2_ORD",  'Tabla Param'[ID ORDEN]
     )
-VAR UltimaMes = MONTH(UltimaFechaCompleta)
-VAR UltimoAnio = YEAR(UltimaFechaCompleta)
 RETURN
-CALCULATE(
-    SUM('salida_intragrupo_3_vw TRANSPASO'[recop_max_eur]),
-    FILTER(
-        'salida_intragrupo_3_vw TRANSPASO',
-        MONTH('salida_intragrupo_3_vw TRANSPASO'[process_date]) = UltimaMes &&
-        YEAR('salida_intragrupo_3_vw TRANSPASO'[process_date]) = UltimoAnio
-    )
+ADDCOLUMNS(
+    T,
+    "Cat2_ORD_GLOBAL", [Cat1_ORD] * 1000 + [Cat2_ORD]
 )
