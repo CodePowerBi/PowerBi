@@ -1,22 +1,20 @@
-Categoria1_Group_quick = 
-VAR id = [ID ORDEN]            -- si tu columna id se llama distinto, reemplaza aquí
-VAR name = TRIM( [CATEGORIA 1] )
+Categoria1_Group_Order =
+VAR id_ = [ID ORDEN]
 RETURN
 SWITCH(
     TRUE(),
-    id IN {17}, "S3",
-    id IN {16}, "S2",
-    id IN {15}, "S1",
-    id IN {14}, "(Reserves/Total Risk)",
-    id IN {13}, "Reserves",
-    id IN {11, 10}, "Net Write Offs",
-    id IN {9}, "CoC",
-    id IN {8, 7}, "Net Credit Losses",
-    id IN {5}, "% NPL (S3)",
-    id IN {4}, "Stage 3",
-    id IN {3}, "Stage 2",
-    id IN {2}, "Stage 1",
-    id IN {1}, "Total Risk",
-    /* fallback */
-    name
+    id_ IN {17}, 1,   // S3
+    id_ IN {16}, 2,   // S2
+    id_ IN {15}, 3,   // S1
+    id_ IN {14}, 4,   // (Reserves/Total Risk)
+    id_ IN {13}, 5,   // Reserves
+    id_ IN {11,10}, 6,// Net Write Offs
+    id_ IN {9}, 7,    // CoC
+    id_ IN {8,7}, 8,  // Net Credit Losses (ambos juntos)
+    id_ IN {5}, 9,    // % NPL (S3)
+    id_ IN {4}, 10,   // Stage 3
+    id_ IN {3}, 11,   // Stage 2
+    id_ IN {2}, 12,   // Stage 1
+    id_ IN {1}, 13,   // Total Risk
+    999               // fallback (por si hay valores no mapeados)
 )
