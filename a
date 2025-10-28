@@ -1,17 +1,22 @@
-ID_orden.Categoria1 = 
-VAR id = TRIM( IF( ISBLANK([ID_orden]), "", "" & [ID_orden] ) )
-VAR cat = TRIM( IF( ISBLANK([categoria1]), "", "" & [categoria1] ) )
+Categoria1_Group_quick = 
+VAR id = [ID ORDEN]            -- si tu columna id se llama distinto, reemplaza aquí
+VAR name = TRIM( [CATEGORIA 1] )
 RETURN
-IF(
-    id = "" && cat = "",
-    BLANK(),
-    IF(
-        id = "",
-        cat,
-        IF(
-            cat = "",
-            id,
-            id & "." & cat
-        )
-    )
+SWITCH(
+    TRUE(),
+    id IN {17}, "S3",
+    id IN {16}, "S2",
+    id IN {15}, "S1",
+    id IN {14}, "(Reserves/Total Risk)",
+    id IN {13}, "Reserves",
+    id IN {11, 10}, "Net Write Offs",
+    id IN {9}, "CoC",
+    id IN {8, 7}, "Net Credit Losses",
+    id IN {5}, "% NPL (S3)",
+    id IN {4}, "Stage 3",
+    id IN {3}, "Stage 2",
+    id IN {2}, "Stage 1",
+    id IN {1}, "Total Risk",
+    /* fallback */
+    name
 )
