@@ -1,20 +1,13 @@
-Categoria1_Group_Order =
-VAR id_ = [ID ORDEN]
-RETURN
-SWITCH(
-    TRUE(),
-    id_ IN {17}, 1,   // S3
-    id_ IN {16}, 2,   // S2
-    id_ IN {15}, 3,   // S1
-    id_ IN {14}, 4,   // (Reserves/Total Risk)
-    id_ IN {13}, 5,   // Reserves
-    id_ IN {11,10}, 6,// Net Write Offs
-    id_ IN {9}, 7,    // CoC
-    id_ IN {8,7}, 8,  // Net Credit Losses (ambos juntos)
-    id_ IN {5}, 9,    // % NPL (S3)
-    id_ IN {4}, 10,   // Stage 3
-    id_ IN {3}, 11,   // Stage 2
-    id_ IN {2}, 12,   // Stage 1
-    id_ IN {1}, 13,   // Total Risk
-    999               // fallback (por si hay valores no mapeados)
-)
+KPI Punctuality
+
+Calculated by the corporation and by report level based on the compliance with the delivery schedule
+▪ Concept Report name: COREP 66.00, COREP 67.00, COREP 68.00, COREP 69.00, COREP 71.00, COREP 70.00, COREP 72.00, COREP 73.00, COREP 74.00, COREP 80.00, COREP 81.00
+
+Scale
+▪ 0 compliant with schedule.
+▪ 0.5 non-compliant with schedule but with non-material issues (units send core information correctly but additional information presents issues, such as no reporting the reconciliations and adjustments, LCR backtesting, etc., implying an additional submission, which could be done past due).
+▪ 1 non-compliant with schedule and material issues presented (this category includes a second submission to update data).
+
+Periodicity
+▪ LCR and ALMM monthly.
+▪ NSFR quarterly.
