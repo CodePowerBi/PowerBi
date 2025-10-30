@@ -1,5 +1,27 @@
-La desviación entre el LCR diario de cierre de mes vs LCR regulatorio cumple con ambos límites corporativos aprobados por el GATF:
+KPI Data Quality
 
-✓ Min (20%; Max(4%; (LCR-100%)/5)): desviación de 2,4% frente al límite de 8,5% → CUMPLE
+Calculated by corporation and by report level based on the compliance with the consistency checks (CN2)
+▪ Evaluation of the 37 consistency checks among reports (COREP vs COREP and COREP vs FINREP.)
+▪ Concept Report name: COREP 66.0, COREP 72.00, COREP 73.00, COREP 74.00, COREP 81.00.
 
-✓ Net outflows absolute deviation between Daily LCR and monthly official LCR (<10%): desviación de 0,4% frente al límite del 10% → CUMPLE
+Scale
+▪ 0 no difference or no reconciliation items above the threshold.
+▪ 0.5 the information has reconciliation items above the threshold in some checks.
+▪ 1 the information has reconciliation items above the threshold in several checks.
+
+Periodicity
+▪ LCR, ALMM and NSFR quarterly.
+
+
+____
+
+KPI Traceability
+
+Calculated by corporation and by report level based on the compliance with the traceability framework
+▪ Concept Report name: COREP 66.00, COREP 67.00, COREP 68.00, COREP 69.00, COREP 70.00, COREP 71.00, COREP 72.00, COREP 73.00, COREP 74.00, COREP 75.00, COREP 80.00, COREP 81.00.
+
+Scale
+▪ Calculated as a percentage of the compliance with the traceability exercises, 0 fully compliant and 1 non-compliant.
+
+Periodicity
+▪ Semiannual
