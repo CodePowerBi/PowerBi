@@ -1,14 +1,5 @@
-Texto LCR Regulatorio :=
-VAR NumMeses =
-    DISTINCTCOUNT ( Dates[monthly] )
-VAR MesSeleccionado =
-    MAX ( Dates[monthly] )
-VAR MesAñoTexto =
-    FORMAT ( MesSeleccionado; "[$-C0A]mmm yy" )
-RETURN
-IF (
-    NumMeses = 1;
-    "A cierre de " & MesAñoTexto &
-    " el LCR regulatorio de Santander México se sitúa en ";
-    "A cierre del periodo seleccionado el LCR regulatorio de Santander México se sitúa en "
-)
+La desviación entre el LCR diario de cierre de mes vs LCR regulatorio cumple con ambos límites corporativos aprobados por el GATF:
+
+✓ Min (20%; Max(4%; (LCR-100%)/5)): desviación de 2,4% frente al límite de 8,5% → CUMPLE
+
+✓ Net outflows absolute deviation between Daily LCR and monthly official LCR (<10%): desviación de 0,4% frente al límite del 10% → CUMPLE
