@@ -1,23 +1,2 @@
-Texto LCR Regulatorio :=
-VAR NumMeses = DISTINCTCOUNT(Dates[monthly])
-VAR MesSeleccionado = MAX(Dates[monthly])
-VAR MesAnoTexto = FORMAT(MesSeleccionado, "[$-C0A]mmm yy")
-RETURN
-IF(
-    NumMeses = 1,
-    "A cierre de " & MesAnoTexto &
-    " el LCR regulatorio de Santander México se sitúa en 212,5% frente al 215,7% reportado en el cálculo del LCR diario del 31/12." &
-    UNICHAR(10) & UNICHAR(10) &
-    "Las principales diferencias que explican la desviación de +3.2 p.p en el diario son las siguientes:" &
-    UNICHAR(10) &
-    "✓ Outflows:" &
-    UNICHAR(10) &
-    "   • Deposits & Other Liabilities: Impacto +2.0bn (diario)" &
-    UNICHAR(10) &
-    "✓ Inflows:" &
-    UNICHAR(10) &
-    "   • Loans & Credits: Impacto +2.2bn (diario)" &
-    UNICHAR(10) & UNICHAR(10) &
-    "A continuación, se incluye el desglose con el detalle del backtesting.",
-    "A cierre del periodo seleccionado el LCR regulatorio de Santander México se sitúa en ..."
-)
+Último día mes (texto) :=
+FORMAT( EOMONTH( MAX(Dates[Date]), 0 ), "dd/mm/yyyy" )
