@@ -1,13 +1,13 @@
-KPI Punctuality
+Reconciliación LCR diario de cierre de mes Vs LCR regulatorio
 
-Calculated by the corporation and by report level based on the compliance with the delivery schedule
-▪ Concept Report name: COREP 66.00, COREP 67.00, COREP 68.00, COREP 69.00, COREP 71.00, COREP 70.00, COREP 72.00, COREP 73.00, COREP 74.00, COREP 80.00, COREP 81.00
+A cierre de dic24 el LCR regulatorio de Santander México se sitúa en 212,5% frente al 215,7% reportado en el cálculo del LCR diario del 31/12.
 
-Scale
-▪ 0 compliant with schedule.
-▪ 0.5 non-compliant with schedule but with non-material issues (units send core information correctly but additional information presents issues, such as no reporting the reconciliations and adjustments, LCR backtesting, etc., implying an additional submission, which could be done past due).
-▪ 1 non-compliant with schedule and material issues presented (this category includes a second submission to update data).
+Las principales diferencias que explican la desviación de +3.2 p.p en el diario son las siguientes:
 
-Periodicity
-▪ LCR and ALMM monthly.
-▪ NSFR quarterly.
+✓ Outflows:
+  • Deposits & Other Liabilities: Impacto +2.0bn (diario)
+
+✓ Inflows:
+  • Loans & Credits: Impacto +2.2bn (diario)
+
+A continuación, se incluye el desglose con el detalle del backtesting.
