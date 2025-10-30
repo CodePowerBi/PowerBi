@@ -1,4 +1,14 @@
-Título LCR =
-"🔴 A cierre de " &
-[Mes Año Seleccionado] &
-" el LCR regulatorio de Santander México se sitúa en ..."
+Texto LCR Regulatorio :=
+VAR NumMeses =
+    DISTINCTCOUNT ( Dates[monthly] )
+VAR MesSeleccionado =
+    MAX ( Dates[monthly] )
+VAR MesAñoTexto =
+    FORMAT ( MesSeleccionado; "[$-C0A]mmm yy" )
+RETURN
+IF (
+    NumMeses = 1;
+    "A cierre de " & MesAñoTexto &
+    " el LCR regulatorio de Santander México se sitúa en ";
+    "A cierre del periodo seleccionado el LCR regulatorio de Santander México se sitúa en "
+)
