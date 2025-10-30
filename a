@@ -1,13 +1,4 @@
-Reconciliación LCR diario de cierre de mes Vs LCR regulatorio
-
-A cierre de dic24 el LCR regulatorio de Santander México se sitúa en 212,5% frente al 215,7% reportado en el cálculo del LCR diario del 31/12.
-
-Las principales diferencias que explican la desviación de +3.2 p.p en el diario son las siguientes:
-
-✓ Outflows:
-  • Deposits & Other Liabilities: Impacto +2.0bn (diario)
-
-✓ Inflows:
-  • Loans & Credits: Impacto +2.2bn (diario)
-
-A continuación, se incluye el desglose con el detalle del backtesting.
+Título LCR =
+"🔴 A cierre de " &
+[Mes Año Seleccionado] &
+" el LCR regulatorio de Santander México se sitúa en ..."
