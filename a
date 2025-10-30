@@ -1,44 +1,21 @@
-
-KPI Punctuality
-
-Calculated by the corporation and by report level based on the compliance with the delivery schedule
-▪ Concept Report name: COREP 66.00, COREP 67.00, COREP 68.00, COREP 69.00, COREP 71.00, COREP 70.00, COREP 72.00, COREP 73.00, COREP 74.00, COREP 80.00, COREP 81.00
-
-Scale
-▪ 0 compliant with schedule.
-▪ 0.5 non-compliant with schedule but with non-material issues (units send core information correctly but additional information presents issues, such as no reporting the reconciliations and adjustments, LCR backtesting, etc., implying an additional submission, which could be done past due).
-▪ 1 non-compliant with schedule and material issues presented (this category includes a second submission to update data).
-
-Periodicity
-▪ LCR and ALMM monthly.
-▪ NSFR quarterly.
-
-____________
-
-KPI Data Quality
-
-Calculated by corporation and by report level based on the compliance with the consistency checks (CN2)
-▪ Evaluation of the 37 consistency checks among reports (COREP vs COREP and COREP vs FINREP.)
-▪ Concept Report name: COREP 66.0, COREP 72.00, COREP 73.00, COREP 74.00, COREP 81.00.
-
-Scale
-▪ 0 no difference or no reconciliation items above the threshold.
-▪ 0.5 the information has reconciliation items above the threshold in some checks.
-▪ 1 the information has reconciliation items above the threshold in several checks.
-
-Periodicity
-▪ LCR, ALMM and NSFR quarterly.
-
-
-____
-
-KPI Traceability
-
-Calculated by corporation and by report level based on the compliance with the traceability framework
-▪ Concept Report name: COREP 66.00, COREP 67.00, COREP 68.00, COREP 69.00, COREP 70.00, COREP 71.00, COREP 72.00, COREP 73.00, COREP 74.00, COREP 75.00, COREP 80.00, COREP 81.00.
-
-Scale
-▪ Calculated as a percentage of the compliance with the traceability exercises, 0 fully compliant and 1 non-compliant.
-
-Periodicity
-▪ Semiannual
+Fecha =
+VAR MesTexto = 'TuTabla'[Month]
+VAR MesNumero =
+    SWITCH(
+        TRUE(),
+        MesTexto = "January", 1,
+        MesTexto = "February", 2,
+        MesTexto = "March", 3,
+        MesTexto = "April", 4,
+        MesTexto = "May", 5,
+        MesTexto = "June", 6,
+        MesTexto = "July", 7,
+        MesTexto = "August", 8,
+        MesTexto = "September", 9,
+        MesTexto = "October", 10,
+        MesTexto = "November", 11,
+        MesTexto = "December", 12,
+        BLANK()
+    )
+RETURN
+DATE('TuTabla'[Year], MesNumero, 'TuTabla'[Day])
