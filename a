@@ -1,2 +1,19 @@
-Último día mes (texto) :=
-FORMAT( EOMONTH( MAX(Dates[Date]), 0 ), "dd/mm/yyyy" )
+Imagen 1
+
+Most of the derivative operations of the Group’s entities are subject to collateral contracts, which cover the market value of these operations.
+
+The LCR considers twice the adverse impact on the valuation of derivatives and subsequent additional liquidity needs due to an increase in the contribution of collaterals:
+
+▪ Through the “historical look-back approach” method, in which the most significant net variation in 30 days is calculated during the time horizon of the preceding 24 months, which is added as liquidity needs.
+
+▪ Through the quantification of additional liquidity outflows as a result of a credit rating downgrade of up to three notches.
+
+📄 Imagen 2
+
+Liquidity Risk Analysis: Consolidated Level – LCR
+
+The Santander Group performs the consolidated LCR ratio in the identified significant currencies, EUR, USD, GBP, BRL, MXN and CLP. On an individual basis, each of the entities also carries out its own LCR ratio in significant currency.
+
+Units present a consistent position between the liquidity buffer and net outflows.
+
+In the case of Latin American countries, the positions in the buffers are significantly higher in USD, with the aim of optimizing the position and ensuring high convertibility. Positions in foreign currencies are monitored in detail, carrying out, for example, currency stress scenarios.
