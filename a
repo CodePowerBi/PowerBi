@@ -1,19 +1,9 @@
-Imagen 1
+99,4% balance from 32 units
++
+0,6% balance via Add-on [EUR 7,2 bn]
 
-Most of the derivative operations of the Group’s entities are subject to collateral contracts, which cover the market value of these operations.
-
-The LCR considers twice the adverse impact on the valuation of derivatives and subsequent additional liquidity needs due to an increase in the contribution of collaterals:
-
-▪ Through the “historical look-back approach” method, in which the most significant net variation in 30 days is calculated during the time horizon of the preceding 24 months, which is added as liquidity needs.
-
-▪ Through the quantification of additional liquidity outflows as a result of a credit rating downgrade of up to three notches.
-
-📄 Imagen 2
-
-Liquidity Risk Analysis: Consolidated Level – LCR
-
-The Santander Group performs the consolidated LCR ratio in the identified significant currencies, EUR, USD, GBP, BRL, MXN and CLP. On an individual basis, each of the entities also carries out its own LCR ratio in significant currency.
-
-Units present a consistent position between the liquidity buffer and net outflows.
-
-In the case of Latin American countries, the positions in the buffers are significantly higher in USD, with the aim of optimizing the position and ensuring high convertibility. Positions in foreign currencies are monitored in detail, carrying out, for example, currency stress scenarios.
+At the consolidated level, the ratio consists of adding every unit’s balances and netting out intra-group exposures, with positive and negative effects such as:
+▪ +Short term intragroup (loans <6M): ASF 0% vs RSF 10%
+▪ +Off balance credit lines (5% RSF)
+▪ – Long term intragroup funding (issuances >1Y): ASF 100% vs RSF 85%
+▪ – Any intragroup adjustment between the stablished levels is applied in OTHA with a RSF 100%
