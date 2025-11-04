@@ -1,17 +1,8 @@
--3m =
-VAR FechaActual_Dia1   = 'salida_buffer_vw'[FECHA_DIA1]
-VAR FechaMenos3_Dia1   = EDATE ( FechaActual_Dia1, -3 )
-VAR TipoBufferActual   = 'salida_buffer_vw'[tipo_buffer]
-VAR IdUnitActual       = 'salida_buffer_vw'[id_unit]
-VAR CurrencyActual     = 'salida_buffer_vw'[currency]
+Surplus_FechaMaxSelector :=
+VAR FechaMaxSelector =
+    MAX ( Dates[Date] )          -- fecha máxima que queda después del slicer
 RETURN
 CALCULATE (
-    SUM ( 'salida_buffer_vw'[valor] ),
-    FILTER (
-        'salida_buffer_vw',
-        'salida_buffer_vw'[FECHA_DIA1]  = FechaMenos3_Dia1   &&
-        'salida_buffer_vw'[tipo_buffer] = TipoBufferActual   &&
-        'salida_buffer_vw'[id_unit]     = IdUnitActual       &&
-        'salida_buffer_vw'[currency]    = CurrencyActual
-    )
+    SUM ( escenarios_stress[surplus] ),
+    Dates[Date] = FechaMaxSelector
 )
