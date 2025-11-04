@@ -3,3 +3,22 @@ RELATED ( Dates[Date_3M] )
 
 ____________________
 
+Valor_-3M =
+LOOKUPVALUE (
+    'tablones_des salida_buffer_hqla_vw mezcla'[valor_metrica],       -- lo que quiero traer
+
+    'tablones_des salida_buffer_hqla_vw mezcla'[fecha],               -- clave 1
+    'tablones_des salida_buffer_hqla_vw mezcla'[Fecha_-3M],           -- fecha -3M de esta fila
+
+    'tablones_des salida_buffer_hqla_vw mezcla'[metrica],             -- mismas claves
+    'tablones_des salida_buffer_hqla_vw mezcla'[metrica],
+
+    'tablones_des salida_buffer_hqla_vw mezcla'[pais],
+    'tablones_des salida_buffer_hqla_vw mezcla'[pais],
+
+    'tablones_des salida_buffer_hqla_vw mezcla'[periodo],
+    'tablones_des salida_buffer_hqla_vw mezcla'[periodo],
+
+    'tablones_des salida_buffer_hqla_vw mezcla'[nivel],
+    'tablones_des salida_buffer_hqla_vw mezcla'[nivel]
+)
