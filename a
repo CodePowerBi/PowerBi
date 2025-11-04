@@ -1,19 +1,5 @@
-Chile applies a conservative approach for term deposits as the local DGS covers the amount by client not by entity, thus as they cannot be sure of the total amount of term deposits in the system of our clients. Therefore, Chile is not including any term deposit as covered.
+Fecha_-3M =
+RELATED ( Dates[Date_3M] )
 
-Argentina and Uruguay are showing lower levels due to the USD deposits not covered by the DGS.
+____________________
 
-______________
-
-COMMENTS
-
-Information about the composition of the LCR.
-
-The information related to the LCR for each period is estimated using the moving average of the last 12 months.
-
-The reduction on “outflows related to loss of funding on debt products” is due to a reclassification requested by the ECB.
-
-___________
-
-COMMENTS
-
-Information about the composition of the NSFR (EBA).
