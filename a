@@ -1,8 +1,31 @@
-Surplus_FechaMaxSelector :=
-VAR FechaMaxSelector =
-    MAX ( Dates[Date] )          -- fecha máxima que queda después del slicer
-RETURN
-CALCULATE (
-    SUM ( escenarios_stress[surplus] ),
-    Dates[Date] = FechaMaxSelector
+ComparativaMeses =
+DATATABLE (
+    "Label", STRING, "Offset", INTEGER,
+    {
+        { "0M",  0 },
+        { "-3M", -3 },
+        { "-6M", -6 },
+        { "-9M", -9 }
+    }
 )
+
+
+___
+
+Surplus_Mes_Offset :=
+VAR OffsetMeses   = SELECTEDVALUE ( ComparativaMeses[Offset], 0 )
+VAR FechaMax      = [FechaMax_Selector_escenarios]
+VAR InicioMes     = EOMONTH ( FechaMax, OffsetMeses - 1 ) + 1
+VAR FinMes        = EOMONTH ( FechaMax, OffsetMeses )
+VAR FechaUltima   =
+    CALCULATE (
+        MAX ( Dates[Date] ),                      -- por si no hay dato el 30/31
+        DATESBETWEEN ( Dates[Date], InicioMes, FinMes )
+    )
+RETURN
+-- Usa todo el mes o sólo el último día según necesites:
+-- 1) Mes completo:
+-- CALCULATE ( [Surplus_60d], DATESBETWEEN ( Dates[Date], InicioMes, FinMes ) )
+
+-- 2) Sólo el último día del mes objetivo:
+CALCULATE ( [Surplus_60d], Dates[Date] = FechaUltima )
