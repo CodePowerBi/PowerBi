@@ -30,3 +30,25 @@ AVERAGE ( 'tablones_des_salida_escenarios_stress'[limit_liquidity_horizon] )
 
 Apetite Liquidity :=
 AVERAGE ( 'tablones_des_salida_escenarios_stress'[apetite_liquidity_horizon] )
+
+
+____________
+
+Mes_Visible_12M :=
+VAR FechaMax =
+    [FechaMax_Seleccionada]              -- p. ej. 31/05/2025
+VAR FechaMin =
+    EOMONTH ( FechaMax, -12 ) + 1        -- p. ej. 01/06/2024  (12 meses antes)
+VAR PrimerDiaMes_Contexto =
+    DATE (
+        YEAR ( MAX ( Dates[Date] ) ),
+        MONTH ( MAX ( Dates[Date] ) ),
+        1
+    )
+RETURN
+IF (
+    PrimerDiaMes_Contexto >= FechaMin &&
+    PrimerDiaMes_Contexto <= FechaMax,
+    1
+)
+
