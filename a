@@ -1,20 +1,32 @@
-SELECT
-    c.id_unit AS pais,
-    DATE_TRUNC('month', a.fecha)::date AS mes,
-    b.tipo_buffer,
-    ROUND(SUM(a.valor)::numeric, 2) AS sum_valor_metrica
-FROM salida_buffer_vw a
-INNER JOIN dicc_tipo_buffer_buffer b
-    ON a.tipo_buffer = b.id
-INNER JOIN dicc_id_unit_buffer c
-    ON a.id_unit = c.id_unit
-WHERE a.fecha >= '2025-03-01'
-  AND a.fecha <  '2025-10-17'
-GROUP BY
-    c.id_unit,
-    DATE_TRUNC('month', a.fecha)::date,
-    b.tipo_buffer
-ORDER BY
-    c.id_unit,
-    mes,
-    b.tipo_buffer;
+FechaMax_Seleccionada :=
+CALCULATE (
+    MAX ( Dates[Date] ),
+    ALLSELECTED ( Dates )        -- respeta el slicer, ignora solo el contexto del visual
+)
+
+
+___________
+
+
+Mes_Visible :=
+VAR FechaMax = [FechaMax_Seleccionada]
+VAR PrimerDiaMes =
+    DATE ( YEAR ( MAX ( Dates[Date] ) ), MONTH ( MAX ( Dates[Date] ) ), 1 )
+RETURN
+IF ( PrimerDiaMes <= FechaMax, 1 )
+
+
+_______________
+
+
+Surplus 60 Days :=
+SUM ( 'tablones_des_salida_escenarios_stress'[surplus_60_days_tc] )
+
+Survival Days :=
+AVERAGE ( 'tablones_des_salida_escenarios_stress'[survival_days] )
+
+Limit Liquidity :=
+AVERAGE ( 'tablones_des_salida_escenarios_stress'[limit_liquidity_horizon] )
+
+Apetite Liquidity :=
+AVERAGE ( 'tablones_des_salida_escenarios_stress'[apetite_liquidity_horizon] )
