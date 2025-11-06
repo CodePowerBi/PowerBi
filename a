@@ -1,54 +1,34 @@
-FechaMax_Seleccionada :=
-CALCULATE (
-    MAX ( Dates[Date] ),
-    ALLSELECTED ( Dates )        -- respeta el slicer, ignora solo el contexto del visual
+MesSelector :=
+SELECTCOLUMNS (
+    DISTINCT ( Dates ),
+    "Monthly", Dates[Monthly],
+    "MesAnioOrden", Dates[MesAnioOrden]
 )
 
 
 ___________
 
-
-Mes_Visible :=
-VAR FechaMax = [FechaMax_Seleccionada]
-VAR PrimerDiaMes =
-    DATE ( YEAR ( MAX ( Dates[Date] ) ), MONTH ( MAX ( Dates[Date] ) ), 1 )
-RETURN
-IF ( PrimerDiaMes <= FechaMax, 1 )
-
-
-_______________
-
-
-Surplus 60 Days :=
-SUM ( 'tablones_des_salida_escenarios_stress'[surplus_60_days_tc] )
-
-Survival Days :=
-AVERAGE ( 'tablones_des_salida_escenarios_stress'[survival_days] )
-
-Limit Liquidity :=
-AVERAGE ( 'tablones_des_salida_escenarios_stress'[limit_liquidity_horizon] )
-
-Apetite Liquidity :=
-AVERAGE ( 'tablones_des_salida_escenarios_stress'[apetite_liquidity_horizon] )
-
-
-____________
-
-Mes_Visible_12M :=
-VAR FechaMax =
-    [FechaMax_Seleccionada]              -- p. ej. 31/05/2025
-VAR FechaMin =
-    EOMONTH ( FechaMax, -12 ) + 1        -- p. ej. 01/06/2024  (12 meses antes)
-VAR PrimerDiaMes_Contexto =
-    DATE (
-        YEAR ( MAX ( Dates[Date] ) ),
-        MONTH ( MAX ( Dates[Date] ) ),
-        1
-    )
+FechaMax_Slicer :=
+VAR YM = SELECTEDVALUE ( MesSelector[MesAnioOrden] )
 RETURN
 IF (
-    PrimerDiaMes_Contexto >= FechaMin &&
-    PrimerDiaMes_Contexto <= FechaMax,
-    1
+    NOT ISBLANK ( YM ),
+    EOMONTH ( DATE ( INT ( YM / 100 ), MOD ( YM, 100 ), 1 ), 0 ),
+    MAX ( Dates[Date] )   -- fallback si no hay selección
 )
 
+
+___________-
+
+Mes_Visible_12M :=
+VAR FechaMax  = [FechaMax_Slicer]
+VAR FechaMin  = EOMONTH ( FechaMax, -12 ) + 1   -- 12 meses exactos previos, incluido el mes seleccionado
+VAR PrimerDiaMes_Contexto =
+    DATE ( YEAR ( MAX ( Dates[Date] ) ), MONTH ( MAX ( Dates[Date] ) ), 1 )
+RETURN
+IF (
+    NOT ISBLANK ( FechaMax )
+        && PrimerDiaMes_Contexto >= FechaMin
+        && PrimerDiaMes_Contexto <= FechaMax,
+    1
+)
