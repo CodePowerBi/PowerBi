@@ -1,19 +1,29 @@
-Crea estas dos medidas en Dates (o donde tengas el resto):
-
-InicioMes_Sel :=
-VAR F = [FechaMax_Slicer]
-RETURN IF ( NOT ISBLANK(F), DATE ( YEAR(F), MONTH(F), 1 ) )
-
-FinMes_Sel :=
-VAR F = [FechaMax_Slicer]
-RETURN IF ( NOT ISBLANK(F), EOMONTH ( F, 0 ) )
-
-2) Valor del mes seleccionado (para usar en la matriz)
-Valor_Metrica_MesSel :=
-CALCULATE (
-    SUM ( 'salida_buffer_hqla_vw'[valor_metrica] ),
-    DATESBETWEEN ( Dates[Date], [InicioMes_Sel], [FinMes_Sel] )
+Top10_por_mes_mrf_67 :=
+VAR Meses :=
+    SUMMARIZE (
+        mrf_plantilla_67,
+        "fecha", DATE ( YEAR ( mrf_plantilla_67[fecha] ), MONTH ( mrf_plantilla_67[fecha] ), 1 )
+    )
+VAR Resultado :=
+    GENERATE (
+        Meses,
+        TOPN (
+            10,
+            SUMMARIZE (
+                FILTER (
+                    mrf_plantilla_67,
+                    DATE ( YEAR ( mrf_plantilla_67[fecha] ), MONTH ( mrf_plantilla_67[fecha] ), 1 ) = [fecha]
+                ),
+                mrf_plantilla_67[counterparty_name],
+                "amount_received", SUM ( mrf_plantilla_67[amount_received] )
+            ),
+            [amount_received], DESC
+        )
+    )
+RETURN
+SELECTCOLUMNS (
+    Resultado,
+    "counterparty_name", [counterparty_name],
+    "fecha", [fecha],
+    "amount_received", [amount_received]
 )
-
-
-Úsala en Valores de la matriz. Respetará tus filtros (p. ej. Country=Brasil) y el slicer desconectado vía [FechaMax_Slicer].
