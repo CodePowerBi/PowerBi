@@ -1,39 +1,44 @@
 Top10_por_mes_mrf_67 :=
-VAR Base :=
+VAR Base =
     SELECTCOLUMNS (
         'tablones_des mrf_plantilla_67',
-        "counterparty_name", 'tablones_des mrf_plantilla_67'[<<NOMBRE_REAL_COUNTERPARTY>>],
-        "effective_date",   'tablones_des mrf_plantilla_67'[<<NOMBRE_REAL_FECHA>>],
-        "amount_received",  'tablones_des mrf_plantilla_67'[<<NOMBRE_REAL_AMOUNT>>]
+        "Counterparty", 'tablones_des mrf_plantilla_67'[counterparty_name],
+        "FechaSrc",    'tablones_des mrf_plantilla_67'[effective_date],
+        "Amount",      'tablones_des mrf_plantilla_67'[amount_received]
     )
-VAR ConMes :=
+VAR ConMes =
     ADDCOLUMNS (
         Base,
-        "fecha",
-            DATE (
-                YEAR ( [effective_date] ),
-                MONTH ( [effective_date] ),
-                1
-            )
+        "Mes",
+            VAR f = [FechaSrc]
+            RETURN
+                DATE (
+                    YEAR ( IF ( ISTEXT ( f ), DATEVALUE ( f ), f ) ),
+                    MONTH ( IF ( ISTEXT ( f ), DATEVALUE ( f ), f ) ),
+                    1
+                )
     )
+/* claves únicas (contraparte, mes) */
+VAR Claves :=
+    SUMMARIZE ( ConMes, [Counterparty], [Mes] )
+/* agregado mensual sin GROUPBY */
 VAR Agregado :=
-    GROUPBY (
-        ConMes,
-        ConMes[counterparty_name],
-        ConMes[fecha],
-        "amount_received",
-            SUMX ( CURRENTGROUP (), ConMes[amount_received] )
+    ADDCOLUMNS (
+        Claves,
+        "amount_received", CALCULATE ( SUM ( ConMes[Amount] ) )
     )
+/* ranking por mes */
 VAR ConRanking :=
     ADDCOLUMNS (
         Agregado,
         "rk",
-            VAR m = [fecha]
-            RETURN RANKX ( FILTER ( Agregado, [fecha] = m ), [amount_received], , DESC, DENSE )
+            VAR m = [Mes]
+            RETURN RANKX ( FILTER ( Agregado, [Mes] = m ), [amount_received], , DESC, DENSE )
     )
 RETURN
-SELECTCOLUMNS (
-    FILTER ( ConRanking, [rk] <= 10 ),
-    "counterparty_name", [counterparty_name],
-    "fecha", [fecha],
-    "amount_received",_
+    SELECTCOLUMNS (
+        FILTER ( ConRanking, [rk] <= 10 ),
+        "counterparty_name", [Counterparty],
+        "fecha",            [Mes],
+        "amount_received",  [amount_received]
+    )
