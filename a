@@ -10,12 +10,12 @@ VAR BaseConMes =
             )
     )
 VAR Agregado =
-    SUMMARIZE (
+    GROUPBY (
         BaseConMes,
-        [counterparty_name],
-        [fecha],
+        BaseConMes[counterparty_name],
+        BaseConMes[fecha],
         "amount_received",
-            SUMX ( CURRENTGROUP (), 'tablones_des mrf_plantilla_67'[amount_received] )
+            SUMX ( CURRENTGROUP (), BaseConMes[amount_received] )
     )
 VAR ConRanking =
     ADDCOLUMNS (
@@ -23,13 +23,7 @@ VAR ConRanking =
         "rk",
             VAR m = [fecha]
             RETURN
-                RANKX (
-                    FILTER ( Agregado, [fecha] = m ),
-                    [amount_received],
-                    ,
-                    DESC,
-                    DENSE
-                )
+                RANKX ( FILTER ( Agregado, [fecha] = m ), [amount_received], , DESC, DENSE )
     )
 RETURN
 SELECTCOLUMNS (
