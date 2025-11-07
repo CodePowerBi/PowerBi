@@ -1,9 +1,19 @@
-Mes_Visible_1M :=
-VAR FechaMax = [FechaMax_Slicer]
-VAR MesSel   = DATE ( YEAR ( FechaMax ), MONTH ( FechaMax ), 1 )
-VAR MesCtx   = DATE ( YEAR ( MAX ( Dates[Date] ) ), MONTH ( MAX ( Dates[Date] ) ), 1 )
-RETURN
-IF ( MesCtx = MesSel, 1 )
+Crea estas dos medidas en Dates (o donde tengas el resto):
 
-_______
+InicioMes_Sel :=
+VAR F = [FechaMax_Slicer]
+RETURN IF ( NOT ISBLANK(F), DATE ( YEAR(F), MONTH(F), 1 ) )
 
+FinMes_Sel :=
+VAR F = [FechaMax_Slicer]
+RETURN IF ( NOT ISBLANK(F), EOMONTH ( F, 0 ) )
+
+2) Valor del mes seleccionado (para usar en la matriz)
+Valor_Metrica_MesSel :=
+CALCULATE (
+    SUM ( 'salida_buffer_hqla_vw'[valor_metrica] ),
+    DATESBETWEEN ( Dates[Date], [InicioMes_Sel], [FinMes_Sel] )
+)
+
+
+Úsala en Valores de la matriz. Respetará tus filtros (p. ej. Country=Brasil) y el slicer desconectado vía [FechaMax_Slicer].
