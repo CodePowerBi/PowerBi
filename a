@@ -1,40 +1,31 @@
--- Crea una tabla calculada con el Top 10 mensual por amount_received
 Top10_mensual =
 VAR BaseConMes =
-    -- 1) Proyectamos la tabla original y añadimos la clave de mes (primer día del mes)
     ADDCOLUMNS (
         'mrf_plantilla_67',
         "fecha_mes", DATE ( YEAR ( 'mrf_plantilla_67'[fecha] ), MONTH ( 'mrf_plantilla_67'[fecha] ), 1 )
-        -- Si prefieres fin de mes, usa: EOMONTH('mrf_plantilla_67'[fecha], 0)
     )
-
 VAR AgregadoMesCounterparty =
-    -- 2) Agregamos por mes y counterparty_name, sumando amount_received
-    --    SUMMARIZE crea grupos y con SUMX(CURRENTGROUP()) calculamos la suma por grupo
-    SUMMARIZE (
+    -- Aquí sí usamos CURRENTGROUP, porque va dentro de GROUPBY
+    GROUPBY (
         BaseConMes,
         [fecha_mes],
         'mrf_plantilla_67'[counterparty_name],
         "amount_received", SUMX ( CURRENTGROUP (), 'mrf_plantilla_67'[amount_received] )
     )
-
 VAR ConRanking =
-    -- 3) Calculamos el ranking (position) dentro de cada mes,
-    --    ordenando por amount_received de mayor a menor
     ADDCOLUMNS (
         AgregadoMesCounterparty,
         "position",
+            VAR mes = [fecha_mes]
+            RETURN
             RANKX (
-                -- Comparamos solo dentro del mismo mes
-                FILTER ( AgregadoMesCounterparty, [fecha_mes] = EARLIER ( [fecha_mes] ) ),
+                FILTER ( AgregadoMesCounterparty, [fecha_mes] = mes ),
                 [amount_received],
                 ,
-                DESC,   -- mayor a menor
-                DENSE   -- ranking denso (1,2,2,3,...)
+                DESC,
+                DENSE
             )
     )
-
--- 4) Nos quedamos solo con los Top 10 de cada mes y devolvemos las columnas pedidas
 RETURN
 SELECTCOLUMNS (
     FILTER ( ConRanking, [position] <= 10 ),
