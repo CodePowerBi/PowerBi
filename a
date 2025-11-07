@@ -1,34 +1,9 @@
-MesSelector :=
-SELECTCOLUMNS (
-    DISTINCT ( Dates ),
-    "Monthly", Dates[Monthly],
-    "MesAnioOrden", Dates[MesAnioOrden]
-)
-
-
-___________
-
-FechaMax_Slicer :=
-VAR YM = SELECTEDVALUE ( MesSelector[MesAnioOrden] )
+Mes_Visible_1M :=
+VAR FechaMax = [FechaMax_Slicer]
+VAR MesSel   = DATE ( YEAR ( FechaMax ), MONTH ( FechaMax ), 1 )
+VAR MesCtx   = DATE ( YEAR ( MAX ( Dates[Date] ) ), MONTH ( MAX ( Dates[Date] ) ), 1 )
 RETURN
-IF (
-    NOT ISBLANK ( YM ),
-    EOMONTH ( DATE ( INT ( YM / 100 ), MOD ( YM, 100 ), 1 ), 0 ),
-    MAX ( Dates[Date] )   -- fallback si no hay selección
-)
+IF ( MesCtx = MesSel, 1 )
 
+_______
 
-___________-
-
-Mes_Visible_12M :=
-VAR FechaMax  = [FechaMax_Slicer]
-VAR FechaMin  = EOMONTH ( FechaMax, -12 ) + 1   -- 12 meses exactos previos, incluido el mes seleccionado
-VAR PrimerDiaMes_Contexto =
-    DATE ( YEAR ( MAX ( Dates[Date] ) ), MONTH ( MAX ( Dates[Date] ) ), 1 )
-RETURN
-IF (
-    NOT ISBLANK ( FechaMax )
-        && PrimerDiaMes_Contexto >= FechaMin
-        && PrimerDiaMes_Contexto <= FechaMax,
-    1
-)
