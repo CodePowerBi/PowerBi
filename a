@@ -1,44 +1,41 @@
 Top10_por_mes_mrf_67 :=
-VAR Base =
-    SELECTCOLUMNS (
+VAR Meses =
+    SUMMARIZE (
         'tablones_des mrf_plantilla_67',
-        "Counterparty", 'tablones_des mrf_plantilla_67'[counterparty_name],
-        "FechaSrc",    'tablones_des mrf_plantilla_67'[effective_date],
-        "Amount",      'tablones_des mrf_plantilla_67'[amount_received]
+        "fecha",
+            DATE (
+                YEAR ( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                MONTH ( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                1
+            )
     )
-VAR ConMes =
-    ADDCOLUMNS (
-        Base,
-        "Mes",
-            VAR f = [FechaSrc]
-            RETURN
-                DATE (
-                    YEAR ( IF ( ISTEXT ( f ), DATEVALUE ( f ), f ) ),
-                    MONTH ( IF ( ISTEXT ( f ), DATEVALUE ( f ), f ) ),
-                    1
-                )
-    )
-/* claves únicas (contraparte, mes) */
-VAR Claves :=
-    SUMMARIZE ( ConMes, [Counterparty], [Mes] )
-/* agregado mensual sin GROUPBY */
-VAR Agregado :=
-    ADDCOLUMNS (
-        Claves,
-        "amount_received", CALCULATE ( SUM ( ConMes[Amount] ) )
-    )
-/* ranking por mes */
-VAR ConRanking :=
-    ADDCOLUMNS (
-        Agregado,
-        "rk",
-            VAR m = [Mes]
-            RETURN RANKX ( FILTER ( Agregado, [Mes] = m ), [amount_received], , DESC, DENSE )
+VAR Resultado =
+    GENERATE (
+        Meses,
+        VAR m = [fecha]
+        RETURN
+            TOPN (
+                10,
+                SUMMARIZE (
+                    FILTER (
+                        'tablones_des mrf_plantilla_67',
+                        DATE (
+                            YEAR ( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                            MONTH ( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                            1
+                        ) = m
+                    ),
+                    'tablones_des mrf_plantilla_67'[counterparty_name],
+                    "amount_received",
+                        SUM ( 'tablones_des mrf_plantilla_67'[amount_received] )
+                ),
+                [amount_received], DESC
+            )
     )
 RETURN
-    SELECTCOLUMNS (
-        FILTER ( ConRanking, [rk] <= 10 ),
-        "counterparty_name", [Counterparty],
-        "fecha",            [Mes],
-        "amount_received",  [amount_received]
-    )
+SELECTCOLUMNS (
+    Resultado,
+    "counterparty_name", [counterparty_name],
+    "fecha",            [fecha],
+    "amount_received",  [amount_received]
+)
