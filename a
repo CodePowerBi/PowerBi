@@ -3,47 +3,50 @@ VAR BaseConMes =
     ADDCOLUMNS (
         'tablones_des mrf_plantilla_67',
         "fecha_mes",
-            DATE (
-                YEAR ( 'tablones_des mrf_plantilla_67'[effective_date] ),
-                MONTH( 'tablones_des mrf_plantilla_67'[effective_date] ),
-                1
-            )
+            DATE ( YEAR ( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                   MONTH( 'tablones_des mrf_plantilla_67'[effective_date] ), 1 )
     )
 
-VAR AgregadoMesCounterparty =
-    GROUPBY (
+-- Grupos (mes, contraparte)
+VAR Grupos =
+    SUMMARIZE (
         BaseConMes,
         [fecha_mes],
-        'tablones_des mrf_plantilla_67'[counterparty_name],
+        'tablones_des mrf_plantilla_67'[counterparty_name]
+    )
 
-        -- Suma del mes (se usa para el ranking Top-10)
+-- Añadimos importes y la fecha de la FILA TOP por amount_received
+VAR Agregado =
+    ADDCOLUMNS (
+        Grupos,
         "amount_received",
-            SUMX ( CURRENTGROUP(), 'tablones_des mrf_plantilla_67'[amount_received] ),
-
-        -- Fecha de la FILA TOP por amount_received dentro del grupo (mes, cpty)
+            CALCULATE ( SUM ( 'tablones_des mrf_plantilla_67'[amount_received] ) ),
         "effective_date_top",
-            VAR t =
-                CURRENTGROUP()
+            VAR mes  = [fecha_mes]
+            VAR cpty = 'tablones_des mrf_plantilla_67'[counterparty_name]
             VAR top1 =
                 TOPN (
                     1,
-                    t,
-                    'tablones_des mrf_plantilla_67'[amount_received], DESC,   -- criterio principal
-                    'tablones_des mrf_plantilla_67'[effective_date], DESC,    -- desempate 1: más reciente
-                    'tablones_des mrf_plantilla_67'[counterparty_name], ASC   -- desempate 2: estable
+                    FILTER (
+                        BaseConMes,
+                        [fecha_mes] = mes
+                        && 'tablones_des mrf_plantilla_67'[counterparty_name] = cpty
+                    ),
+                    'tablones_des mrf_plantilla_67'[amount_received], DESC,
+                    'tablones_des mrf_plantilla_67'[effective_date], DESC
                 )
-            RETURN
-                MAXX ( top1, 'tablones_des mrf_plantilla_67'[effective_date] )
+            RETURN MAXX ( top1, 'tablones_des mrf_plantilla_67'[effective_date] )
     )
 
+-- Ranking dentro de cada mes por la suma mensual
 VAR ConRanking =
     ADDCOLUMNS (
-        AgregadoMesCounterparty,
+        Agregado,
         "position",
             VAR mes = [fecha_mes]
             RETURN
             RANKX (
-                FILTER ( AgregadoMesCounterparty, [fecha_mes] = mes ),
+                FILTER ( Agregado, [fecha_mes] = mes ),
                 [amount_received],
                 ,
                 DESC,
@@ -54,8 +57,8 @@ VAR ConRanking =
 RETURN
 SELECTCOLUMNS (
     FILTER ( ConRanking, [position] <= 10 ),
-    "position",             [position],
-    "counterparty_name",    'tablones_des mrf_plantilla_67'[counterparty_name],
-    "fecha",                [effective_date_top],   -- ← fecha original de la fila TOP por importe
-    "amount_received",      [amount_received]       -- suma mensual (criterio de ranking)
+    "position",            [position],
+    "counterparty_name",   'tablones_des mrf_plantilla_67'[counterparty_name],
+    "fecha",               [effective_date_top],   -- fecha original de la fila TOP
+    "amount_received",     [amount_received]
 )
