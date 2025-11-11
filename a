@@ -1,15 +1,61 @@
-Amount_Month_Sum :=
-VAR _mes   = 'Pag7_Top10_mensual'[fecha]                  -- primer día del mes
-VAR _cpty  = 'Pag7_Top10_mensual'[counterparty_name]
-VAR _ini   = _mes
-VAR _fin   = EOMONTH( _mes, 0 )
-RETURN
-CALCULATE (
-    SUM ( 'tablones_des mrf_plantilla_67'[amount_received] ),
-    FILTER (
+Pag7_Top10_mensual =
+VAR BaseConMes =
+    ADDCOLUMNS (
         'tablones_des mrf_plantilla_67',
-        'tablones_des mrf_plantilla_67'[counterparty_name] = _cpty
-            && 'tablones_des mrf_plantilla_67'[effective_date] >= _ini
-            && 'tablones_des mrf_plantilla_67'[effective_date] <= _fin
+        "fecha_mes",
+            DATE (
+                YEAR ( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                MONTH( 'tablones_des mrf_plantilla_67'[effective_date] ),
+                1
+            )
     )
+
+VAR AgregadoMesCounterparty =
+    GROUPBY (
+        BaseConMes,
+        [fecha_mes],
+        'tablones_des mrf_plantilla_67'[counterparty_name],
+
+        -- Suma del mes (se usa para el ranking Top-10)
+        "amount_received",
+            SUMX ( CURRENTGROUP(), 'tablones_des mrf_plantilla_67'[amount_received] ),
+
+        -- Fecha de la FILA TOP por amount_received dentro del grupo (mes, cpty)
+        "effective_date_top",
+            VAR t =
+                CURRENTGROUP()
+            VAR top1 =
+                TOPN (
+                    1,
+                    t,
+                    'tablones_des mrf_plantilla_67'[amount_received], DESC,   -- criterio principal
+                    'tablones_des mrf_plantilla_67'[effective_date], DESC,    -- desempate 1: más reciente
+                    'tablones_des mrf_plantilla_67'[counterparty_name], ASC   -- desempate 2: estable
+                )
+            RETURN
+                MAXX ( top1, 'tablones_des mrf_plantilla_67'[effective_date] )
+    )
+
+VAR ConRanking =
+    ADDCOLUMNS (
+        AgregadoMesCounterparty,
+        "position",
+            VAR mes = [fecha_mes]
+            RETURN
+            RANKX (
+                FILTER ( AgregadoMesCounterparty, [fecha_mes] = mes ),
+                [amount_received],
+                ,
+                DESC,
+                DENSE
+            )
+    )
+
+RETURN
+SELECTCOLUMNS (
+    FILTER ( ConRanking, [position] <= 10 ),
+    "position",             [position],
+    "counterparty_name",    'tablones_des mrf_plantilla_67'[counterparty_name],
+    "fecha",                [effective_date_top],   -- ← fecha original de la fila TOP por importe
+    "amount_received",      [amount_received]       -- suma mensual (criterio de ranking)
 )
