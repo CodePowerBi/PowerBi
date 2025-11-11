@@ -1,10 +1,10 @@
-CantidadTotalPasivo :=
-VAR _mes   = 'Top10_mensual'[fecha]                    -- primer día del mes en Top10
-VAR _cpty  = 'Top10_mensual'[counterparty_name]
+WAIM_vlookup :=
+VAR cpty = 'Pag7_Top10_mensual'[counterparty_name]
+VAR mes  = 'Pag7_Top10_mensual'[fecha]  -- inicio de mes
 RETURN
-CALCULATE (
-    SUM ( 'tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones] ),
-    KEEPFILTERS ( 'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = _cpty ),
-    KEEPFILTERS ( 'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] >= _mes ),
-    KEEPFILTERS ( 'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] <= EOMONTH ( _mes, 0 ) )
+CALCULATE(
+    MAX( 'tablones_des mrf_plantilla_67'[weight_average_initial_maturity] ),
+    'tablones_des mrf_plantilla_67'[counterparty_name] = cpty,
+    'tablones_des mrf_plantilla_67'[effective_date] >= mes,
+    'tablones_des mrf_plantilla_67'[effective_date] <= EOMONTH(mes, 0)
 )
