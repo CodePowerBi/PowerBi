@@ -1,10 +1,15 @@
-WAIM_vlookup :=
-VAR cpty = 'Pag7_Top10_mensual'[counterparty_name]
-VAR mes  = 'Pag7_Top10_mensual'[fecha]  -- inicio de mes
+Amount_Month_Sum :=
+VAR _mes   = 'Pag7_Top10_mensual'[fecha]                  -- primer día del mes
+VAR _cpty  = 'Pag7_Top10_mensual'[counterparty_name]
+VAR _ini   = _mes
+VAR _fin   = EOMONTH( _mes, 0 )
 RETURN
-CALCULATE(
-    MAX( 'tablones_des mrf_plantilla_67'[weight_average_initial_maturity] ),
-    'tablones_des mrf_plantilla_67'[counterparty_name] = cpty,
-    'tablones_des mrf_plantilla_67'[effective_date] >= mes,
-    'tablones_des mrf_plantilla_67'[effective_date] <= EOMONTH(mes, 0)
+CALCULATE (
+    SUM ( 'tablones_des mrf_plantilla_67'[amount_received] ),
+    FILTER (
+        'tablones_des mrf_plantilla_67',
+        'tablones_des mrf_plantilla_67'[counterparty_name] = _cpty
+            && 'tablones_des mrf_plantilla_67'[effective_date] >= _ini
+            && 'tablones_des mrf_plantilla_67'[effective_date] <= _fin
+    )
 )
