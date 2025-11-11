@@ -1,19 +1,6 @@
-% Funding (origen) :=
-VAR _mes  = SELECTEDVALUE( 'Pag7_Top10_mensual'[fecha] )
-VAR _cpty = SELECTEDVALUE( 'Pag7_Top10_mensual'[counterparty_name] )
-VAR amount_month :=
-    CALCULATE(
-        SUM( 'tablones_des mrf_plantilla_67'[amount_received] ),
-        'tablones_des mrf_plantilla_67'[counterparty_name] = _cpty,
-        'tablones_des mrf_plantilla_67'[effective_date] >= _mes,
-        'tablones_des mrf_plantilla_67'[effective_date] <= EOMONTH( _mes, 0 )
-    )
-VAR pasivo_month :=
-    CALCULATE(
-        SUM( 'tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones] ),
-        'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = _cpty,
-        'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] >= _mes,
-        'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] <= EOMONTH( _mes, 0 )
-    )
-VAR den = COALESCE(pasivo_month,0) + COALESCE(amount_month,0)
-RETURN IF( OR( ISBLANK(amount_month), den = 0 ), BLANK(), DIVIDE( amount_month, den ) )
+%Funding_fila :=
+VAR amount = 'Pag7_Top10_mensual'[amount_received]          -- o tu columna [Amount - Millones]
+VAR pasivo = 'Pag7_Top10_mensual'[CantidadTotalPasivo]
+VAR total  = 'Pag7_Top10_mensual'[Amount_Month_Sum]         -- pon aquí tu “total month” real
+VAR den    = COALESCE(pasivo,0) + COALESCE(total,0)
+RETURN IF( OR(ISBLANK(amount), den = 0), BLANK(), amount / den )
