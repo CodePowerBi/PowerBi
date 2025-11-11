@@ -1,36 +1,10 @@
-Top10_mensual =
-VAR BaseConMes =
-    ADDCOLUMNS (
-        'mrf_plantilla_67',
-        "fecha_mes", DATE ( YEAR ( 'mrf_plantilla_67'[fecha] ), MONTH ( 'mrf_plantilla_67'[fecha] ), 1 )
-    )
-VAR AgregadoMesCounterparty =
-    -- Aquí sí usamos CURRENTGROUP, porque va dentro de GROUPBY
-    GROUPBY (
-        BaseConMes,
-        [fecha_mes],
-        'mrf_plantilla_67'[counterparty_name],
-        "amount_received", SUMX ( CURRENTGROUP (), 'mrf_plantilla_67'[amount_received] )
-    )
-VAR ConRanking =
-    ADDCOLUMNS (
-        AgregadoMesCounterparty,
-        "position",
-            VAR mes = [fecha_mes]
-            RETURN
-            RANKX (
-                FILTER ( AgregadoMesCounterparty, [fecha_mes] = mes ),
-                [amount_received],
-                ,
-                DESC,
-                DENSE
-            )
-    )
+CantidadTotalPasivo :=
+VAR _mes   = 'Top10_mensual'[fecha]                    -- primer día del mes en Top10
+VAR _cpty  = 'Top10_mensual'[counterparty_name]
 RETURN
-SELECTCOLUMNS (
-    FILTER ( ConRanking, [position] <= 10 ),
-    "position", [position],
-    "counterparty_name", 'mrf_plantilla_67'[counterparty_name],
-    "fecha", [fecha_mes],
-    "amount_received", [amount_received]
+CALCULATE (
+    SUM ( 'tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones] ),
+    KEEPFILTERS ( 'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = _cpty ),
+    KEEPFILTERS ( 'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] >= _mes ),
+    KEEPFILTERS ( 'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] <= EOMONTH ( _mes, 0 ) )
 )
