@@ -1,35 +1,28 @@
 % Funding (Top10) :=
-VAR cpty = SELECTEDVALUE('Pag7_Top10_mensual'[counterparty_name])
-VAR f    = SELECTEDVALUE('Pag7_Top10_mensual'[fecha])           -- puede ser cualquier día del mes
--- Si falta cpty o fecha en la celda, no calculamos
-VAR guardrails := IF( OR( ISBLANK(cpty), ISBLANK(f) ), TRUE(), FALSE() )
-VAR ini = DATE( YEAR(f), MONTH(f), 1 )
-VAR fin = EOMONTH( f, 0 )
+VAR _cpty = SELECTEDVALUE( 'Pag7_Top10_mensual'[counterparty_name] )
+VAR _f    = SELECTEDVALUE( 'Pag7_Top10_mensual'[fecha] )
 
-VAR amount_month =
-    IF(
-        guardrails,
-        BLANK(),
-        CALCULATE(
-            SUM( 'tablones_des mrf_plantilla_67'[amount_received] ),
-            'tablones_des mrf_plantilla_67'[counterparty_name] = cpty,
-            'tablones_des mrf_plantilla_67'[effective_date] >= ini,
-            'tablones_des mrf_plantilla_67'[effective_date] <= fin
-        )
+-- Normalizamos a mes (por si [fecha] no es día 1)
+VAR _ini  = DATE( YEAR(_f), MONTH(_f), 1 )
+VAR _fin  = EOMONTH( _f, 0 )
+
+-- Numerador: amount recibido del MES para esa contraparte
+VAR amount_month :=
+    CALCULATE(
+        SUM( 'tablones_des mrf_plantilla_67'[amount_received] ),
+        'tablones_des mrf_plantilla_67'[counterparty_name] = _cpty,
+        'tablones_des mrf_plantilla_67'[effective_date] >= _ini,
+        'tablones_des mrf_plantilla_67'[effective_date] <= _fin
     )
 
-VAR pasivo_month =
-    IF(
-        guardrails,
-        BLANK(),
-        CALCULATE(
-            SUM( 'tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones] ),
-            'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = cpty,
-            'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] >= ini,
-            'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] <= fin
-        )
+-- Pasivo del MES para esa contraparte
+VAR pasivo_month :=
+    CALCULATE(
+        SUM( 'tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones] ),
+        'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = _cpty,
+        'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] >= _ini,
+        'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] <= _fin
     )
 
 VAR den = COALESCE(pasivo_month,0) + COALESCE(amount_month,0)
-RETURN
-IF( guardrails || den = 0 || ISBLANK(amount_month), BLANK(), DIVIDE(amount_month, den) )
+RETURN IF( den = 0 || ISBLANK(amount_month), BLANK(), DIVIDE( amount_month, den ) )
