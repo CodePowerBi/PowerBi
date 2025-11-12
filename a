@@ -1,17 +1,14 @@
-% Funding (Top10 - sin relación Dates) :=
-VAR cpty = SELECTEDVALUE('Pag7_Top10_mensual'[counterparty_name])
-VAR mes  = SELECTEDVALUE(Dates[Monthly])   -- primer día del mes
-VAR amount_month :=
-    CALCULATE(
-        SUM('tablones_des mrf_plantilla_67'[amount_received]),
-        'tablones_des mrf_plantilla_67'[counterparty_name] = cpty,
-        TREATAS( { mes }, 'tablones_des mrf_plantilla_67'[effective_date] )
-    )
-VAR pasivo_month :=
-    CALCULATE(
-        SUM('tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones]),
-        'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = cpty,
-        TREATAS( { mes }, 'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] )
-    )
-VAR den = COALESCE(pasivo_month,0) + COALESCE(amount_month,0)
-RETURN IF( ISBLANK(amount_month) || den = 0, BLANK(), DIVIDE(amount_month, den) )
+InicioMes_Sel :=
+VAR F = [FechaMax_Slicer PRUEBA2]
+RETURN IF( NOT ISBLANK(F), DATE( YEAR(F), MONTH(F), 1 ) )
+
+FinMes_Sel :=
+VAR F = [FechaMax_Slicer PRUEBA2]
+RETURN IF( NOT ISBLANK(F), EOMONTH( F, 0 ) )
+
+-- Usa esta en Valores de la matriz
+Valor_Metrica_MesSel :=
+CALCULATE(
+    SUM( 'salida_buffer_hqla_vw'[valor_metrica] ),
+    DATESBETWEEN( Dates[Date], [InicioMes_Sel], [FinMes_Sel] )
+)
