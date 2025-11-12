@@ -1,6 +1,10 @@
-%Funding_fila :=
-VAR amount = 'Pag7_Top10_mensual'[amount_received]          -- o tu columna [Amount - Millones]
-VAR pasivo = 'Pag7_Top10_mensual'[CantidadTotalPasivo]
-VAR total  = 'Pag7_Top10_mensual'[Amount_Month_Sum]         -- pon aquí tu “total month” real
-VAR den    = COALESCE(pasivo,0) + COALESCE(total,0)
-RETURN IF( OR(ISBLANK(amount), den = 0), BLANK(), amount / den )
+% Funding MEDIDA :=
+VAR amount =
+    SUM ( 'pag7 nueva'[Amount Received (bn)] )              -- numerador
+VAR pasivo =
+    MAX ( 'pag7 nueva'[CantidadTotalPasivo] )               -- constante por mes → MAX para no sumarlo N veces
+VAR totalMes =
+    MAX ( 'pag7 nueva'[total Amount recibido por fecha] )   -- idem
+VAR den = COALESCE(pasivo,0) + COALESCE(totalMes,0)
+RETURN
+IF ( den = 0 || ISBLANK(amount), BLANK(), DIVIDE( amount, den ) )
