@@ -1,28 +1,17 @@
-% Funding (Top10) :=
-VAR _cpty = SELECTEDVALUE( 'Pag7_Top10_mensual'[counterparty_name] )
-VAR _f    = SELECTEDVALUE( 'Pag7_Top10_mensual'[fecha] )
-
--- Normalizamos a mes (por si [fecha] no es día 1)
-VAR _ini  = DATE( YEAR(_f), MONTH(_f), 1 )
-VAR _fin  = EOMONTH( _f, 0 )
-
--- Numerador: amount recibido del MES para esa contraparte
+% Funding (Top10 - sin relación Dates) :=
+VAR cpty = SELECTEDVALUE('Pag7_Top10_mensual'[counterparty_name])
+VAR mes  = SELECTEDVALUE(Dates[Monthly])   -- primer día del mes
 VAR amount_month :=
     CALCULATE(
-        SUM( 'tablones_des mrf_plantilla_67'[amount_received] ),
-        'tablones_des mrf_plantilla_67'[counterparty_name] = _cpty,
-        'tablones_des mrf_plantilla_67'[effective_date] >= _ini,
-        'tablones_des mrf_plantilla_67'[effective_date] <= _fin
+        SUM('tablones_des mrf_plantilla_67'[amount_received]),
+        'tablones_des mrf_plantilla_67'[counterparty_name] = cpty,
+        TREATAS( { mes }, 'tablones_des mrf_plantilla_67'[effective_date] )
     )
-
--- Pasivo del MES para esa contraparte
 VAR pasivo_month :=
     CALCULATE(
-        SUM( 'tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones] ),
-        'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = _cpty,
-        'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] >= _ini,
-        'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] <= _fin
+        SUM('tablones_des mrf_pasivo_neto_plantilla_67'[cantidad- Millones]),
+        'tablones_des mrf_pasivo_neto_plantilla_67'[counterparty_name] = cpty,
+        TREATAS( { mes }, 'tablones_des mrf_pasivo_neto_plantilla_67'[effective_date] )
     )
-
 VAR den = COALESCE(pasivo_month,0) + COALESCE(amount_month,0)
-RETURN IF( den = 0 || ISBLANK(amount_month), BLANK(), DIVIDE( amount_month, den ) )
+RETURN IF( ISBLANK(amount_month) || den = 0, BLANK(), DIVIDE(amount_month, den) )
