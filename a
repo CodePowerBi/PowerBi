@@ -1,14 +1,7 @@
-InicioMes_Sel :=
-VAR F = [FechaMax_Slicer PRUEBA2]
-RETURN IF( NOT ISBLANK(F), DATE( YEAR(F), MONTH(F), 1 ) )
+InicioMes_Menos3 :=
+VAR F = [FechaMax_Slicer]
+RETURN IF( NOT ISBLANK(F), EOMONTH(F, -4) + 1 )   -- 01/mar/25 si F es jun-25
 
-FinMes_Sel :=
-VAR F = [FechaMax_Slicer PRUEBA2]
-RETURN IF( NOT ISBLANK(F), EOMONTH( F, 0 ) )
-
--- Usa esta en Valores de la matriz
-Valor_Metrica_MesSel :=
-CALCULATE(
-    SUM( 'salida_buffer_hqla_vw'[valor_metrica] ),
-    DATESBETWEEN( Dates[Date], [InicioMes_Sel], [FinMes_Sel] )
-)
+FinMes_Menos3 :=
+VAR F = [FechaMax_Slicer]
+RETURN IF( NOT ISBLANK(F), EOMONTH(F, -3) )       -- 31/mar/25 si F es jun-25
