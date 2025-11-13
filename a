@@ -1,17 +1,18 @@
-InicioMes_Menos3 :=
-VAR F = [FechaMax_Slicer]
-RETURN IF( NOT ISBLANK(F), EOMONTH(F, -4) + 1 )   -- 01/mar/25 si F es jun-25
-
-FinMes_Menos3 :=
-VAR F = [FechaMax_Slicer]
-RETURN IF( NOT ISBLANK(F), EOMONTH(F, -3) )       -- 31/mar/25 si F es jun-25
-
-
-____________
-
-
-Valor_Metrica_Mes_Menos3 :=
-CALCULATE(
-    SUM( 'salida_buffer_hqla_vw'[valor_metrica] ),
-    DATESBETWEEN( Dates[Date], [InicioMes_Menos3], [FinMes_Menos3] )
+TOP10_-3M_Flag :=
+VAR TopTable =
+    TOPN (
+        10,
+        SUMMARIZE (
+            ALLSELECTED ( 'pag7 nueva' ),
+            'pag7 nueva'[CounterpartyName]
+        ),
+        [Amount_-3M_Orden],
+        DESC
+    )
+RETURN
+IF (
+    MAX ( 'pag7 nueva'[CounterpartyName] )
+        IN VALUES ( TopTable[CounterpartyName] ),
+    1,
+    0
 )
