@@ -1,4 +1,27 @@
+Rank_Amount_-3M :=
+VAR Rnk =
+    RANKX (
+        ALLSELECTED ( 'pag7_nueva'[Concentration of Funding] ),  -- quita solo el filtro de la entidad
+        [Amount_-3M],                                            -- usa la medida que ya calcula el -3M
+        ,
+        DESC,
+        DENSE
+    )
+RETURN
+    Rnk
+
+
+__________
+
 Rank_Amount_-3M_Top10 :=
 VAR Rnk = [Rank_Amount_-3M]
 RETURN
 IF ( NOT ISBLANK ( [Amount_-3M] ) && Rnk <= 10, Rnk )
+
+
+______
+
+Amount_-3M_Top10 :=
+VAR Rnk = [Rank_Amount_-3M]
+RETURN
+IF ( Rnk <= 10, [Amount_-3M] )
