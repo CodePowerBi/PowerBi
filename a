@@ -1,13 +1,12 @@
 Ranking_-3M :=
-VAR ThisAmount =
-    SUM ( 'pag7 nueva'[-3m] )
+VAR ThisAmount = [Amount_-3M]
 RETURN
 IF (
     ISBLANK ( ThisAmount ),
     BLANK (),
     RANKX (
         ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),
-        SUM ( 'pag7 nueva'[-3m] ),
+        [Amount_-3M],
         ThisAmount,
         DESC,
         DENSE
