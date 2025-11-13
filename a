@@ -1,24 +1,14 @@
-TOP10_-3M_Flag :=
-VAR TopTable =
-    TOPN (
-        10,
-        ADDCOLUMNS (
-            SUMMARIZE (
-                ALLSELECTED ( 'pag7 nueva' ),
-                'pag7 nueva'[CounterpartyName]
-            ),
-            "__Amount_-3M", [Amount_-3M]
-        ),
-        [__Amount_-3M],
-        DESC
-    )
+Ranking_-3M :=
+VAR ThisAmount = [Amount_-3M]
 RETURN
 IF (
-    CONTAINS (
-        TopTable,
-        'pag7 nueva'[CounterpartyName],
-        MAX ( 'pag7 nueva'[CounterpartyName] )
-    ),
-    1,
-    0
+    ISBLANK ( ThisAmount ),
+    BLANK (),
+    RANKX (
+        ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),
+        [Amount_-3M],
+        ThisAmount,
+        DESC,
+        DENSE
+    )
 )
