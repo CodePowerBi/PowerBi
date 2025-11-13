@@ -1,9 +1,6 @@
-Ranking_-3M :=
+RankingTop10_-3M :=
 VAR ThisAmount = [Amount_-3M]
-RETURN
-IF (
-    ISBLANK ( ThisAmount ),
-    BLANK (),
+VAR ThisRank =
     RANKX (
         ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),
         [Amount_-3M],
@@ -11,4 +8,9 @@ IF (
         DESC,
         DENSE
     )
+RETURN
+IF (
+    ISBLANK ( ThisAmount ),
+    BLANK (),
+    IF ( ThisRank <= 10, ThisRank, BLANK() )
 )
