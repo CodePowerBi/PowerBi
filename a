@@ -1,25 +1,4 @@
-RankingTop10_-3M :=
-VAR TablaRanking =
-    ADDCOLUMNS (
-        SUMMARIZE (
-            ALLSELECTED ( 'pag7 nueva' ),
-            'pag7 nueva'[CounterpartyName]         -- una fila por contraparte
-        ),
-        "__Amount_-3M", [Amount_-3M]               -- importe de -3M para cada una
-    )
-VAR ThisCP   = MAX ( 'pag7 nueva'[CounterpartyName] )
-VAR ThisAmt  = [Amount_-3M]
-VAR RankCalc =
-    RANKX (
-        TablaRanking,
-        [__Amount_-3M],                            -- ordenamos por Amount_-3M
-        ThisAmt,
-        DESC,
-        SKIP
-    )
+Rank_Amount_-3M_Top10 :=
+VAR Rnk = [Rank_Amount_-3M]
 RETURN
-IF (
-    ISBLANK ( ThisAmt ),
-    BLANK (),
-    IF ( RankCalc <= 10, RankCalc, BLANK () )
-)
+IF ( NOT ISBLANK ( [Amount_-3M] ) && Rnk <= 10, Rnk )
