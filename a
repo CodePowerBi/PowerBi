@@ -1,3 +1,18 @@
+Amount_-3M :=
+CALCULATE (
+    SUM ( 'pag7 nueva'[Amount Received (bn)] ),
+    DATEADD ( Dates[Date], -3, MONTH )
+)
+
+______________
+
+Amount_-3M_Orden :=
+[Amount_-3M]
+
+_____________
+
+
+
 TOP10_-3M_Flag :=
 VAR TopTable =
     TOPN (
