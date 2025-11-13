@@ -1,16 +1,14 @@
-RankingTop10_-3M :=
+Ranking_-3M :=
 VAR ThisAmount = [Amount_-3M]
-VAR ThisRank =
-    RANKX (
-        ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),
-        [Amount_-3M],
-        ThisAmount,
-        DESC,
-        DENSE
-    )
 RETURN
 IF (
     ISBLANK ( ThisAmount ),
     BLANK (),
-    IF ( ThisRank <= 10, ThisRank, BLANK() )
+    RANKX (
+        ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),   -- todas las contrapartes filtradas
+        [Amount_-3M],                                     -- se ordenan por el amount de -3M
+        ThisAmount,
+        DESC,
+        SKIP
+    )
 )
