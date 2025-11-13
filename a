@@ -1,14 +1,16 @@
-Ranking_-3M :=
+RankingTop10_-3M :=
 VAR ThisAmount = [Amount_-3M]
-RETURN
-IF (
-    ISBLANK ( ThisAmount ),
-    BLANK (),
+VAR RankCalc =
     RANKX (
-        ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),   -- todas las contrapartes filtradas
-        [Amount_-3M],                                     -- se ordenan por el amount de -3M
+        ALLSELECTED ( 'pag7 nueva'[CounterpartyName] ),
+        [Amount_-3M],
         ThisAmount,
         DESC,
         SKIP
     )
+RETURN
+IF (
+    ISBLANK ( ThisAmount ),
+    BLANK (),
+    IF ( RankCalc <= 10, RankCalc, BLANK() )
 )
