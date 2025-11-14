@@ -1,6 +1,9 @@
 Tipo_Grupo :=
-IF (
-    diccionario_epigrafes_filter_vw[tipo] = "activo",
-    "Assets",
-    "Liabilities"
+VAR t = LOWER ( diccionario_epigrafes_filter_vw[tipo] )
+RETURN
+SWITCH(
+    TRUE(),
+    t = "activo",  "Assets",
+    t = "pasivo",  "Liabilities",
+    BLANK()
 )
