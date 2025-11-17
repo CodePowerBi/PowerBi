@@ -1,11 +1,6 @@
-Amount_MismoDia :=
-VAR Fecha =
-    'pag7_nueva'[Effective_date]
-VAR CP =
-    'pag7_nueva'[CounterpartyName]
-RETURN
-LOOKUPVALUE (
-    Pag7_Top10_mensual[amount_received],          -- valor que quieres traer
-    Pag7_Top10_mensual[fechha], Fecha,            -- buscar por fecha
-    Pag7_Top10_mensual[counterparty_name], CP     -- y por counterparty
+CantidadTotalPasivo_Pag7Nueva =
+LOOKUPVALUE(
+    Pag7_Nueva[CantidadTotalPasivo],
+    Pag7_Nueva[Effective_date], 'Pag7_Top10_mensual'[fechha],
+    Pag7_Nueva[CounterpartyName], 'Pag7_Top10_mensual'[counterparty_name]
 )
