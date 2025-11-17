@@ -1,40 +1,38 @@
-Periodo12M_Valor :=
+ParentCo_12M :=
 VAR MesAnclaCodigo =
     SELECTEDVALUE ( Dates[MesAnioOrden] )
 
 VAR MesActualCodigo =
     SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )
 
--- YYYYMM → fecha
 VAR MesAnclaFecha =
     IF (
         NOT ISBLANK ( MesAnclaCodigo ),
-        DATE ( INT ( MesAnclaCodigo / 100 ), MOD ( MesAnclaCodigo, 100 ), 1 )
+        DATE ( INT(MesAnclaCodigo/100), MOD(MesAnclaCodigo,100), 1 )
     )
 
 VAR MesActualFecha =
     IF (
         NOT ISBLANK ( MesActualCodigo ),
-        DATE ( INT ( MesActualCodigo / 100 ), MOD ( MesActualCodigo, 100 ), 1 )
+        DATE ( INT(MesActualCodigo/100), MOD(MesActualCodigo,100), 1 )
     )
 
--- Ventana 12M reales
 VAR DentroVentana =
-    NOT ISBLANK ( MesAnclaFecha ) &&
-    NOT ISBLANK ( MesActualFecha ) &&
+    NOT ISBLANK(MesAnclaFecha) &&
+    NOT ISBLANK(MesActualFecha) &&
     MesActualFecha <= MesAnclaFecha &&
-    MesActualFecha > EDATE ( MesAnclaFecha, -12 )
+    MesActualFecha > EDATE(MesAnclaFecha, -12)
 
 RETURN
-IF (
+IF(
     NOT DentroVentana,
     BLANK(),
-    CALCULATE (
-        SELECTEDMEASURE(),   -- ESTA ES LA CLAVE
-        FILTER (
-            ALL ( lcr_historico[fecha] ),
-            lcr_historico[fecha] >= MesActualFecha
-                && lcr_historico[fecha] < EOMONTH ( MesActualFecha, 0 ) + 1
+    CALCULATE(
+        MAX(lcr_historico[parent_co]),
+        FILTER(
+            ALL(lcr_historico),
+            lcr_historico[fecha] >= MesActualFecha &&
+            lcr_historico[fecha] <  EOMONTH(MesActualFecha,0) + 1
         )
     )
 )
