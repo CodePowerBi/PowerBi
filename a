@@ -1,9 +1,15 @@
-CantidadTotalPasivo_Lookup =
-CALCULATE(
-    MAX(Pag7_Nueva[CantidadTotalPasivo]),
-    FILTER(
-        Pag7_Nueva,
-        Pag7_Nueva[Effective_date] = MAX(Pag7_Top10_mensual[fechha]) &&
-        Pag7_Nueva[CounterpartyName] = MAX(Pag7_Top10_mensual[counterparty_name])
+Trim =
+VAR Mes = MONTH(Dates[Date])
+VAR Anyo = YEAR(Dates[Date])
+VAR TextoBase =
+    LOWER(
+        FORMAT(Dates[Date], "mmm")
+        & "-"
+        & RIGHT(FORMAT(Dates[Date], "yy"), 2)
     )
+RETURN
+IF(
+    Mes IN {3, 6, 9, 12},
+    UPPER(LEFT(TextoBase, 1)) & MID(TextoBase, 2, LEN(TextoBase)),
+    "-"
 )
