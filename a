@@ -1,18 +1,23 @@
 LCR_12M_Chart :=
-VAR MesAncla    = SELECTEDVALUE ( Dates[MesAnioOrden] )          -- Mes elegido en el slicer
-VAR MesActual   = SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )     -- Mes de cada columna del gráfico
+VAR MesAncla =
+    SELECTEDVALUE ( Dates[MesAnioOrden] )        -- mes que eliges en el slicer
+
+VAR MesActual =
+    SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )   -- mes de cada barra del gráfico
+
 VAR DentroVentana =
     NOT ISBLANK ( MesAncla ) &&
     NOT ISBLANK ( MesActual ) &&
     MesActual <= MesAncla &&
-    MesActual > MesAncla - 12        -- últimos 12 meses (MesAncla incluido)
+    MesActual > MesAncla - 12                    -- últimos 12 meses
+
 RETURN
 IF (
     NOT DentroVentana,
-    BLANK(),                         -- Fuera del rango 12M, no mostramos nada
+    BLANK(),
     CALCULATE (
-        [LCR_Base],                  -- tu medida de LCR normal
-        REMOVEFILTERS ( Dates ),     -- quitamos el filtro de fechas actual
-        TREATAS ( { MesActual }, Dates[MesAnioOrden] )   -- fijamos el mes que corresponde a la columna del gráfico
+        [LCR_Base],                              -- usa la medida base
+        REMOVEFILTERS ( Dates ),                 -- quita el filtro del mes seleccionado
+        TREATAS ( { MesActual }, Dates[MesAnioOrden] ) -- fija el mes concreto
     )
 )
