@@ -1,15 +1,26 @@
-Trim =
-VAR Mes = MONTH(Dates[Date])
-VAR Anyo = YEAR(Dates[Date])
-VAR TextoBase =
-    LOWER(
-        FORMAT(Dates[Date], "mmm")
-        & "-"
-        & RIGHT(FORMAT(Dates[Date], "yy"), 2)
+Título_Position_Trim =
+VAR MesSeleccionadoTexto =
+    IF(
+        HASONEVALUE(Dates[Trim]),
+        VALUES(Dates[Trim]),
+        BLANK()
     )
+
+VAR FechaCorrespondiente =
+    CALCULATE(
+        MIN(Dates[Date]),
+        FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
+    )
+
+VAR TrimCorrespondiente =
+    CALCULATE(
+        VALUES(Dates[Trim]),
+        FILTER(Dates, Dates[Date] = FechaCorrespondiente)
+    )
+
 RETURN
 IF(
-    Mes IN {3, 6, 9, 12},
-    UPPER(LEFT(TextoBase, 1)) & MID(TextoBase, 2, LEN(TextoBase)),
-    "-"
+    NOT ISBLANK(MesSeleccionadoTexto),
+    "Position " & TrimCorrespondiente,
+    "Please select a month first"
 )
