@@ -1,6 +1,6 @@
 CantidadTotalPasivo_Pag7Nueva =
 LOOKUPVALUE(
     Pag7_Nueva[CantidadTotalPasivo],
-    Pag7_Nueva[Effective_date], 'Pag7_Top10_mensual'[fechha],
+    TRUNC(Pag7_Nueva[Effective_date]), TRUNC('Pag7_Top10_mensual'[fechha]),
     Pag7_Nueva[CounterpartyName], 'Pag7_Top10_mensual'[counterparty_name]
 )
