@@ -1,11 +1,11 @@
-LCR_12M_Chart :=
+Periodo12M_Valor :=
 VAR MesAnclaCodigo =
     SELECTEDVALUE ( Dates[MesAnioOrden] )
 
 VAR MesActualCodigo =
     SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )
 
--- Convertir los YYYYMM en fechas reales (siempre día 1)
+-- YYYYMM → fecha
 VAR MesAnclaFecha =
     IF (
         NOT ISBLANK ( MesAnclaCodigo ),
@@ -18,7 +18,7 @@ VAR MesActualFecha =
         DATE ( INT ( MesActualCodigo / 100 ), MOD ( MesActualCodigo, 100 ), 1 )
     )
 
--- Ventana de 12 meses reales usando EDATE
+-- Ventana 12M reales
 VAR DentroVentana =
     NOT ISBLANK ( MesAnclaFecha ) &&
     NOT ISBLANK ( MesActualFecha ) &&
@@ -30,8 +30,11 @@ IF (
     NOT DentroVentana,
     BLANK(),
     CALCULATE (
-        [LCR_Base],
-        REMOVEFILTERS ( Dates ),
-        TREATAS ( { MesActualCodigo }, Dates[MesAnioOrden] )
+        SELECTEDMEASURE(),   -- ESTA ES LA CLAVE
+        FILTER (
+            ALL ( lcr_historico[fecha] ),
+            lcr_historico[fecha] >= MesActualFecha
+                && lcr_historico[fecha] < EOMONTH ( MesActualFecha, 0 ) + 1
+        )
     )
 )
