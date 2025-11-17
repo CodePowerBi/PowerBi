@@ -1,8 +1,2 @@
-EjeMes_12M =
-DISTINCT (
-    SELECTCOLUMNS (
-        Dates,
-        "MesAnioOrden", Dates[MesAnioOrden],
-        "Monthly",      Dates[Monthly]
-    )
-)
+LCR_Base :=
+DIVIDE ( [HQLA], [Outflows] )
