@@ -16,16 +16,15 @@ VAR FechaCorrespondiente =
 VAR FechaMenosxMeses =
     EDATE(FechaCorrespondiente, 0)
 
--- buscamos el Trim de esa fecha
-VAR TrimResultado =
-    CALCULATE(
-        SELECTEDVALUE(Dates[Trim]),
-        FILTER(Dates, Dates[Date] = FechaMenosxMeses)
-    )
-
 RETURN
 IF(
     NOT ISBLANK(MesSeleccionadoTexto),
-    TrimResultado,                 -- o "Position " & TrimResultado
+
+    /* === FORMATO CON PRIMERA LETRA EN MAYÚSCULA === */
+    UPPER(LEFT(FORMAT(FechaMenosxMeses, "mmm"), 1)) &
+    MID(FORMAT(FechaMenosxMeses, "mmm"), 2, 2) &
+    "-" &
+    FORMAT(FechaMenosxMeses, "yy"),
+
     "Please select a month first"
 )
