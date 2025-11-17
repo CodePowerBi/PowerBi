@@ -1,4 +1,4 @@
-Título_Position_Menos_3Meses =
+Título_m_km1 =
 VAR MesSeleccionadoTexto =
     IF(
         HASONEVALUE(Dates[Trim]),
@@ -6,37 +6,26 @@ VAR MesSeleccionadoTexto =
         BLANK()
     )
 
--- Fecha del trim seleccionado (por ejemplo 30/09/2024)
 VAR FechaCorrespondiente =
     CALCULATE(
         MIN(Dates[Date]),
         FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
     )
 
--- Fecha menos 3 meses (por ejemplo 30/06/2024)
-VAR FechaMenos3Meses =
-    EDATE(FechaCorrespondiente, -3)
+-- aquí decides cuántos meses restar (0, -3, -6…)
+VAR FechaMenosxMeses =
+    EDATE(FechaCorrespondiente, 0)
 
--- Construimos el texto del trim de esa fecha: Jun-24, Sep-24, etc.
-VAR MesMenos3 = MONTH(FechaMenos3Meses)
-VAR TextoBaseMenos3 =
-    LOWER(
-        FORMAT(FechaMenos3Meses, "mmm")
-        & "-"
-        & RIGHT(FORMAT(FechaMenos3Meses, "yy"), 2)
-    )
-
-VAR TrimMenos3 =
-    IF(
-        MesMenos3 IN {3, 6, 9, 12},
-        UPPER(LEFT(TextoBaseMenos3, 1)) &
-        MID(TextoBaseMenos3, 2, LEN(TextoBaseMenos3)),
-        BLANK()
+-- buscamos el Trim de esa fecha
+VAR TrimResultado =
+    CALCULATE(
+        SELECTEDVALUE(Dates[Trim]),
+        FILTER(Dates, Dates[Date] = FechaMenosxMeses)
     )
 
 RETURN
 IF(
-    NOT ISBLANK(MesSeleccionadoTexto) && NOT ISBLANK(TrimMenos3),
-    "Position " & TrimMenos3,
+    NOT ISBLANK(MesSeleccionadoTexto),
+    TrimResultado,                 -- o "Position " & TrimResultado
     "Please select a month first"
 )
