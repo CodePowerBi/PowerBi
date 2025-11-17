@@ -1,30 +1,8 @@
-Título_m_km1 =
-VAR MesSeleccionadoTexto =
-    IF(
-        HASONEVALUE(Dates[Trim]),
-        VALUES(Dates[Trim]),
-        BLANK()
-    )
-
-VAR FechaCorrespondiente =
+mrf_lending =
+VAR MaxFecha =
     CALCULATE(
-        MIN(Dates[Date]),
-        FILTER(Dates, Dates[Trim] = MesSeleccionadoTexto)
+        MAX('lending'[calculation_date]),
+        ALL('lending')
     )
-
--- aquí decides cuántos meses restar (0, -3, -6…)
-VAR FechaMenosxMeses =
-    EDATE(FechaCorrespondiente, 0)
-
 RETURN
-IF(
-    NOT ISBLANK(MesSeleccionadoTexto),
-
-    /* === FORMATO CON PRIMERA LETRA EN MAYÚSCULA === */
-    UPPER(LEFT(FORMAT(FechaMenosxMeses, "mmm"), 1)) &
-    MID(FORMAT(FechaMenosxMeses, "mmm"), 2, 2) &
-    "-" &
-    FORMAT(FechaMenosxMeses, "yy"),
-
-    "Please select a month first"
-)
+    SELECTEDVALUE('TABLA Effective Date'[Date]) = MaxFecha
