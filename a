@@ -1,6 +1,9 @@
-CantidadTotalPasivo_Pag7Nueva =
-LOOKUPVALUE(
-    Pag7_Nueva[CantidadTotalPasivo],
-    TRUNC(Pag7_Nueva[Effective_date]), TRUNC('Pag7_Top10_mensual'[fechha]),
-    Pag7_Nueva[CounterpartyName], 'Pag7_Top10_mensual'[counterparty_name]
+CantidadTotalPasivo_Lookup =
+CALCULATE(
+    MAX(Pag7_Nueva[CantidadTotalPasivo]),
+    FILTER(
+        Pag7_Nueva,
+        Pag7_Nueva[Effective_date] = MAX(Pag7_Top10_mensual[fechha]) &&
+        Pag7_Nueva[CounterpartyName] = MAX(Pag7_Top10_mensual[counterparty_name])
+    )
 )
