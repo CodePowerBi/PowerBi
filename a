@@ -1,15 +1,8 @@
-mrf_lending =
-VAR MaxFechaLending =
-    CALCULATE(
-        MAX ( 'lending'[calculation_date] ),
-        ALL ( 'lending' )
+EjeMes_12M =
+DISTINCT (
+    SELECTCOLUMNS (
+        Dates,
+        "MesAnioOrden", Dates[MesAnioOrden],
+        "Monthly",      Dates[Monthly]
     )
-
-VAR UltimoMesLending =
-    EOMONTH ( MaxFechaLending, 0 )
-
-VAR MesFila =
-    EOMONTH ( 'TABLA Effective Date'[Date], 0 )
-
-RETURN
-    MesFila = UltimoMesLending
+)
