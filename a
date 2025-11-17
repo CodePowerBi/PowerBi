@@ -1,8 +1,15 @@
 mrf_lending =
-VAR MaxFecha =
+VAR MaxFechaLending =
     CALCULATE(
-        MAX('lending'[calculation_date]),
-        ALL('lending')
+        MAX ( 'lending'[calculation_date] ),
+        ALL ( 'lending' )
     )
+
+VAR UltimoMesLending =
+    EOMONTH ( MaxFechaLending, 0 )
+
+VAR MesFila =
+    EOMONTH ( 'TABLA Effective Date'[Date], 0 )
+
 RETURN
-    SELECTEDVALUE('TABLA Effective Date'[Date]) = MaxFecha
+    MesFila = UltimoMesLending
