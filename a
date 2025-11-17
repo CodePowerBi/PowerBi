@@ -1,21 +1,26 @@
 Amount_3M_Atras_Vlookup :=
 VAR FechaFila =
-    SELECTEDVALUE ( 'pag7_nueva'[Effective_date] )
+    MAX ( 'pag7_nueva'[Effective_date] )
 VAR CPFila =
-    SELECTEDVALUE ( 'pag7_nueva'[CounterpartyName] )
+    MAX ( 'pag7_nueva'[CounterpartyName] )
 VAR Fecha3M =
     EDATE ( FechaFila, -3 )
+VAR InicioMes3M =
+    DATE ( YEAR ( Fecha3M ), MONTH ( Fecha3M ), 1 )
+VAR FinMes3M =
+    EOMONTH ( Fecha3M, 0 )
 RETURN
-IF (
-    NOT ISBLANK ( FechaFila ) &&
-    NOT ISBLANK ( CPFila ),
+COALESCE (
     CALCULATE (
         SUM ( Pag7_Top10_mensual[amount_received] ),
         FILTER (
             ALL ( Pag7_Top10_mensual ),
-            Pag7_Top10_mensual[counterparty_name] = CPFila
-                && YEAR ( Pag7_Top10_mensual[fechha] ) = YEAR ( Fecha3M )
-                && MONTH ( Pag7_Top10_mensual[fechha] ) = MONTH ( Fecha3M )
+            -- Igualar nombre de contraparte ignorando mayúsculas/espacios
+            TRIM ( UPPER ( Pag7_Top10_mensual[counterparty_name] ) ) =
+                TRIM ( UPPER ( CPFila ) )
+                && Pag7_Top10_mensual[fechha] >= InicioMes3M
+                && Pag7_Top10_mensual[fechha] <= FinMes3M
         )
-    )
+    ),
+    0
 )
