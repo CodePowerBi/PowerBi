@@ -1,21 +1,8 @@
-PD_constante :=
-VAR _Year =
-    YEAR( MAX( 'VINTAGES_DT'[origination_date] ) )   -- año del punto en el gráfico
+Monthly =
+VAR _mesLower = LOWER( FORMAT( Dates[Date], "mmm" ) )        -- mar / abr / may...
+VAR _mesCapital =
+    UPPER( LEFT( _mesLower, 1 ) ) &
+    MID( _mesLower, 2, LEN( _mesLower ) )                    -- Mar / Abr / May
+VAR _año = RIGHT( FORMAT( Dates[Date], "yy" ), 2 )
 RETURN
-MAXX(
-    FILTER(
-        ALL( 'VINTAGES_DT'[origination_date] ),      -- quita el filtro de mes
-        YEAR( 'VINTAGES_DT'[origination_date] ) = _Year
-    ),
-    -- aquí usamos EXACTAMENTE el mismo cálculo de PD
-    DIVIDE(
-        CALCULATE(
-            SUM( 'VINTAGES_DT'[pd_times_ead] ),
-            'VINTAGES_DT'[time_in_books] = 3
-        ),
-        CALCULATE(
-            SUM( 'VINTAGES_DT'[ead_ifrs9] ),
-            'VINTAGES_DT'[time_in_books] = 3
-        )
-    ) / 100
-)
+_mesCapital & "-" & _año
