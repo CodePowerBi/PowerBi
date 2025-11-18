@@ -1,38 +1,14 @@
-ParentCo_12M :=
-VAR MesAnclaCodigo =
-    SELECTEDVALUE ( Dates[MesAnioOrden] )
-
-VAR MesActualCodigo =
-    SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )
-
-VAR MesAnclaFecha =
-    IF (
-        NOT ISBLANK ( MesAnclaCodigo ),
-        DATE ( INT(MesAnclaCodigo/100), MOD(MesAnclaCodigo,100), 1 )
-    )
-
-VAR MesActualFecha =
-    IF (
-        NOT ISBLANK ( MesActualCodigo ),
-        DATE ( INT(MesActualCodigo/100), MOD(MesActualCodigo,100), 1 )
-    )
-
-VAR DentroVentana =
-    NOT ISBLANK(MesAnclaFecha) &&
-    NOT ISBLANK(MesActualFecha) &&
-    MesActualFecha <= MesAnclaFecha &&
-    MesActualFecha > EDATE(MesAnclaFecha, -12)
-
+Año = YEAR('VINTAGES_DT'[Fecha])
+2) Crear columna "PD_Max_Año"
+DAX
+Copiar código
+PD_Max_Año =
+VAR _año = 'VINTAGES_DT'[Año]
 RETURN
-IF(
-    NOT DentroVentana,
-    BLANK(),
-    CALCULATE(
-        MAX(lcr_historico[parent_co]),
-        FILTER(
-            ALL(lcr_historico),
-            lcr_historico[fecha] >= MesActualFecha &&
-            lcr_historico[fecha] <  EOMONTH(MesActualFecha,0) + 1
-        )
+CALCULATE(
+    MAX('VINTAGES_DT'[PD]),
+    FILTER(
+        'VINTAGES_DT',
+        'VINTAGES_DT'[Año] = _año
     )
 )
