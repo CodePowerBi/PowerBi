@@ -1,14 +1,21 @@
-Año = YEAR('VINTAGES_DT'[Fecha])
-2) Crear columna "PD_Max_Año"
-DAX
-Copiar código
-PD_Max_Año =
-VAR _año = 'VINTAGES_DT'[Año]
+PD_constante :=
+VAR _Year =
+    YEAR( MAX( 'VINTAGES_DT'[origination_date] ) )   -- año del punto en el gráfico
 RETURN
-CALCULATE(
-    MAX('VINTAGES_DT'[PD]),
+MAXX(
     FILTER(
-        'VINTAGES_DT',
-        'VINTAGES_DT'[Año] = _año
-    )
+        ALL( 'VINTAGES_DT'[origination_date] ),      -- quita el filtro de mes
+        YEAR( 'VINTAGES_DT'[origination_date] ) = _Year
+    ),
+    -- aquí usamos EXACTAMENTE el mismo cálculo de PD
+    DIVIDE(
+        CALCULATE(
+            SUM( 'VINTAGES_DT'[pd_times_ead] ),
+            'VINTAGES_DT'[time_in_books] = 3
+        ),
+        CALCULATE(
+            SUM( 'VINTAGES_DT'[ead_ifrs9] ),
+            'VINTAGES_DT'[time_in_books] = 3
+        )
+    ) / 100
 )
