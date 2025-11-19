@@ -1,9 +1,9 @@
-EsRepetido =
-VAR _id = 'Tabla'[id]
-VAR _cuenta =
-    CALCULATE(
-        COUNTROWS ( 'Tabla' ),
-        ALLEXCEPT ( 'Tabla', 'Tabla'[id] )
-    )
+TipoPeriodo =
+VAR _orden = 'Tabla'[orden]
 RETURN
-IF ( _cuenta > 1, "Repetido", "Único" )
+SWITCH (
+    TRUE(),
+    _orden IN { 0, 1, 2, 3 },    "M",
+    _orden IN { 100, 101, 102 }, "3M",
+    "Otro"
+)
