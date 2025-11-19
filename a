@@ -1,8 +1,9 @@
-Monthly =
-VAR _mesLower = LOWER( FORMAT( Dates[Date], "mmm" ) )        -- mar / abr / may...
-VAR _mesCapital =
-    UPPER( LEFT( _mesLower, 1 ) ) &
-    MID( _mesLower, 2, LEN( _mesLower ) )                    -- Mar / Abr / May
-VAR _año = RIGHT( FORMAT( Dates[Date], "yy" ), 2 )
+EsRepetido =
+VAR _id = 'Tabla'[id]
+VAR _cuenta =
+    CALCULATE(
+        COUNTROWS ( 'Tabla' ),
+        ALLEXCEPT ( 'Tabla', 'Tabla'[id] )
+    )
 RETURN
-_mesCapital & "-" & _año
+IF ( _cuenta > 1, "Repetido", "Único" )
