@@ -1,11 +1,11 @@
 A SLICER GRAFICO :=
 VAR MesSlicerCodigo =
     SELECTEDVALUE ( MesSelector[MesAnioOrden] )
-    -- Aquí leo el mes que yo tengo elegido en el slicer (MesSelector), en formato AAAAMM
+    -- Aquí leo el mes que yo he elegido en el slicer, por ejemplo 202506 (jun-25)
 
 VAR MesEjeCodigo =
     SELECTEDVALUE ( 'EjeMes_12M'[MesAnioOrden] )
-    -- Aquí leo el mes concreto que está dibujando el gráfico en la leyenda/eje
+    -- Aquí leo el mes que está pintando ahora mismo el gráfico en la leyenda/eje
 
 VAR MesSlicerFecha =
     IF (
@@ -17,12 +17,13 @@ VAR MesSlicerFecha =
 VAR MesEjeFecha =
     IF (
         NOT ISBLANK ( MesEjeCodigo ),
-        -- Hago lo mismo con el mes del eje
+        -- Hago lo mismo con el mes del eje para poder compararlos por fecha
         DATE ( INT ( MesEjeCodigo / 100 ), MOD ( MesEjeCodigo, 100 ), 1 )
     )
 
 VAR DentroVentana =
-    -- Aquí compruebo si el mes del eje está dentro de los últimos 12 meses del mes seleccionado
+    -- Aquí compruebo si el mes del eje está dentro de los últimos 12 meses
+    -- respecto al mes que yo he elegido en el slicer
     NOT ISBLANK ( MesSlicerFecha ) &&
     NOT ISBLANK ( MesEjeFecha ) &&
     MesEjeFecha <= MesSlicerFecha &&
@@ -31,17 +32,15 @@ VAR DentroVentana =
 RETURN
 IF (
     NOT DentroVentana,
-    -- Si el mes está fuera de la ventana de 12M, no quiero pintar nada
+    -- Si este mes no entra en la ventana de 12M, yo no quiero pintar nada
     BLANK(),
-    -- Si está dentro, calculo EXACTAMENTE el mismo importe que en EXPECTATIVA para ese mes
+    -- Si sí entra, calculo EXACTAMENTE el mismo valor de [Carrying Amount] para ese mes
     CALCULATE (
-        [Importe],      -- uso la misma suma que en EXPECTATIVA
-        KEEPFILTERS (
-            DATESBETWEEN (
-                Dates[Date],
-                MesEjeFecha,                -- desde el día 1 del mes del eje
-                EOMONTH ( MesEjeFecha, 0 )  -- hasta el último día de ese mes
-            )
-        )
+        [Carrying Amount],
+        -- Aquí quito cualquier filtro de fechas que venga del modelo
+        REMOVEFILTERS ( Dates ),
+        -- Y aquí limito yo mismo el cálculo al mes del eje
+        Dates[Date] >= MesEjeFecha &&
+        Dates[Date] <= EOMONTH ( MesEjeFecha, 0 )
     )
 )
