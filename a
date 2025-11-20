@@ -1,15 +1,20 @@
-Current MTD FVPL =
-VAR _Last =
-    MAX ( 'DICC_FECHA'[Date] )          -- fecha máxima dentro del contexto del slicer
+Last Month FVPL =
+VAR _Current =
+    MAX ( 'DICC_FECHA'[Date] )                      -- Fecha seleccionada en slicer
 
-VAR _Start =
-    DATE ( YEAR ( _Last ), MONTH ( _Last ), 1 )
+VAR _LastMonth =
+    EOMONTH ( _Current, -1 )                         -- Último día del mes previo
+
+VAR _StartLM =
+    DATE ( YEAR ( _LastMonth ), MONTH ( _LastMonth ), 1 )
+VAR _EndLM = _LastMonth
 
 VAR _total =
     CALCULATE (
         SUM ( vw_equity_2[sum_imrazonable] ),
         vw_equity_2[nbcartera] = "29 - FVPL",
-        DATESBETWEEN ( 'DICC_FECHA'[Date], _Start, _Last )
+        DATESBETWEEN ( 'DICC_FECHA'[Date], _StartLM, _EndLM )
     )
+
 RETURN
     COALESCE ( _total, 0 )
