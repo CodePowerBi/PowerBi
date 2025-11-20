@@ -1,9 +1,45 @@
-EsRepetido =
-VAR _id = 'Tabla'[id]
-VAR _cuenta =
-    CALCULATE(
-        COUNTROWS ( 'Tabla' ),
-        ALLEXCEPT ( 'Tabla', 'Tabla'[id] )
+SLICER GRAFICO :=
+VAR MesSlicerCodigo =
+    SELECTEDVALUE ( MesSelector[MesAnioOrden] )
+    -- Aquí cojo el mes EXACTO que yo selecciono en el slicer (MesSelector).
+    -- Esta era la pieza que faltaba.
+
+VAR MesEjeCodigo =
+    SELECTEDVALUE ( 'EjeMes_12M'[MesAnioOrden] )
+    -- Aquí cojo el mes que está pintando el eje. Esto está bien.
+
+VAR MesSlicerFecha =
+    IF (
+        NOT ISBLANK ( MesSlicerCodigo ),
+        -- Convierto el mes del slicer a fecha real (202506 → 01/06/2025)
+        DATE ( INT ( MesSlicerCodigo / 100 ), MOD ( MesSlicerCodigo, 100 ), 1 )
     )
+
+VAR MesEjeFecha =
+    IF (
+        NOT ISBLANK ( MesEjeCodigo ),
+        -- Convierto el mes del eje a fecha real
+        DATE ( INT ( MesEjeCodigo / 100 ), MOD ( MesEjeCodigo, 100 ), 1 )
+    )
+
+-- Aquí yo defino si el mes del eje entra en la ventana de 12M hacia atrás desde el mes del slicer
+VAR DentroVentana =
+    NOT ISBLANK ( MesSlicerFecha ) &&
+    NOT ISBLANK ( MesEjeFecha ) &&
+    MesEjeFecha <= MesSlicerFecha &&
+    MesEjeFecha > EDATE ( MesSlicerFecha, -12 )
+
 RETURN
-IF ( _cuenta > 1, "Repetido", "Único" )
+IF (
+    NOT DentroVentana,
+    BLANK(),
+    CALCULATE (
+        SUM ( fusion_vw[importe_libros] ),
+        FILTER (
+            ALL ( fusion_vw ),
+            -- Aquí filtro SOLO el mes exacto del eje
+            fusion_vw[report_date] >= MesEjeFecha &&
+            fusion_vw[report_date] <  EOMONTH ( MesEjeFecha, 0 ) + 1
+        )
+    )
+)
