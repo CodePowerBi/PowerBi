@@ -1,29 +1,28 @@
-SLICER GRAFICO :=
+A SLICER GRAFICO :=
 VAR MesSlicerCodigo =
     SELECTEDVALUE ( MesSelector[MesAnioOrden] )
-    -- Aquí cojo el mes EXACTO que yo selecciono en el slicer (MesSelector).
-    -- Esta era la pieza que faltaba.
+    -- Aquí leo el mes que yo he elegido en el slicer (MesSelector), en formato AAAAMM
 
 VAR MesEjeCodigo =
     SELECTEDVALUE ( 'EjeMes_12M'[MesAnioOrden] )
-    -- Aquí cojo el mes que está pintando el eje. Esto está bien.
+    -- Aquí leo el mes que está pintando el gráfico ahora mismo en la leyenda/eje
 
 VAR MesSlicerFecha =
     IF (
         NOT ISBLANK ( MesSlicerCodigo ),
-        -- Convierto el mes del slicer a fecha real (202506 → 01/06/2025)
+        -- Si tengo un mes elegido en el slicer, lo convierto a una fecha real (1er día del mes)
         DATE ( INT ( MesSlicerCodigo / 100 ), MOD ( MesSlicerCodigo, 100 ), 1 )
     )
 
 VAR MesEjeFecha =
     IF (
         NOT ISBLANK ( MesEjeCodigo ),
-        -- Convierto el mes del eje a fecha real
+        -- Hago lo mismo con el mes del eje, para poder compararlo por rango
         DATE ( INT ( MesEjeCodigo / 100 ), MOD ( MesEjeCodigo, 100 ), 1 )
     )
 
--- Aquí yo defino si el mes del eje entra en la ventana de 12M hacia atrás desde el mes del slicer
 VAR DentroVentana =
+    -- Aquí compruebo si el mes del eje está dentro de los últimos 12 meses del mes seleccionado
     NOT ISBLANK ( MesSlicerFecha ) &&
     NOT ISBLANK ( MesEjeFecha ) &&
     MesEjeFecha <= MesSlicerFecha &&
@@ -32,14 +31,14 @@ VAR DentroVentana =
 RETURN
 IF (
     NOT DentroVentana,
+    -- Si el mes del eje está fuera de la ventana de 12M, yo devuelvo BLANK para no pintar nada
     BLANK(),
+    -- Si está dentro, calculo el mismo importe que vería en una tabla normal para ese mes
     CALCULATE (
-        SUM ( fusion_vw[importe_libros] ),
-        FILTER (
-            ALL ( fusion_vw ),
-            -- Aquí filtro SOLO el mes exacto del eje
-            fusion_vw[report_date] >= MesEjeFecha &&
-            fusion_vw[report_date] <  EOMONTH ( MesEjeFecha, 0 ) + 1
-        )
+        [Importe],                                  -- reutilizo mi medida base
+        TREATAS ( { MesEjeCodigo }, Dates[MesAnioOrden] )
+        -- Con TREATAS, fuerzo a que este mes del eje actúe como filtro sobre Dates[MesAnioOrden]
+        -- De esta forma, el valor que devuelvo aquí es el mismo que Suma de importe_libros
+        -- para ese mes concreto
     )
 )
