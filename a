@@ -1,23 +1,23 @@
 A SLICER GRAFICO :=
 VAR MesSlicerCodigo =
     SELECTEDVALUE ( MesSelector[MesAnioOrden] )
-    -- Aquí leo el mes que yo he elegido en el slicer (MesSelector), en formato AAAAMM
+    -- Aquí leo el mes que yo tengo elegido en el slicer (MesSelector), en formato AAAAMM
 
 VAR MesEjeCodigo =
     SELECTEDVALUE ( 'EjeMes_12M'[MesAnioOrden] )
-    -- Aquí leo el mes que está pintando el gráfico ahora mismo en la leyenda/eje
+    -- Aquí leo el mes concreto que está dibujando el gráfico en la leyenda/eje
 
 VAR MesSlicerFecha =
     IF (
         NOT ISBLANK ( MesSlicerCodigo ),
-        -- Si tengo un mes elegido en el slicer, lo convierto a una fecha real (1er día del mes)
+        -- Si tengo un mes elegido en el slicer, lo convierto a una fecha real (1 de ese mes)
         DATE ( INT ( MesSlicerCodigo / 100 ), MOD ( MesSlicerCodigo, 100 ), 1 )
     )
 
 VAR MesEjeFecha =
     IF (
         NOT ISBLANK ( MesEjeCodigo ),
-        -- Hago lo mismo con el mes del eje, para poder compararlo por rango
+        -- Hago lo mismo con el mes del eje
         DATE ( INT ( MesEjeCodigo / 100 ), MOD ( MesEjeCodigo, 100 ), 1 )
     )
 
@@ -31,14 +31,17 @@ VAR DentroVentana =
 RETURN
 IF (
     NOT DentroVentana,
-    -- Si el mes del eje está fuera de la ventana de 12M, yo devuelvo BLANK para no pintar nada
+    -- Si el mes está fuera de la ventana de 12M, no quiero pintar nada
     BLANK(),
-    -- Si está dentro, calculo el mismo importe que vería en una tabla normal para ese mes
+    -- Si está dentro, calculo EXACTAMENTE el mismo importe que en EXPECTATIVA para ese mes
     CALCULATE (
-        [Importe],                                  -- reutilizo mi medida base
-        TREATAS ( { MesEjeCodigo }, Dates[MesAnioOrden] )
-        -- Con TREATAS, fuerzo a que este mes del eje actúe como filtro sobre Dates[MesAnioOrden]
-        -- De esta forma, el valor que devuelvo aquí es el mismo que Suma de importe_libros
-        -- para ese mes concreto
+        [Importe],      -- uso la misma suma que en EXPECTATIVA
+        KEEPFILTERS (
+            DATESBETWEEN (
+                Dates[Date],
+                MesEjeFecha,                -- desde el día 1 del mes del eje
+                EOMONTH ( MesEjeFecha, 0 )  -- hasta el último día de ese mes
+            )
+        )
     )
 )
