@@ -1,20 +1,9 @@
-Last Month FVPL =
-VAR _Current =
-    MAX ( 'DICC_FECHA'[Date] )                      -- Fecha seleccionada en slicer
-
-VAR _LastMonth =
-    EOMONTH ( _Current, -1 )                         -- Último día del mes previo
-
-VAR _StartLM =
-    DATE ( YEAR ( _LastMonth ), MONTH ( _LastMonth ), 1 )
-VAR _EndLM = _LastMonth
-
-VAR _total =
+ID_Repetido :=
+VAR _id = fusion_vw[id]
+VAR _count =
     CALCULATE (
-        SUM ( vw_equity_2[sum_imrazonable] ),
-        vw_equity_2[nbcartera] = "29 - FVPL",
-        DATESBETWEEN ( 'DICC_FECHA'[Date], _StartLM, _EndLM )
+        COUNTROWS ( fusion_vw ),
+        FILTER ( fusion_vw, fusion_vw[id] = _id )
     )
-
 RETURN
-    COALESCE ( _total, 0 )
+IF ( _count > 1, "Repetido", "No repetido" )
