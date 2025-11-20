@@ -1,9 +1,9 @@
-ID_Repetido :=
-VAR _id = fusion_vw[id]
-VAR _count =
-    CALCULATE (
-        COUNTROWS ( fusion_vw ),
-        FILTER ( fusion_vw, fusion_vw[id] = _id )
+EsRepetido =
+VAR _id = 'Tabla'[id]
+VAR _cuenta =
+    CALCULATE(
+        COUNTROWS ( 'Tabla' ),
+        ALLEXCEPT ( 'Tabla', 'Tabla'[id] )
     )
 RETURN
-IF ( _count > 1, "Repetido", "No repetido" )
+IF ( _cuenta > 1, "Repetido", "Único" )
