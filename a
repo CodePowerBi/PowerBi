@@ -1,39 +1,15 @@
-SLICER GRAFICO :=
-VAR MesSlicerCodigo =
-    SELECTEDVALUE ( Dates[MesAnioOrden] )           -- mes elegido en el slicer
+Current MTD FVPL =
+VAR _Last =
+    MAX ( 'DICC_FECHA'[Date] )          -- fecha máxima dentro del contexto del slicer
 
-VAR MesEjeCodigo =
-    SELECTEDVALUE ( 'EjeMes_12M'[MesAnioOrden] )    -- mes que está pintando el eje/leyenda
+VAR _Start =
+    DATE ( YEAR ( _Last ), MONTH ( _Last ), 1 )
 
-VAR MesSlicerFecha =
-    IF (
-        NOT ISBLANK ( MesSlicerCodigo ),
-        DATE ( INT ( MesSlicerCodigo / 100 ), MOD ( MesSlicerCodigo, 100 ), 1 )
-    )
-
-VAR MesEjeFecha =
-    IF (
-        NOT ISBLANK ( MesEjeCodigo ),
-        DATE ( INT ( MesEjeCodigo / 100 ), MOD ( MesEjeCodigo, 100 ), 1 )
-    )
-
--- ¿El mes del eje está dentro de la ventana de 12M hacia atrás desde el mes seleccionado?
-VAR DentroVentana =
-    NOT ISBLANK ( MesSlicerFecha ) &&
-    NOT ISBLANK ( MesEjeFecha ) &&
-    MesEjeFecha <= MesSlicerFecha &&
-    MesEjeFecha > EDATE ( MesSlicerFecha, -12 )
-
-RETURN
-IF (
-    NOT DentroVentana,
-    BLANK (),
+VAR _total =
     CALCULATE (
-        MAX ( fusion_vw[importe_libros] ),          -- o la medida que quieras usar
-        FILTER (
-            ALL ( fusion_vw ),
-            fusion_vw[report_date] >= MesEjeFecha &&
-            fusion_vw[report_date] <= EOMONTH ( MesEjeFecha, 0 ) + 1
-        )
+        SUM ( vw_equity_2[sum_imrazonable] ),
+        vw_equity_2[nbcartera] = "29 - FVPL",
+        DATESBETWEEN ( 'DICC_FECHA'[Date], _Start, _Last )
     )
-)
+RETURN
+    COALESCE ( _total, 0 )
