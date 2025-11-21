@@ -1,2 +1,15 @@
-epigrafe_total :=
-IF( 'fusion_vw'[epigraf_front] = "TOTAL", "TOTAL", 'fusion_vw'[epigraf_front] )
+Dicc_Epigrafes_Total =
+VAR Base =
+    SUMMARIZE(
+        'dicc_epigrafes',
+        'dicc_epigrafes'[epigraf_front],
+        'dicc_epigrafes'[orden_categoria]   -- usa aquí tu columna de orden
+    )
+RETURN
+UNION(
+    Base,
+    ROW(
+        "epigraf_front",    "TOTAL",
+        "orden_categoria",  999            -- pon un número alto para que quede el último
+    )
+)
