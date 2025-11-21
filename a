@@ -1,12 +1,2 @@
-Color_Mes_Medida =
-VAR YM = MAX ( 'MesSelector'[MesAnioOrden] )
-VAR YM_Sel = SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
-RETURN
-SWITCH (
-    TRUE(),
-    YM = YM_Sel, "Actual",
-    YM = YM_Sel - 1, "Anterior",
-    YM = YM_Sel - 2, "Dos_Meses_Antes",
-    YM = YM_Sel - 3, "Tres_Meses_Antes",
-    "Otros"
-)
+epigrafe_total :=
+IF( 'fusion_vw'[epigraf_front] = "TOTAL", "TOTAL", 'fusion_vw'[epigraf_front] )
