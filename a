@@ -1,14 +1,12 @@
-Mostrar_Hasta_MaxSlicer =
-VAR MaxFecha = [FechaMax_Slicer]
-VAR FechaEje = MAX ( 'Dates'[Date] )
+Color_Mes_Medida =
+VAR YM = MAX ( 'MesSelector'[MesAnioOrden] )
+VAR YM_Sel = SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
 RETURN
-IF (
-    NOT ISBLANK ( FechaEje )
-        && NOT ISBLANK ( MaxFecha )
-        && FechaEje <= MaxFecha,
-    1,
-    0
+SWITCH (
+    TRUE(),
+    YM = YM_Sel, "Actual",
+    YM = YM_Sel - 1, "Anterior",
+    YM = YM_Sel - 2, "Dos_Meses_Antes",
+    YM = YM_Sel - 3, "Tres_Meses_Antes",
+    "Otros"
 )
-
-___
-
