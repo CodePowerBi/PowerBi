@@ -1,46 +1,14 @@
-A SLICER GRAFICO :=
-VAR MesSlicerCodigo =
-    SELECTEDVALUE ( MesSelector[MesAnioOrden] )
-    -- Aquí leo el mes que yo he elegido en el slicer, por ejemplo 202506 (jun-25)
-
-VAR MesEjeCodigo =
-    SELECTEDVALUE ( 'EjeMes_12M'[MesAnioOrden] )
-    -- Aquí leo el mes que está pintando ahora mismo el gráfico en la leyenda/eje
-
-VAR MesSlicerFecha =
-    IF (
-        NOT ISBLANK ( MesSlicerCodigo ),
-        -- Si tengo un mes elegido en el slicer, lo convierto a una fecha real (1 de ese mes)
-        DATE ( INT ( MesSlicerCodigo / 100 ), MOD ( MesSlicerCodigo, 100 ), 1 )
-    )
-
-VAR MesEjeFecha =
-    IF (
-        NOT ISBLANK ( MesEjeCodigo ),
-        -- Hago lo mismo con el mes del eje para poder compararlos por fecha
-        DATE ( INT ( MesEjeCodigo / 100 ), MOD ( MesEjeCodigo, 100 ), 1 )
-    )
-
-VAR DentroVentana =
-    -- Aquí compruebo si el mes del eje está dentro de los últimos 12 meses
-    -- respecto al mes que yo he elegido en el slicer
-    NOT ISBLANK ( MesSlicerFecha ) &&
-    NOT ISBLANK ( MesEjeFecha ) &&
-    MesEjeFecha <= MesSlicerFecha &&
-    MesEjeFecha > EDATE ( MesSlicerFecha, -12 )
-
+Mostrar_Hasta_MaxSlicer =
+VAR MaxFecha = [FechaMax_Slicer]
+VAR FechaEje = MAX ( 'Dates'[Date] )
 RETURN
 IF (
-    NOT DentroVentana,
-    -- Si este mes no entra en la ventana de 12M, yo no quiero pintar nada
-    BLANK(),
-    -- Si sí entra, calculo EXACTAMENTE el mismo valor de [Carrying Amount] para ese mes
-    CALCULATE (
-        [Carrying Amount],
-        -- Aquí quito cualquier filtro de fechas que venga del modelo
-        REMOVEFILTERS ( Dates ),
-        -- Y aquí limito yo mismo el cálculo al mes del eje
-        Dates[Date] >= MesEjeFecha &&
-        Dates[Date] <= EOMONTH ( MesEjeFecha, 0 )
-    )
+    NOT ISBLANK ( FechaEje )
+        && NOT ISBLANK ( MaxFecha )
+        && FechaEje <= MaxFecha,
+    1,
+    0
 )
+
+___
+
