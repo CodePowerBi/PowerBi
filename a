@@ -1,15 +1,13 @@
-Dicc_Epigrafes_Total =
-VAR Base =
-    SUMMARIZE(
-        'dicc_epigrafes',
-        'dicc_epigrafes'[epigraf_front],
-        'dicc_epigrafes'[orden_categoria]   -- usa aquí tu columna de orden
-    )
+Mostrar_Hasta_Rango :=
+VAR MaxFecha = [FechaMax_Slicer PRUEBA2]
+VAR FechaEje = MAX ( 'Dates'[Date] )
+VAR MinFecha = EDATE ( MaxFecha, -8 )   -- Max, Max-1, … Max-8  → 9 meses en total
 RETURN
-UNION(
-    Base,
-    ROW(
-        "epigraf_front",    "TOTAL",
-        "orden_categoria",  999            -- pon un número alto para que quede el último
-    )
+IF (
+    NOT ISBLANK ( FechaEje ) &&
+    NOT ISBLANK ( MaxFecha ) &&
+    FechaEje <= MaxFecha &&
+    FechaEje >= MinFecha,
+    1,
+    0
 )
