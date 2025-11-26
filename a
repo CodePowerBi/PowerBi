@@ -1,9 +1,11 @@
-Mostrar_SoloMesSeleccionado :=
-VAR MaxYM  = [MesMax_Slicer]
-VAR YM_Eje = MAX( 'Dates'[MesAnioOrden] )
+[Medida_param_con_TOTAL]
+
+
+______
+Medida_param_SoloMesSel :=
+VAR MaxYM = [MesMax_Slicer]
 RETURN
-IF(
-    YM_Eje = MaxYM,
-    1,
-    0
+CALCULATE (
+    [Medida_param_con_TOTAL],           -- aquí pones tu medida actual
+    'Dates'[MesAnioOrden] = MaxYM       -- fuerza a usar solo el mes del slicer
 )
