@@ -1,11 +1,11 @@
-[Medida_param_con_TOTAL]
-
-
-______
-Medida_param_SoloMesSel :=
-VAR MaxYM = [MesMax_Slicer]
-RETURN
-CALCULATE (
-    [Medida_param_con_TOTAL],           -- aquí pones tu medida actual
-    'Dates'[MesAnioOrden] = MaxYM       -- fuerza a usar solo el mes del slicer
+Epigrafe_Corregido :=
+SWITCH (
+    TRUE(),
+    'dicc_epigrafes'[id] IN {3, 9},        "Customers",
+    'dicc_epigrafes'[id] = 2,              "Credit Institutions",
+    'dicc_epigrafes'[id] = 11,             "Market Debt Securities",
+    'dicc_epigrafes'[id] = 4,              "Debt Instruments",
+    'dicc_epigrafes'[id] = 14,             "Subordinated Liabilities",
+    'dicc_epigrafes'[id] = 13,             "Other Financial Liabilities",
+    BLANK()
 )
