@@ -1,11 +1,1 @@
-Epigrafe_Corregido :=
-SWITCH (
-    TRUE(),
-    'dicc_epigrafes'[id] IN {3, 9},        "Customers",
-    'dicc_epigrafes'[id] = 2,              "Credit Institutions",
-    'dicc_epigrafes'[id] = 11,             "Market Debt Securities",
-    'dicc_epigrafes'[id] = 4,              "Debt Instruments",
-    'dicc_epigrafes'[id] = 14,             "Subordinated Liabilities",
-    'dicc_epigrafes'[id] = 13,             "Other Financial Liabilities",
-    BLANK()
-)
+Pablo, he limpiado los datos. En assets las categorías vienen bien. En liabilities algunas vienen con otro nombre (por ejemplo, “depósito de la clientela” en vez de “customers”). He normalizado todo para que cada categoría llegue siempre con el mismo nombre y el mismo ID; si cambia, fallará.
