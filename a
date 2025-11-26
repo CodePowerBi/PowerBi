@@ -1,1 +1,23 @@
-Pablo, he limpiado los datos. En assets las categorías vienen bien. En liabilities algunas vienen con otro nombre (por ejemplo, “depósito de la clientela” en vez de “customers”). He normalizado todo para que cada categoría llegue siempre con el mismo nombre y el mismo ID; si cambia, fallará.
+Porc_1_TotalColumna :=
+VAR TotalActivos  = [total activos]
+VAR TotalColumna  = [total columna]
+RETURN
+IF (
+    NOT ISBLANK ( TotalActivos ) && TotalActivos <> 0,
+    DIVIDE ( TotalColumna, TotalActivos ),
+    BLANK()
+)
+
+
+__________
+
+Porc_2_Diferencia :=
+VAR TotalActivos  = [total activos]
+VAR TotalColumna  = [total columna]
+VAR Diferencia    = TotalActivos - TotalColumna
+RETURN
+IF (
+    NOT ISBLANK ( TotalActivos ) && TotalActivos <> 0,
+    DIVIDE ( Diferencia, TotalActivos ),
+    BLANK()
+)
