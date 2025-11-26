@@ -1,23 +1,21 @@
-Porc_1_TotalColumna :=
-VAR TotalActivos  = [total activos]
-VAR TotalColumna  = [total columna]
+Count_Residencia_FechaObjetivoIR :=
+VAR FechaCtx =
+    EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
+
+VAR FechaObjetivoIR =
+    CALCULATE (
+        MAX ( 'informe_regulatorio'[effective_date] ),
+        REMOVEFILTERS ( 'informe_regulatorio' ),
+        FILTER (
+            ALL ( 'informe_regulatorio'[effective_date] ),
+            'informe_regulatorio'[effective_date] <= FechaCtx
+                && MONTH ( 'informe_regulatorio'[effective_date] ) IN { 3, 6, 9, 12 }
+        )
+    )
+
 RETURN
-IF (
-    NOT ISBLANK ( TotalActivos ) && TotalActivos <> 0,
-    DIVIDE ( TotalColumna, TotalActivos ),
-    BLANK()
-)
-
-
-__________
-
-Porc_2_Diferencia :=
-VAR TotalActivos  = [total activos]
-VAR TotalColumna  = [total columna]
-VAR Diferencia    = TotalActivos - TotalColumna
-RETURN
-IF (
-    NOT ISBLANK ( TotalActivos ) && TotalActivos <> 0,
-    DIVIDE ( Diferencia, TotalActivos ),
-    BLANK()
+CALCULATE (
+    COUNT ( 'informe_regulatorio'[residence_id] ),     -- O la columna que uses
+    REMOVEFILTERS ( 'Dates' ),
+    TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )     -- Bloquea el contexto en esa fecha
 )
