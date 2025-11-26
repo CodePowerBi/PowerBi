@@ -1,4 +1,4 @@
-CountResidencia_FechObj :=
+CountResidenciaUnica_FechObj :=
 VAR FechaCtx =
     EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
 
@@ -15,7 +15,7 @@ VAR FechaObjetivoIR =
 
 RETURN
 CALCULATE (
-    COUNTROWS ( 'informe_regulatorio' ),
+    DISTINCTCOUNT ( 'informe_regulatorio'[residence] ),
     REMOVEFILTERS ( 'Dates' ),
     TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )
 )
