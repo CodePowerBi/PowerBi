@@ -1,4 +1,4 @@
-Count_Residencia_FechaObjetivoIR :=
+CountResidencia_FechObj :=
 VAR FechaCtx =
     EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
 
@@ -15,7 +15,7 @@ VAR FechaObjetivoIR =
 
 RETURN
 CALCULATE (
-    COUNT ( 'informe_regulatorio'[residence_id] ),     -- O la columna que uses
+    COUNTROWS ( 'informe_regulatorio' ),
     REMOVEFILTERS ( 'Dates' ),
-    TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )     -- Bloquea el contexto en esa fecha
+    TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )
 )
