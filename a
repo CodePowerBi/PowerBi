@@ -1,11 +1,8 @@
-Mostrar_Ultimos_3M :=
-VAR MaxYM  = [MesMax_Slicer]
-VAR YM_Eje = MAX ( 'Dates'[MesAnioOrden] )
+MesMax_Slicer :=
+VAR YM_Sel = SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
 RETURN
 IF (
-    NOT ISBLANK ( YM_Eje ) &&
-    YM_Eje <= MaxYM &&
-    YM_Eje >= MaxYM - 2,   -- Max, Max-1, Max-2  → 3 meses
-    1,
-    0
+    NOT ISBLANK ( YM_Sel ),
+    YM_Sel,
+    MAX ( 'Dates'[MesAnioOrden] )
 )
