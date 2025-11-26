@@ -1,13 +1,9 @@
-Medida_param_con_TOTAL :=
-VAR EpigrafeEje =
-    SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[epigrafe_front] )
-VAR Base = [Medida_param]   -- tu medida parametrizada
+Mostrar_SoloMesSeleccionado :=
+VAR MaxYM  = [MesMax_Slicer]
+VAR YM_Eje = MAX( 'Dates'[MesAnioOrden] )
 RETURN
-IF (
-    EpigrafeEje = "TOTAL",
-    CALCULATE (
-        Base,
-        ALL ( 'Dicc_Epigrafes_Total'[epigrafe_front] )
-    ),
-    Base
+IF(
+    YM_Eje = MaxYM,
+    1,
+    0
 )
