@@ -1,8 +1,13 @@
-MesMax_Slicer :=
-VAR YM_Sel = SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
+Medida_param_con_TOTAL :=
+VAR EpigrafeEje =
+    SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[epigrafe_front] )
+VAR Base = [Medida_param]   -- tu medida parametrizada
 RETURN
 IF (
-    NOT ISBLANK ( YM_Sel ),
-    YM_Sel,
-    MAX ( 'Dates'[MesAnioOrden] )
+    EpigrafeEje = "TOTAL",
+    CALCULATE (
+        Base,
+        ALL ( 'Dicc_Epigrafes_Total'[epigrafe_front] )
+    ),
+    Base
 )
