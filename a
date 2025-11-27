@@ -1,8 +1,17 @@
-Carrying Amount_Total_MesSel :=
+Carrying Amount_MesSel_con_TOTAL :=
 VAR MaxYM = [MesMax_Slicer]
+VAR Epig = SELECTEDVALUE( 'Dicc_epigrafes_total'[epigrafe_front] )
+VAR BaseMesSel =
+    CALCULATE(
+        COALESCE( SUM( fusion_vw[importe_libros] ), 0 ),
+        KEEPFILTERS( 'Dates'[MesAnioOrden] = MaxYM )
+    )
 RETURN
-CALCULATE (
-    COALESCE ( SUM ( fusion_vw[importe_libros] ), 0 ),
-    KEEPFILTERS ( 'Dates'[MesAnioOrden] = MaxYM ),
-    ALL ( fusion_vw[epigrafe_front] )     -- quita el filtro del epígrafe
+IF(
+    Epig = "TOTAL",
+    CALCULATE(
+        BaseMesSel,
+        ALL( 'Dicc_epigrafes_total'[epigrafe_front] )
+    ),
+    BaseMesSel
 )
