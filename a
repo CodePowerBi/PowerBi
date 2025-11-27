@@ -2,24 +2,25 @@ plus_minus_con_TOTAL :=
 VAR Epig =
     SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )
 
--- Medida base (lo que ya usas en las filas normales)
-VAR Base = [Plus/Minus]
+VAR Base =
+    [Plus/Minus]        -- tu medida original
 
--- Total de los 4 epígrafes, con la misma lógica que Plus/Minus
 VAR Total4 :=
-    CALCULATE (
-        Base,
-        ALL ( 'Dicc_epigrafes_total' ),       -- quita el filtro TOTAL (y cualquier otro de esta tabla)
-        fusion_vw[limpieza] IN {
-            "Central Banks",
-            "Credit Institutions",
-            "Customers",
-            "Debt Instruments"
-        }
+    SUMX (
+        FILTER (
+            ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),
+            'Dicc_epigrafes_total'[Limpieza new] IN {
+                "Central Banks",
+                "Credit Institutions",
+                "Customers",
+                "Debt Instruments"
+            }
+        ),
+        CALCULATE ( [Plus/Minus] )
     )
 RETURN
 IF (
     Epig = "TOTAL",
-    Total4,   -- en la fila TOTAL → suma de los 4 epígrafes
-    Base      -- en las filas normales → valor habitual de Plus/Minus
+    Total4,    -- en TOTAL: suma de Plus/Minus para esos 4 epígrafes
+    Base       -- en el resto: Plus/Minus normal
 )
