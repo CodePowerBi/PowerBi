@@ -1,20 +1,25 @@
-Carrying Amount_con_TOTAL :=
+plus_minus_con_TOTAL :=
 VAR Epig =
-    SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )   -- texto que ves en la tabla
-RETURN
-IF (
-    Epig = "TOTAL",
-    -- Fila TOTAL: sumar SOLO estos 4 epígrafes por el contexto (mes, país, etc.)
+    SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )
+
+-- Medida base (lo que ya usas en las filas normales)
+VAR Base = [Plus/Minus]
+
+-- Total de los 4 epígrafes, con la misma lógica que Plus/Minus
+VAR Total4 :=
     CALCULATE (
-        COALESCE ( SUM ( fusion_vw[importe_libros] ), 0 ),
-        ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),        -- quitar filtro TOTAL
-        fusion_vw[Limpieza new] IN {
+        Base,
+        ALL ( 'Dicc_epigrafes_total' ),       -- quita el filtro TOTAL (y cualquier otro de esta tabla)
+        fusion_vw[limpieza] IN {
             "Central Banks",
             "Credit Institutions",
             "Customers",
             "Debt Instruments"
         }
-    ),
-    -- Fila normal: valor habitual del epígrafe
-    COALESCE ( SUM ( fusion_vw[importe_libros] ), 0 )
+    )
+RETURN
+IF (
+    Epig = "TOTAL",
+    Total4,   -- en la fila TOTAL → suma de los 4 epígrafes
+    Base      -- en las filas normales → valor habitual de Plus/Minus
 )
