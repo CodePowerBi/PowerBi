@@ -1,17 +1,29 @@
 Carrying Amount_MesSel_con_TOTAL :=
 VAR MaxYM = [MesMax_Slicer]
 VAR Epig = SELECTEDVALUE( 'Dicc_epigrafes_total'[epigrafe_front] )
+
+-- Medida base para epígrafes individuales
 VAR BaseMesSel =
     CALCULATE(
         COALESCE( SUM( fusion_vw[importe_libros] ), 0 ),
         KEEPFILTERS( 'Dates'[MesAnioOrden] = MaxYM )
     )
+
+-- TOTAL: suma solo epígrafes específicos
+VAR TotalMesSel :=
+    CALCULATE(
+        COALESCE( SUM( fusion_vw[importe_libros] ), 0 ),
+        KEEPFILTERS( 'Dates'[MesAnioOrden] = MaxYM ),
+        'Dicc_epigrafes_total'[epigrafe_front] IN {
+            "Central Banks",
+            "Credit Institutions",
+            "Customers",
+            "Debt Instruments"
+        }
+    )
 RETURN
 IF(
     Epig = "TOTAL",
-    CALCULATE(
-        BaseMesSel,
-        ALL( 'Dicc_epigrafes_total'[epigrafe_front] )
-    ),
-    BaseMesSel
+    TotalMesSel,   -- devuelve la suma de esos 4 epígrafes
+    BaseMesSel     -- devuelve la cifra individual del epígrafe
 )
