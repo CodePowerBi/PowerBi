@@ -1,21 +1,8 @@
-CountResidenciaUnica_FechObj :=
-VAR FechaCtx =
-    EOMONTH ( MAX ( 'Dates'[Date] ), 0 )
-
-VAR FechaObjetivoIR =
-    CALCULATE (
-        MAX ( 'informe_regulatorio'[effective_date] ),
-        REMOVEFILTERS ( 'informe_regulatorio' ),
-        FILTER (
-            ALL ( 'informe_regulatorio'[effective_date] ),
-            'informe_regulatorio'[effective_date] <= FechaCtx
-                && MONTH ( 'informe_regulatorio'[effective_date] ) IN { 3, 6, 9, 12 }
-        )
-    )
-
+Carrying Amount_Total_MesSel :=
+VAR MaxYM = [MesMax_Slicer]
 RETURN
 CALCULATE (
-    DISTINCTCOUNT ( 'informe_regulatorio'[residence] ),
-    REMOVEFILTERS ( 'Dates' ),
-    TREATAS ( { FechaObjetivoIR }, 'Dates'[Date] )
+    COALESCE ( SUM ( fusion_vw[importe_libros] ), 0 ),
+    KEEPFILTERS ( 'Dates'[MesAnioOrden] = MaxYM ),
+    ALL ( fusion_vw[epigrafe_front] )     -- quita el filtro del epígrafe
 )
