@@ -1,18 +1,20 @@
 Carrying Amount_con_TOTAL :=
-VAR Epig = SELECTEDVALUE( 'Dicc_epigrafes_total'[epigrafe_front] )
+VAR Epig =
+    SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )   -- texto que ves en la tabla
 RETURN
-IF(
+IF (
     Epig = "TOTAL",
-    -- TOTAL por cada MES (solo los 4 epígrafes)
-    CALCULATE(
-        COALESCE( SUM( fusion_vw[importe_libros] ), 0 ),
-        'Dicc_epigrafes_total'[epigrafe_front] IN {
+    -- Fila TOTAL: sumar SOLO estos 4 epígrafes por el contexto (mes, país, etc.)
+    CALCULATE (
+        COALESCE ( SUM ( fusion_vw[importe_libros] ), 0 ),
+        ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),        -- quitar filtro TOTAL
+        fusion_vw[Limpieza new] IN {
             "Central Banks",
             "Credit Institutions",
             "Customers",
             "Debt Instruments"
         }
     ),
-    -- epígrafes normales
-    COALESCE( SUM( fusion_vw[importe_libros] ), 0 )
+    -- Fila normal: valor habitual del epígrafe
+    COALESCE ( SUM ( fusion_vw[importe_libros] ), 0 )
 )
