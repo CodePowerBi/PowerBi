@@ -1,26 +1,5 @@
-plus_minus_con_TOTAL :=
-VAR Epig =
-    SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )
-
-VAR Base =
-    [Plus/Minus]        -- tu medida original
-
-VAR Total4 :=
-    SUMX (
-        FILTER (
-            ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),
-            'Dicc_epigrafes_total'[Limpieza new] IN {
-                "Central Banks",
-                "Credit Institutions",
-                "Customers",
-                "Debt Instruments"
-            }
-        ),
-        CALCULATE ( [Plus/Minus] )
-    )
+Quarter_YY :=
+VAR Q = QUARTER ( 'Dates'[Date] )
+VAR YY = FORMAT ( 'Dates'[Date], "yy" )
 RETURN
-IF (
-    Epig = "TOTAL",
-    Total4,    -- en TOTAL: suma de Plus/Minus para esos 4 epígrafes
-    Base       -- en el resto: Plus/Minus normal
-)
+"Q" & Q & " " & YY
