@@ -1,5 +1,10 @@
-Quarter_YY :=
-VAR Q = QUARTER ( 'Dates'[Date] )
-VAR YY = FORMAT ( 'Dates'[Date], "yy" )
-RETURN
-"Q" & Q & " " & YY
+Owner :=
+SWITCH (
+    TRUE(),
+    fusion_vw[pais] = "CHILE",          "Chile",
+    fusion_vw[pais] = "BRASIL",         "Brasil",
+    fusion_vw[pais] = "ARGENTINA",      "Argentina",
+    fusion_vw[pais] IN { "UK", "UNITED KINGDOM", "REINO UNIDO" }, "UK",
+    fusion_vw[pais] = "ESPAÑA",         "Spain",
+    "Other"
+)
