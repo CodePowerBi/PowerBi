@@ -1,11 +1,45 @@
-Eje_Q_Comparativo =
-DATATABLE(
-    "Categoria", STRING,
-    {
-        { "Prev Total" },
-        { "Parent" },
-        { "UK" },
-        { "Other" },
-        { "Current Total" }
-    }
+Surplus_Eje_Q :=
+VAR Cat = SELECTEDVALUE( Eje_Q_Comparativo[Categoria] )
+
+/* Totales directos (mes previo y mes actual) */
+VAR TotalPrev =
+    CALCULATE(
+        [Surplus_MesPrev_Q],
+        ALL(fusion_vw[Owner])
+    )
+
+VAR TotalActual =
+    CALCULATE(
+        [Surplus_MesActual_Q],
+        ALL(fusion_vw[Owner])
+    )
+
+/* Componentes individuales */
+VAR Parent_Actual =
+    CALCULATE(
+        [Surplus_MesActual_Q],
+        fusion_vw[Owner] = "Parent"
+    )
+
+VAR UK_Actual =
+    CALCULATE(
+        [Surplus_MesActual_Q],
+        fusion_vw[Owner] = "UK"
+    )
+
+VAR Other_Actual =
+    CALCULATE(
+        [Surplus_MesActual_Q],
+        fusion_vw[Owner] = "Other"
+    )
+
+RETURN
+SWITCH(
+    Cat,
+    "Prev Total",       TotalPrev,
+    "Parent",           Parent_Actual,
+    "UK",               UK_Actual,
+    "Other",            Other_Actual,
+    "Current Total",    TotalActual,
+    BLANK()
 )
