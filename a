@@ -1,118 +1,16 @@
-Surplus_Eje_Q :=
-VAR Cat    = SELECTEDVALUE ( Eje_Q_Comparativo[Categoria] )
-VAR MaxYM  = [MesMax_Slicer]
-VAR PrevYM = MaxYM - 3
+Price Slicer :=
+VAR MaxYM = [MesMax_Slicer]
+
+VAR FV_Mes =
+    CALCULATE(
+        [FV],
+        KEEPFILTERS ( 'Dates'[MesAnioOrden] = MaxYM )
+    )
+
+VAR CA_Mes =
+    CALCULATE(
+        [Carrying Amount],
+        KEEPFILTERS ( 'Dates'[MesAnioOrden] = MaxYM )
+    )
 RETURN
-SWITCH (
-    Cat,
-    
-    // 1) Prev Total -> último mes del trimestre anterior (PrevYM)
-    "Prev Total",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = PrevYM
-            ),
-            0
-        ),
-
-    // 2) Parent (mes actual solo Owner = Parent)
-    "Parent",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "Parent"
-            ),
-            0
-        ),
-
-    // 3) UK
-    "UK",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "UK"
-            ),
-            0
-        ),
-
-    // 4) Brasil
-    "Brasil",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "Brasil"
-            ),
-            0
-        ),
-
-    // 5) México
-    "México",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "México"
-            ),
-            0
-        ),
-
-    // 6) Chile
-    "Chile",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "Chile"
-            ),
-            0
-        ),
-
-    // 7) SCF
-    "SCF",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "SCF"
-            ),
-            0
-        ),
-
-    // 8) USA
-    "USA",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "USA"
-            ),
-            0
-        ),
-
-    // 9) Other
-    "Other",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM,
-                fusion_vw[Owner] = "Other"
-            ),
-            0
-        ),
-
-    // 10) Current Total -> mes actual, todos los Owner
-    "Current Total",
-        COALESCE (
-            CALCULATE (
-                SUM ( fusion_vw[surplus] ),
-                'Dates'[MesAnioOrden] = MaxYM
-            ),
-            0
-        ),
-
-    0
-)
+DIVIDE( FV_Mes, CA_Mes, 0 )   -- último argumento: valor si hay error (evita NaN)
