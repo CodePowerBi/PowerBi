@@ -1,10 +1,8 @@
-Owner :=
-SWITCH (
-    TRUE(),
-    fusion_vw[pais] = "CHILE",          "Chile",
-    fusion_vw[pais] = "BRASIL",         "Brasil",
-    fusion_vw[pais] = "ARGENTINA",      "Argentina",
-    fusion_vw[pais] IN { "UK", "UNITED KINGDOM", "REINO UNIDO" }, "UK",
-    fusion_vw[pais] = "ESPAÑA",         "Spain",
-    "Other"
+Surplus_MesPrev_Q :=
+VAR MaxYM   = [MesMax_Slicer]   -- p.ej. 202506
+VAR PrevYM  = MaxYM - 3         -- 202503
+RETURN
+CALCULATE (
+    SUM ( fusion_vw[surplus] ),
+    'Dates'[MesAnioOrden] = PrevYM
 )
