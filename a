@@ -1,44 +1,9 @@
-1) PARENT
-
-Color azul oscuro corporativo.
-HEX: #0F3557
-
-2) UK
-
-Azul algo más claro, tono medio.
-HEX: #1D5FA7
-
-3) PORTUGAL
-
-Azul claro desaturado.
-HEX: #7FB3D5
-
-4) SCF
-
-Azul grisáceo, más mate.
-HEX: #A6C4D7
-
-5) USA
-
-Celeste luminoso.
-HEX: #9ACEEA
-
-6) MEXICO
-
-Azul turquesa medio.
-HEX: #5BBECC
-
-7) BRASIL
-
-Verde azulado leve.
-HEX: #6EC4A8
-
-8) CHILE
-
-Verde claro con gris.
-HEX: #A8D1C0
-
-9) REST
-
-Gris muy claro (casi blanco).
-HEX: #DDE4E7
+VALUE_nueva :=
+VAR MaxYM = [MesMax_Slicer]
+VAR TenorSel = SELECTEDVALUE( slide_values_vw[tenor] )
+RETURN
+CALCULATE(
+    COALESCE( SUM( slide_values_vw[valor] ), 0 ),
+    KEEPFILTERS( 'Dates'[MesAnioOrden] = MaxYM ),
+    KEEPFILTERS( slide_values_vw[tenor] = TenorSel )
+)
