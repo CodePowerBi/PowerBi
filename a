@@ -1,16 +1,44 @@
-Price Slicer :=
-VAR MaxYM = [MesMax_Slicer]
+1) PARENT
 
-VAR FV_Mes =
-    CALCULATE(
-        [FV],
-        KEEPFILTERS ( 'Dates'[MesAnioOrden] = MaxYM )
-    )
+Color azul oscuro corporativo.
+HEX: #0F3557
 
-VAR CA_Mes =
-    CALCULATE(
-        [Carrying Amount],
-        KEEPFILTERS ( 'Dates'[MesAnioOrden] = MaxYM )
-    )
-RETURN
-DIVIDE( FV_Mes, CA_Mes, 0 )   -- último argumento: valor si hay error (evita NaN)
+2) UK
+
+Azul algo más claro, tono medio.
+HEX: #1D5FA7
+
+3) PORTUGAL
+
+Azul claro desaturado.
+HEX: #7FB3D5
+
+4) SCF
+
+Azul grisáceo, más mate.
+HEX: #A6C4D7
+
+5) USA
+
+Celeste luminoso.
+HEX: #9ACEEA
+
+6) MEXICO
+
+Azul turquesa medio.
+HEX: #5BBECC
+
+7) BRASIL
+
+Verde azulado leve.
+HEX: #6EC4A8
+
+8) CHILE
+
+Verde claro con gris.
+HEX: #A8D1C0
+
+9) REST
+
+Gris muy claro (casi blanco).
+HEX: #DDE4E7
