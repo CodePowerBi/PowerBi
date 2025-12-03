@@ -1,9 +1,15 @@
-official_nueva_fmt :=
-VAR RawVal = [official_nueva]  -- tu medida de cálculo
-VAR PercentVal = RawVal * 100
+Price_3M :=
+VAR FechaIni = [InicioMes_Menos3 PRUEBA2]   -- medida que devuelve fecha de inicio
+VAR FechaFin = [FinMes_Menos3 PRUEBA2]      -- medida que devuelve fecha fin
+VAR FV_3M =
+    CALCULATE(
+        [FV Slicer],                        -- tu medida de FV
+        DATESBETWEEN( 'Dates'[Date], FechaIni, FechaFin )
+    )
+VAR CA_3M =
+    CALCULATE(
+        [Carrying Amount Slicer],           -- tu medida de Carrying Amount
+        DATESBETWEEN( 'Dates'[Date], FechaIni, FechaFin )
+    )
 RETURN
-IF(
-    PercentVal = INT(PercentVal),
-    FORMAT(PercentVal, "0\%"),
-    FORMAT(PercentVal, "0.00\%")
-)
+DIVIDE( FV_3M, CA_3M, 0 )                   -- o BLANK() si prefieres
