@@ -1,9 +1,9 @@
-VALUE_nueva :=
-VAR MaxYM = [MesMax_Slicer]
-VAR TenorSel = SELECTEDVALUE( slide_values_vw[tenor] )
+official_nueva_fmt :=
+VAR RawVal = [official_nueva]  -- tu medida de cálculo
+VAR PercentVal = RawVal * 100
 RETURN
-CALCULATE(
-    COALESCE( SUM( slide_values_vw[valor] ), 0 ),
-    KEEPFILTERS( 'Dates'[MesAnioOrden] = MaxYM ),
-    KEEPFILTERS( slide_values_vw[tenor] = TenorSel )
+IF(
+    PercentVal = INT(PercentVal),
+    FORMAT(PercentVal, "0\%"),
+    FORMAT(PercentVal, "0.00\%")
 )
