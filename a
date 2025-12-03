@@ -1,19 +1,20 @@
-Color_Meses :=
-VAR MaxYM = [MesMax_Slicer]
-VAR Mes   = SELECTEDVALUE( 'Dates'[MesAnioOrden] )
-
-VAR MaxYM_Minus3 =
-    MAXYM - 3
-
-VAR MaxYM_Minus6 =
-    MaxYM - 6
+Level1_con_TOTAL :=
+VAR Epig =
+    SELECTEDVALUE( 'Dicc_epigrafes_total'[Limpieza new] )
 RETURN
-SWITCH(
-    TRUE(),
-
-    Mes = MaxYM,             "#808080",  -- gris para fecha mes actual
-    Mes = MaxYM_Minus3,      "#B3B3B3",  -- gris más claro para -3M
-    Mes = MaxYM_Minus6,      "#C00000",  -- rojo para -6M
-
-    "#D9D9D9"                -- color por defecto para el resto (gris hielo)
+IF (
+    Epig = "TOTAL",
+    -- Fila TOTAL: sumar SOLO estos 4 epígrafes
+    CALCULATE (
+        [Level1],
+        ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),       -- quitar filtro "TOTAL"
+        'Dicc_epigrafes_total'[Limpieza new] IN {
+            "Central Banks",
+            "Credit Institutions",
+            "Customers",
+            "Debt Instruments"
+        }
+    ),
+    -- Fila normal: mismo valor que la medida Level1
+    [Level1]
 )
