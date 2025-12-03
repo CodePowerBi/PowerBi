@@ -1,15 +1,19 @@
-Price_3M :=
-VAR FechaIni = [InicioMes_Menos3 PRUEBA2]   -- medida que devuelve fecha de inicio
-VAR FechaFin = [FinMes_Menos3 PRUEBA2]      -- medida que devuelve fecha fin
-VAR FV_3M =
-    CALCULATE(
-        [FV Slicer],                        -- tu medida de FV
-        DATESBETWEEN( 'Dates'[Date], FechaIni, FechaFin )
-    )
-VAR CA_3M =
-    CALCULATE(
-        [Carrying Amount Slicer],           -- tu medida de Carrying Amount
-        DATESBETWEEN( 'Dates'[Date], FechaIni, FechaFin )
-    )
+Color_Meses :=
+VAR MaxYM = [MesMax_Slicer]
+VAR Mes   = SELECTEDVALUE( 'Dates'[MesAnioOrden] )
+
+VAR MaxYM_Minus3 =
+    MAXYM - 3
+
+VAR MaxYM_Minus6 =
+    MaxYM - 6
 RETURN
-DIVIDE( FV_3M, CA_3M, 0 )                   -- o BLANK() si prefieres
+SWITCH(
+    TRUE(),
+
+    Mes = MaxYM,             "#808080",  -- gris para fecha mes actual
+    Mes = MaxYM_Minus3,      "#B3B3B3",  -- gris más claro para -3M
+    Mes = MaxYM_Minus6,      "#C00000",  -- rojo para -6M
+
+    "#D9D9D9"                -- color por defecto para el resto (gris hielo)
+)
