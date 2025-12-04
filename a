@@ -1,11 +1,15 @@
 Mostrar_Hasta_Rango_9M :=
-VAR MaxYM = [MesMax_Slicer]          -- p.ej. 202506 si eliges jun-25
-VAR MinYM = MaxYM - 8                -- incluye Max, Max-1, … Max-8 -> 9 meses
+VAR MaxYM =
+    CALCULATE(
+        [MesMax_Slicer],                       -- tu medida de mes máximo del slicer
+        ALL( 'Dicc_epigrafes_total' )          -- ignora Assets/Liabilities y epígrafe
+    )
+VAR MinYM = MaxYM - 8                          -- últimos 9 meses: Max, Max-1, … Max-8
 VAR YM    = SELECTEDVALUE( 'Dates'[MesAnioOrden] )
 RETURN
 IF (
-    NOT ISBLANK ( MaxYM ) &&
-    NOT ISBLANK ( YM ) &&
+    NOT ISBLANK( MaxYM ) &&
+    NOT ISBLANK( YM ) &&
     YM >= MinYM &&
     YM <= MaxYM,
     1,
