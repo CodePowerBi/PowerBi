@@ -1,40 +1,21 @@
 Level2_con_TOTAL :=
 VAR Epig =
     SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )
-VAR Tipo =
-    SELECTEDVALUE ( 'Dicc_epigrafes_total'[ASSETS O LIABILITIES] )
 RETURN
 IF (
-    Epig <> "TOTAL",
-    -- Filas normales: valor habitual de Level2
-    [Level2],
-    
-    -- Fila TOTAL
-    SWITCH (
-        TRUE(),
-        
-        -- TOTAL dentro del bloque Assets:
-        Tipo = "Assets",
-            CALCULATE (
-                [Level2],
-                ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),   -- quitamos solo epígrafe
-                'Dicc_epigrafes_total'[Limpieza new] IN {
-                    "Central Banks",
-                    "Credit Institutions",
-                    "Customers",
-                    "Debt Instruments"
-                }
-            ),
-        
-        -- TOTAL dentro del bloque Liabilities:
-        Tipo = "Liabilities",
-            CALCULATE (
-                [Level2],
-                ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),   -- quitamos solo epígrafe
-                'Dicc_epigrafes_total'[ASSETS O LIABILITIES] = "Liabilities"
-            ),
-        
-        -- Por si algún caso no entra en ninguno:
+    Epig = "TOTAL",
+        -- Fila TOTAL: sumar SOLO estos 4 epígrafes,
+        -- respetando cualquier filtro de Assets/Liabilities,
+        CALCULATE (
+            [Level2],
+            ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),
+            'Dicc_epigrafes_total'[Limpieza new] IN {
+                "Central Banks",
+                "Credit Institutions",
+                "Customers",
+                "Debt Instruments"
+            }
+        ),
+        -- Filas normales
         [Level2]
-    )
 )
