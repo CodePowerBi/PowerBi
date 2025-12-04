@@ -1,17 +1,40 @@
-Fusion_Level_MesPaisSoc :=
-VAR BaseFiltrada =
+Fusion_Level_MesPais_Total :=
+VAR DetalleFiltrado =
     FILTER (
         fusion_vw,
         fusion_vw[id_epigrafe] IN { 1, 2, 3, 4, 5, 7, 9, 11, 13, 14 }
     )
+
+-- 1. Filas de detalle: por mes, país y epígrafe
+VAR Detalle =
+    ADDCOLUMNS (
+        SUMMARIZE (
+            DetalleFiltrado,
+            fusion_vw[report_date],
+            fusion_vw[id_pais],
+            fusion_vw[id_epigrafe],
+            fusion_vw[extr_date]
+        ),
+        "Level1_Total", CALCULATE ( SUM ( fusion_vw[lvl1] ) ),
+        "Level2_Total", CALCULATE ( SUM ( fusion_vw[lvl2] ) ),
+        "Level3_Total", CALCULATE ( SUM ( fusion_vw[lvl3] ) )
+    )
+
+-- 2. Filas TOTAL: una por cada mes+país (+extr_date)
+VAR TotalesMesPais =
+    ADDCOLUMNS (
+        SUMMARIZE (
+            DetalleFiltrado,
+            fusion_vw[report_date],
+            fusion_vw[id_pais],
+            fusion_vw[extr_date]
+        ),
+        "id_epigrafe", 999,
+        "epigrafe",   "TOTAL",
+        "Level1_Total", CALCULATE ( SUM ( fusion_vw[lvl1] ) ),
+        "Level2_Total", CALCULATE ( SUM ( fusion_vw[lvl2] ) ),
+        "Level3_Total", CALCULATE ( SUM ( fusion_vw[lvl3] ) )
+    )
+
 RETURN
-SUMMARIZE (
-    BaseFiltrada,
-    fusion_vw[report_date],
-    fusion_vw[id_pais],
-    fusion_vw[id_sociedad],
-    fusion_vw[extr_date],
-    "Level1_Total", SUM ( fusion_vw[lvl1] ),
-    "Level2_Total", SUM ( fusion_vw[lvl2] ),
-    "Level3_Total", SUM ( fusion_vw[lvl3] )
-)
+UNION ( Detalle, TotalesMesPais )
