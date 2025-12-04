@@ -1,21 +1,13 @@
-Level2_con_TOTAL :=
-VAR Epig =
-    SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )
+Mostrar_Hasta_Rango_9M :=
+VAR MaxYM = [MesMax_Slicer]          -- p.ej. 202506 si eliges jun-25
+VAR MinYM = MaxYM - 8                -- incluye Max, Max-1, … Max-8 -> 9 meses
+VAR YM    = SELECTEDVALUE( 'Dates'[MesAnioOrden] )
 RETURN
 IF (
-    Epig = "TOTAL",
-        -- Fila TOTAL: sumar SOLO estos 4 epígrafes,
-        -- respetando cualquier filtro de Assets/Liabilities,
-        CALCULATE (
-            [Level2],
-            ALL ( 'Dicc_epigrafes_total'[Limpieza new] ),
-            'Dicc_epigrafes_total'[Limpieza new] IN {
-                "Central Banks",
-                "Credit Institutions",
-                "Customers",
-                "Debt Instruments"
-            }
-        ),
-        -- Filas normales
-        [Level2]
+    NOT ISBLANK ( MaxYM ) &&
+    NOT ISBLANK ( YM ) &&
+    YM >= MinYM &&
+    YM <= MaxYM,
+    1,
+    0
 )
