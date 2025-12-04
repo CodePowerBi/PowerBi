@@ -1,17 +1,17 @@
-Mostrar_Hasta_Rango_9M :=
-VAR MaxYM =
-    CALCULATE(
-        [MesMax_Slicer],                       -- tu medida de mes máximo del slicer
-        ALL( 'Dicc_epigrafes_total' )          -- ignora Assets/Liabilities y epígrafe
+Fusion_Level_MesPaisSoc :=
+VAR BaseFiltrada =
+    FILTER (
+        fusion_vw,
+        fusion_vw[id_epigrafe] IN { 1, 2, 3, 4, 5, 7, 9, 11, 13, 14 }
     )
-VAR MinYM = MaxYM - 8                          -- últimos 9 meses: Max, Max-1, … Max-8
-VAR YM    = SELECTEDVALUE( 'Dates'[MesAnioOrden] )
 RETURN
-IF (
-    NOT ISBLANK( MaxYM ) &&
-    NOT ISBLANK( YM ) &&
-    YM >= MinYM &&
-    YM <= MaxYM,
-    1,
-    0
+SUMMARIZE (
+    BaseFiltrada,
+    fusion_vw[report_date],
+    fusion_vw[id_pais],
+    fusion_vw[id_sociedad],
+    fusion_vw[extr_date],
+    "Level1_Total", SUM ( fusion_vw[lvl1] ),
+    "Level2_Total", SUM ( fusion_vw[lvl2] ),
+    "Level3_Total", SUM ( fusion_vw[lvl3] )
 )
