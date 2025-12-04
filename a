@@ -1,66 +1,52 @@
-Fusion_Level_MesPais_Total :=
-VAR BaseFiltrada =
-    FILTER (
-        fusion_vw,
-        fusion_vw[id_epigrafe] IN { 1, 2, 3, 4, 5, 7, 9, 11, 13, 14 }
+Monthly_Diff_Out_Inf :=
+VAR Monthly_Out =
+    CALCULATE(
+        SUM ( 'mrf_backtesting'[monthly_flujo] ),
+        'mrf_backtesting'[categoria_2] = "CASH OUTFLOWS"
     )
-
--- 1) Detalle por mes, país y epígrafe
-VAR DetalleRaw =
-    ADDCOLUMNS (
-        SUMMARIZE (
-            BaseFiltrada,
-            fusion_vw[report_date],
-            fusion_vw[id_pais],
-            fusion_vw[id_epigrafe],
-            fusion_vw[extr_date]
-        ),
-        "Level1_Total", CALCULATE ( SUM ( fusion_vw[lvl1] ) ),
-        "Level2_Total", CALCULATE ( SUM ( fusion_vw[lvl2] ) ),
-        "Level3_Total", CALCULATE ( SUM ( fusion_vw[lvl3] ) )
-    )
-
--- 2) Totales por mes y país (fila TOTAL)
-VAR TotalesRaw =
-    ADDCOLUMNS (
-        SUMMARIZE (
-            BaseFiltrada,
-            fusion_vw[report_date],
-            fusion_vw[id_pais],
-            fusion_vw[extr_date]
-        ),
-        "id_epigrafe", 999,
-        "epigrafe",    "TOTAL",
-        "Level1_Total", CALCULATE ( SUM ( fusion_vw[lvl1] ) ),
-        "Level2_Total", CALCULATE ( SUM ( fusion_vw[lvl2] ) ),
-        "Level3_Total", CALCULATE ( SUM ( fusion_vw[lvl3] ) )
-    )
-
--- 3) Forzamos MISMA estructura de columnas en ambas tablas
-VAR DetalleFinal =
-    SELECTCOLUMNS (
-        DetalleRaw,
-        "report_date",   [report_date],
-        "id_pais",       [id_pais],
-        "id_epigrafe",   [id_epigrafe],
-        "epigrafe",      BLANK(),          -- aquí podrías poner RELATED(...) si tienes diccionario
-        "extr_date",     [extr_date],
-        "Level1_Total",  [Level1_Total],
-        "Level2_Total",  [Level2_Total],
-        "Level3_Total",  [Level3_Total]
-    )
-
-VAR TotalesFinal =
-    SELECTCOLUMNS (
-        TotalesRaw,
-        "report_date",   [report_date],
-        "id_pais",       [id_pais],
-        "id_epigrafe",   [id_epigrafe],
-        "epigrafe",      [epigrafe],       -- aquí sí va "TOTAL"
-        "extr_date",     [extr_date],
-        "Level1_Total",  [Level1_Total],
-        "Level2_Total",  [Level2_Total],
-        "Level3_Total",  [Level3_Total]
+VAR Monthly_Inf =
+    CALCULATE(
+        SUM ( 'mrf_backtesting'[monthly_flujo] ),
+        'mrf_backtesting'[categoria_2] = "CASH INFLOWS"
     )
 RETURN
-UNION ( DetalleFinal, TotalesFinal )
+    Monthly_Out - Monthly_Inf
+
+
+_____________________
+
+
+Daily_Diff_Out_Inf :=
+VAR Daily_Out =
+    CALCULATE(
+        SUM ( 'mrf_backtesting'[daily_flujo] ),
+        'mrf_backtesting'[categoria_2] = "CASH OUTFLOWS"
+    )
+VAR Daily_Inf =
+    CALCULATE(
+        SUM ( 'mrf_backtesting'[daily_flujo] ),
+        'mrf_backtesting'[categoria_2] = "CASH INFLOWS"
+    )
+RETURN
+    Daily_Out - Daily_Inf
+_______________________________
+
+
+Flow_Variation :=
+VAR Monthly_Diff = [Monthly_Diff_Out_Inf]
+VAR Daily_Diff   = [Daily_Diff_Out_Inf]
+RETURN
+    Monthly_Diff - Daily_Diff
+
+______________________
+
+Pct_Variation :=
+VAR Monthly_Diff = [Monthly_Diff_Out_Inf]
+VAR Daily_Diff   = [Daily_Diff_Out_Inf]
+VAR Resta        = Daily_Diff - Monthly_Diff   -- o Monthly_Diff - Daily_Diff, según cómo lo hayáis definido
+RETURN
+IF (
+    NOT ISBLANK ( Monthly_Diff ) && Monthly_Diff <> 0,
+    ABS ( Resta / Monthly_Diff ),
+    BLANK ()
+)
