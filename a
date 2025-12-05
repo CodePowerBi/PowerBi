@@ -1,52 +1,21 @@
-Monthly_Diff_Out_Inf :=
-VAR Monthly_Out =
-    CALCULATE(
-        SUM ( 'mrf_backtesting'[monthly_flujo] ),
-        'mrf_backtesting'[categoria_2] = "CASH OUTFLOWS"
-    )
-VAR Monthly_Inf =
-    CALCULATE(
-        SUM ( 'mrf_backtesting'[monthly_flujo] ),
-        'mrf_backtesting'[categoria_2] = "CASH INFLOWS"
+Fusion_Level_MesSoc_AL_Total :=
+VAR BaseFiltrada =
+    FILTER (
+        fusion_vw,
+        fusion_vw[id_epigrafe] IN { 1, 2, 3, 4, 5, 7, 9, 11, 13, 14 }
     )
 RETURN
-    Monthly_Out - Monthly_Inf
-
-
-_____________________
-
-
-Daily_Diff_Out_Inf :=
-VAR Daily_Out =
-    CALCULATE(
-        SUM ( 'mrf_backtesting'[daily_flujo] ),
-        'mrf_backtesting'[categoria_2] = "CASH OUTFLOWS"
-    )
-VAR Daily_Inf =
-    CALCULATE(
-        SUM ( 'mrf_backtesting'[daily_flujo] ),
-        'mrf_backtesting'[categoria_2] = "CASH INFLOWS"
-    )
-RETURN
-    Daily_Out - Daily_Inf
-_______________________________
-
-
-Flow_Variation :=
-VAR Monthly_Diff = [Monthly_Diff_Out_Inf]
-VAR Daily_Diff   = [Daily_Diff_Out_Inf]
-RETURN
-    Monthly_Diff - Daily_Diff
-
-______________________
-
-Pct_Variation :=
-VAR Monthly_Diff = [Monthly_Diff_Out_Inf]
-VAR Daily_Diff   = [Daily_Diff_Out_Inf]
-VAR Resta        = Daily_Diff - Monthly_Diff   -- o Monthly_Diff - Daily_Diff, según cómo lo hayáis definido
-RETURN
-IF (
-    NOT ISBLANK ( Monthly_Diff ) && Monthly_Diff <> 0,
-    ABS ( Resta / Monthly_Diff ),
-    BLANK ()
+ADDCOLUMNS (
+    SUMMARIZE (
+        BaseFiltrada,
+        fusion_vw[report_date],               -- mes
+        fusion_vw[id_sociedad],               -- sociedad
+        'Dicc_epigrafes_total'[ASSETS O LIABILITIES],  -- Assets / Liabilities
+        fusion_vw[extr_date]                  -- extracción (si la quieres)
+    ),
+    "id_epigrafe",   999,                     -- marcamos como TOTAL
+    "epigrafe",      "TOTAL",
+    "Level1_Total",  SUM ( fusion_vw[lvl1] ),
+    "Level2_Total",  SUM ( fusion_vw[lvl2] ),
+    "Level3_Total",  SUM ( fusion_vw[lvl3] )
 )
