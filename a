@@ -1,21 +1,16 @@
-Fusion_Level_MesSoc_AL_Total :=
-VAR BaseFiltrada =
-    FILTER (
-        fusion_vw,
-        fusion_vw[id_epigrafe] IN { 1, 2, 3, 4, 5, 7, 9, 11, 13, 14 }
-    )
+Valor_3M_Antes :=
+VAR FechaActual = TablaResumen[report_date]
+VAR Fecha_3M    = EDATE ( FechaActual, -3 )
+
+VAR DivisaActual = TablaResumen[divisa]
+VAR PaisActual   = TablaResumen[pais]   -- o id_pais, ajusta al tuyo
 RETURN
-ADDCOLUMNS (
-    SUMMARIZE (
-        BaseFiltrada,
-        fusion_vw[report_date],               -- mes
-        fusion_vw[id_sociedad],               -- sociedad
-        'Dicc_epigrafes_total'[ASSETS O LIABILITIES],  -- Assets / Liabilities
-        fusion_vw[extr_date]                  -- extracción (si la quieres)
-    ),
-    "id_epigrafe",   999,                     -- marcamos como TOTAL
-    "epigrafe",      "TOTAL",
-    "Level1_Total",  SUM ( fusion_vw[lvl1] ),
-    "Level2_Total",  SUM ( fusion_vw[lvl2] ),
-    "Level3_Total",  SUM ( fusion_vw[lvl3] )
+CALCULATE (
+    MAX ( TablaResumen[valor] ),        -- usa SUM si en esa tabla ya está agregado
+    FILTER (
+        ALL ( TablaResumen ),
+        TablaResumen[report_date] = Fecha_3M
+            && TablaResumen[divisa] = DivisaActual
+            && TablaResumen[pais]   = PaisActual
+    )
 )
