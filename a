@@ -1,20 +1,18 @@
-Valor_3M_Antes :=
-VAR FechaActual   = Fusion_Resumen[report_date]
-VAR Fecha3M       = EDATE ( FechaActual, -3 )
-
-VAR Anyo3M        = YEAR ( Fecha3M )
-VAR Mes3M         = MONTH ( Fecha3M )
-
-VAR DivisaActual  = Fusion_Resumen[divisa]
-VAR PaisActual    = Fusion_Resumen[pais]
+Mostrar_Hasta_Rango_3_slide19 :=
+VAR MaxFecha = [FechaMax_Slicer PRUEBA2]
+VAR FechaEje = MAX ( 'Dates'[Date] )
+VAR MinFecha = EDATE ( MaxFecha, -9 )   -- Max, Max-1, … Max-8
+VAR Epig     = SELECTEDVALUE ( 'Dicc_epigrafes_total'[Limpieza new] )
 RETURN
-CALCULATE (
-    MAX ( Fusion_Resumen[valor] ),        -- o SUM si corresponde
-    FILTER (
-        ALL ( Fusion_Resumen ),
-        YEAR ( Fusion_Resumen[report_date] ) = Anyo3M
-            && MONTH ( Fusion_Resumen[report_date] ) = Mes3M
-            && Fusion_Resumen[divisa] = DivisaActual
-            && Fusion_Resumen[pais]   = PaisActual
+IF (
+    Epig = "TOTAL",
+    1,                                      -- siempre mostrar TOTAL
+    IF (
+        NOT ISBLANK ( FechaEje ) &&
+        NOT ISBLANK ( MaxFecha ) &&
+        FechaEje <= MaxFecha &&
+        FechaEje >= MinFecha,
+        1,
+        0
     )
 )
