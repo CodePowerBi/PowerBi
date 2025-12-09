@@ -1,16 +1,20 @@
 Valor_3M_Antes :=
-VAR FechaActual = TablaResumen[report_date]
-VAR Fecha_3M    = EDATE ( FechaActual, -3 )
+VAR FechaActual   = Fusion_Resumen[report_date]
+VAR Fecha3M       = EDATE ( FechaActual, -3 )
 
-VAR DivisaActual = TablaResumen[divisa]
-VAR PaisActual   = TablaResumen[pais]   -- o id_pais, ajusta al tuyo
+VAR Anyo3M        = YEAR ( Fecha3M )
+VAR Mes3M         = MONTH ( Fecha3M )
+
+VAR DivisaActual  = Fusion_Resumen[divisa]
+VAR PaisActual    = Fusion_Resumen[pais]
 RETURN
 CALCULATE (
-    MAX ( TablaResumen[valor] ),        -- usa SUM si en esa tabla ya está agregado
+    MAX ( Fusion_Resumen[valor] ),        -- o SUM si corresponde
     FILTER (
-        ALL ( TablaResumen ),
-        TablaResumen[report_date] = Fecha_3M
-            && TablaResumen[divisa] = DivisaActual
-            && TablaResumen[pais]   = PaisActual
+        ALL ( Fusion_Resumen ),
+        YEAR ( Fusion_Resumen[report_date] ) = Anyo3M
+            && MONTH ( Fusion_Resumen[report_date] ) = Mes3M
+            && Fusion_Resumen[divisa] = DivisaActual
+            && Fusion_Resumen[pais]   = PaisActual
     )
 )
