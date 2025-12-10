@@ -1,18 +1,45 @@
 Level1_Eje_Meses :=
-VAR Cat   = SELECTEDVALUE ( Eje_Meses[Categoria] )
-VAR MaxYM = [MesMax_Slicer]
+VAR Cat   = SELECTEDVALUE ( Eje_Meses[Categoria] )      -- Actual, 3m, 6m, 9m, 12m
+VAR MaxYM = [MesMax_Slicer]                             -- p.ej. 202509 si eliges sep-25
+
 VAR TargetYM =
     SWITCH (
         Cat,
-        "Actual",           MaxYM,
-        "Anterior",         MaxYM - 1,
-        "Dos_Meses_Antes",  MaxYM - 2,
-        "Tres_Meses_Antes", MaxYM - 3,
-        BLANK()
+        "Actual", MaxYM,
+        "3m",     MaxYM - 3,
+        "6m",     MaxYM - 6,
+        "9m",     MaxYM - 9,
+        "12m",    MaxYM - 12,
+        BLANK ()                                     -- Otros / sin categoría
+    )
+
+VAR Limp =
+    SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[Limpieza new] )   -- Central Banks, TOTAL, etc.
+
+-- Valor normal del epígrafe para el mes objetivo
+VAR ValorEpigrafes :=
+    CALCULATE (
+        [Level1_Base],
+        'Dates'[MesAnioOrden] = TargetYM
+    )
+
+-- Valor TOTAL = suma de los 4 epígrafes, mismo mes objetivo
+VAR ValorTotal :=
+    CALCULATE (
+        [Level1_Base],
+        'Dates'[MesAnioOrden] = TargetYM,
+        REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[Limpieza new] ),   -- quitamos la fila TOTAL
+        'Dicc_Epigrafes_Total'[Limpieza new]
+            IN {
+                "Central Banks",
+                "Credit Institutions",
+                "Customers",
+                "Debt Instruments"
+            }
     )
 RETURN
 IF (
     ISBLANK ( TargetYM ),
-    BLANK(),
-    CALCULATE ( [Level1.], 'Dates'[MesAnioOrden] = TargetYM )
+    BLANK (),
+    IF ( Limp = "TOTAL", ValorTotal, ValorEpigrafes )
 )
