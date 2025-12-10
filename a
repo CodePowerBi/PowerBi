@@ -1,71 +1,10 @@
-NUEVA_2 :=
-VAR BaseFiltrada =
-    FILTER (
-        fusion_vw,
-        fusion_vw[id_epigrafe] IN { 6, 7, 10, 18, 13, 26, 22, 3134 }
+ASSETS O LIABILITIES :=
+IF (
+    'Dicc_epigrafes_Total'[Limpieza new] = "TOTAL",
+    "TOTAL",
+    LOOKUPVALUE (
+        dicc_epigrafes_filter_vw[Asset_Liabilities],   -- valor a devolver
+        dicc_epigrafes_filter_vw[id_epigrafe],         -- columna clave en tabla origen
+        'Dicc_epigrafes_Total'[id_epigrafe]            -- columna clave en esta tabla
     )
-
--- 1) Detalle por epígrafe
-VAR DetalleRaw =
-    ADDCOLUMNS (
-        SUMMARIZE (
-            BaseFiltrada,
-            fusion_vw[report_date],
-            fusion_vw[id_sociedad],
-            'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES],
-            fusion_vw[extr_date],
-            fusion_vw[id_epigrafe]          -- aquí van LOS IDs reales
-        ),
-        "epigrafe",      RELATED ( 'Dicc_Epigrafes_Total'[Limpieza new] ),
-        "Level1_Total",  SUM ( fusion_vw[lvl1] ),
-        "Level2_Total",  SUM ( fusion_vw[lvl2] ),
-        "Level3_Total",  SUM ( fusion_vw[lvl3] )
-    )
-
--- 2) Fila TOTAL por mes + sociedad + Assets/Liabilities
-VAR TotalesRaw =
-    ADDCOLUMNS (
-        SUMMARIZE (
-            BaseFiltrada,
-            fusion_vw[report_date],
-            fusion_vw[id_sociedad],
-            'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES],
-            fusion_vw[extr_date]
-        ),
-        "id_epigrafe",   999,
-        "epigrafe",      "TOTAL",
-        "Level1_Total",  SUM ( fusion_vw[lvl1] ),
-        "Level2_Total",  SUM ( fusion_vw[lvl2] ),
-        "Level3_Total",  SUM ( fusion_vw[lvl3] )
-    )
-
--- 3) Forzamos la misma estructura de columnas en ambos y unimos
-VAR Detalle =
-    SELECTCOLUMNS (
-        DetalleRaw,
-        "report_date",          [report_date],
-        "id_sociedad",          [id_sociedad],
-        "ASSETS O LIABILITIES", [ASSETS O LIABILITIES],
-        "extr_date",            [extr_date],
-        "id_epigrafe",          [id_epigrafe],
-        "epigrafe",             [epigrafe],
-        "Level1_Total",         [Level1_Total],
-        "Level2_Total",         [Level2_Total],
-        "Level3_Total",         [Level3_Total]
-    )
-
-VAR Totales =
-    SELECTCOLUMNS (
-        TotalesRaw,
-        "report_date",          [report_date],
-        "id_sociedad",          [id_sociedad],
-        "ASSETS O LIABILITIES", [ASSETS O LIABILITIES],
-        "extr_date",            [extr_date],
-        "id_epigrafe",          [id_epigrafe],
-        "epigrafe",             [epigrafe],
-        "Level1_Total",         [Level1_Total],
-        "Level2_Total",         [Level2_Total],
-        "Level3_Total",         [Level3_Total]
-    )
-RETURN
-UNION ( Detalle, Totales )
+)
