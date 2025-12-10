@@ -1,50 +1,22 @@
 Level1_Eje_Meses :=
-VAR Cat       = SELECTEDVALUE ( Eje_Meses[Categoria] )
-VAR SlicerYM  = [MesMax_Slicer]          -- 202509 si el slicer está en sep-25
+VAR Cat    = SELECTEDVALUE ( Eje_Meses[Categoria] )
+VAR Slicer = [MesMax_Slicer]
 VAR TargetYM =
     SWITCH (
         Cat,
-        "Actual", SlicerYM,
-        "3m",     SlicerYM - 3,
-        "6m",     SlicerYM - 6,
-        "9m",     SlicerYM - 9,
-        "12m",    SlicerYM - 12,
-        BLANK ()
-    )
-
-VAR Epig = SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[Limpieza new] )
-
--- Mapeamos el epígrafe de la tabla de diccionario TOTAL
--- a la tabla que SÍ está relacionada con fusion_vw
-VAR FiltroEpigrafes =
-    TREATAS (
-        VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-        diccionario_epigrafes_filter_vw[id_epigrafe]
+        "Actual", Slicer,
+        "3m",     Slicer - 3,
+        "6m",     Slicer - 6,
+        "9m",     Slicer - 9,
+        "12m",    Slicer - 12,
+        BLANK()
     )
 RETURN
 IF (
     ISBLANK ( TargetYM ),
-    BLANK (),
-    IF (
-        Epig = "TOTAL",
-            -- TOTAL: suma solo los 4 epígrafes para ese mes
-            CALCULATE (
-                [Level1],                                  -- medida base lvl1
-                'Dates'[MesAnioOrden] = TargetYM,
-                FiltroEpigrafes,
-                ALL ( 'Dicc_Epigrafes_Total'[Limpieza new] ),
-                'Dicc_Epigrafes_Total'[Limpieza new] IN {
-                    "Central Banks",
-                    "Credit Institutions",
-                    "Customers",
-                    "Debt Instruments"
-                }
-            ),
-            -- Filas normales: epígrafe tal cual
-            CALCULATE (
-                [Level1],
-                'Dates'[MesAnioOrden] = TargetYM,
-                FiltroEpigrafes
-            )
+    BLANK(),
+    CALCULATE (
+        [Level1_con_TOTAL],
+        'Dates'[MesAnioOrden] = TargetYM
     )
 )
