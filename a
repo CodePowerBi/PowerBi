@@ -1,10 +1,18 @@
-ASSETS O LIABILITIES :=
-IF (
-    'Dicc_epigrafes_Total'[Limpieza new] = "TOTAL",
-    "TOTAL",
-    LOOKUPVALUE (
-        dicc_epigrafes_filter_vw[Asset_Liabilities],   -- valor a devolver
-        dicc_epigrafes_filter_vw[id_epigrafe],         -- columna clave en tabla origen
-        'Dicc_epigrafes_Total'[id_epigrafe]            -- columna clave en esta tabla
+Level1_Eje_Meses :=
+VAR Cat   = SELECTEDVALUE ( Eje_Meses[Categoria] )
+VAR MaxYM = [MesMax_Slicer]
+VAR TargetYM =
+    SWITCH (
+        Cat,
+        "Actual",           MaxYM,
+        "Anterior",         MaxYM - 1,
+        "Dos_Meses_Antes",  MaxYM - 2,
+        "Tres_Meses_Antes", MaxYM - 3,
+        BLANK()
     )
+RETURN
+IF (
+    ISBLANK ( TargetYM ),
+    BLANK(),
+    CALCULATE ( [Level1.], 'Dates'[MesAnioOrden] = TargetYM )
 )
