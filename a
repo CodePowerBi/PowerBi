@@ -1,24 +1,9 @@
-12_6m_format_MesSel :=
-VAR Valor6m_MesSel =
-    CALCULATE (
-        SUM ( 'liq1_ponderada'[6m] ),
-        DATESBETWEEN (
-            Dates[Date],
-            [InicioMes_Sel PRUEBA 2 *],
-            [FinMes_Sel PRUEBA 2]
-        )
-    )
-
-VAR EsRatio =
-    SELECTEDVALUE ( 'dicc_metrica_esp'[Metrica_Limpia_slide12] )
-        = "Ratio de cobertura de liquidez (%)*"
-
-VAR ValorLimpio =
-    IF ( COALESCE ( Valor6m_MesSel, 0 ) = 0, BLANK(), Valor6m_MesSel )
-
+BgColor_Assets_Inflows :=
+VAR m = SELECTEDVALUE ( 'dicc_metrica_eng'[metrica], "" )
 RETURN
 IF (
-    EsRatio,
-    FORMAT ( ValorLimpio, "#%" ),
-    ValorLimpio
+    CONTAINSSTRING ( m, "High-Quality liquidity Assets" )
+        || CONTAINSSTRING ( m, "Cash inflows" ),
+    "#E6E6E6",   -- gris claro
+    BLANK()      -- sin color (deja el fondo por defecto)
 )
