@@ -1,23 +1,12 @@
-12_arriba_3m_format_MesSel :=
-VAR ValorMesSel =
+12 Suma primera columna de amount (MesSel) =
+VAR totalMesSel =
     CALCULATE (
-        SUM ( 'salida_buffer_vw'[valor] ),
+        SUM ( 'liq1_no_ponderada'[amount] ),
         DATESBETWEEN (
             Dates[Date],
             [InicioMes_Sel PRUEBA 2 *],
             [FinMes_Sel PRUEBA 2]
         )
     )
-
-VAR EsRatio =
-    OR (
-        SELECTEDVALUE ( 'km1'[Categoria_2_Nombre] ) = "Ratio de cobertura de liquidez (%)*",
-        SELECTEDVALUE ( 'km1'[Categoria_2_Nombre] ) = "Ratio NSFR (%)"
-    )
-
 RETURN
-IF (
-    EsRatio,
-    FORMAT ( ValorMesSel, "#%" ),
-    ValorMesSel
-)
+IF ( totalMesSel <> 0, totalMesSel, BLANK() )
