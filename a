@@ -1,22 +1,23 @@
-Level1_Eje_Meses :=
-VAR Cat    = SELECTEDVALUE ( Eje_Meses[Categoria] )
-VAR Slicer = [MesMax_Slicer]
-VAR TargetYM =
-    SWITCH (
-        Cat,
-        "Actual", Slicer,
-        "3m",     Slicer - 3,
-        "6m",     Slicer - 6,
-        "9m",     Slicer - 9,
-        "12m",    Slicer - 12,
-        BLANK()
+12_arriba_3m_format_MesSel :=
+VAR ValorMesSel =
+    CALCULATE (
+        SUM ( 'salida_buffer_vw'[valor] ),
+        DATESBETWEEN (
+            Dates[Date],
+            [InicioMes_Sel PRUEBA 2 *],
+            [FinMes_Sel PRUEBA 2]
+        )
     )
+
+VAR EsRatio =
+    OR (
+        SELECTEDVALUE ( 'km1'[Categoria_2_Nombre] ) = "Ratio de cobertura de liquidez (%)*",
+        SELECTEDVALUE ( 'km1'[Categoria_2_Nombre] ) = "Ratio NSFR (%)"
+    )
+
 RETURN
 IF (
-    ISBLANK ( TargetYM ),
-    BLANK(),
-    CALCULATE (
-        [Level1_con_TOTAL],
-        'Dates'[MesAnioOrden] = TargetYM
-    )
+    EsRatio,
+    FORMAT ( ValorMesSel, "#%" ),
+    ValorMesSel
 )
