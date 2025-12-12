@@ -1,8 +1,24 @@
-3m (medida) :=
-VAR Valor3m =
+12_6m_format_MesSel :=
+VAR Valor6m_MesSel =
     CALCULATE (
-        SUM ( 'liq1_no_ponderada'[amount] ),
-        DATEADD ( Dates[Date], -3, MONTH )
+        SUM ( 'liq1_ponderada'[6m] ),
+        DATESBETWEEN (
+            Dates[Date],
+            [InicioMes_Sel PRUEBA 2 *],
+            [FinMes_Sel PRUEBA 2]
+        )
     )
+
+VAR EsRatio =
+    SELECTEDVALUE ( 'dicc_metrica_esp'[Metrica_Limpia_slide12] )
+        = "Ratio de cobertura de liquidez (%)*"
+
+VAR ValorLimpio =
+    IF ( COALESCE ( Valor6m_MesSel, 0 ) = 0, BLANK(), Valor6m_MesSel )
+
 RETURN
-IF ( Valor3m = 0, BLANK(), Valor3m )
+IF (
+    EsRatio,
+    FORMAT ( ValorLimpio, "#%" ),
+    ValorLimpio
+)
