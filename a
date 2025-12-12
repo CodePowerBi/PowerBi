@@ -1,12 +1,8 @@
-12 Suma primera columna de amount (MesSel) =
-VAR totalMesSel =
+3m (medida) :=
+VAR Valor3m =
     CALCULATE (
         SUM ( 'liq1_no_ponderada'[amount] ),
-        DATESBETWEEN (
-            Dates[Date],
-            [InicioMes_Sel PRUEBA 2 *],
-            [FinMes_Sel PRUEBA 2]
-        )
+        DATEADD ( Dates[Date], -3, MONTH )
     )
 RETURN
-IF ( totalMesSel <> 0, totalMesSel, BLANK() )
+IF ( Valor3m = 0, BLANK(), Valor3m )
