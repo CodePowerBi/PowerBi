@@ -1,9 +1,12 @@
-BgColor_Assets_Inflows :=
-VAR m = SELECTEDVALUE ( 'dicc_metrica_eng'[metrica], "" )
+Color_Metrica_Español :=
+VAR m = SELECTEDVALUE('dicc_metrica_esp'[metrica], "")
+VAR m2 = UPPER(TRIM(m))
 RETURN
 IF (
-    CONTAINSSTRING ( m, "High-Quality liquidity Assets" )
-        || CONTAINSSTRING ( m, "Cash inflows" ),
-    "#E6E6E6",   -- gris claro
-    BLANK()      -- sin color (deja el fondo por defecto)
+    m2 = UPPER("Activos líquidos de alta calidad")
+        || m2 = UPPER("Salidas de efectivo")
+        || m2 = UPPER("Entradas de efectivo")
+        || m2 = UPPER("TOTAL VALOR AJUSTADO"),
+    "#E6E6E6",
+    BLANK()
 )
