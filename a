@@ -1,17 +1,14 @@
-Price_con_TOTAL :=
-VAR Epig = SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[Limpieza_new_total] )
-
-VAR FV_Total =
-    [FairValue_con_TOTAL]          -- ya incluye la lógica del TOTAL
-
-VAR CA_Total =
-    [Carrying Amount_con_TOTAL]    -- también con su propia lógica
-
+next_meeting_nueva :=
+VAR MaxYM =
+    [MesMax_Slicer]
+VAR FechaMeeting =
+    CALCULATE (
+        SELECTEDVALUE ( slide_info_vw[next_meeting] ),
+        KEEPFILTERS ( 'A_Dates'[MesAnioOrden] = MaxYM )
+    )
 RETURN
 IF (
-    NOT ISBLANK ( FV_Total )
-        && NOT ISBLANK ( CA_Total )
-        && CA_Total <> 0,
-    DIVIDE ( FV_Total, CA_Total ),
-    BLANK()
+    ISBLANK ( FechaMeeting ),
+    BLANK(),
+    LOWER ( FORMAT ( FechaMeeting, "dd-mmm" ) )   -- ej. 24-jul
 )
