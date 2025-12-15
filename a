@@ -1,12 +1,14 @@
-Color_Metrica_Español :=
-VAR m = SELECTEDVALUE('dicc_metrica_esp'[metrica], "")
-VAR m2 = UPPER(TRIM(m))
+FechaMax_Slicer_Menos3_Text :=
+VAR Fecha = [FechaMax_Slicer]
+VAR Fecha_3M = 
+    IF (
+        ISBLANK ( Fecha ),
+        BLANK (),
+        EDATE ( Fecha, -3 )
+    )
 RETURN
 IF (
-    m2 = UPPER("Activos líquidos de alta calidad")
-        || m2 = UPPER("Salidas de efectivo")
-        || m2 = UPPER("Entradas de efectivo")
-        || m2 = UPPER("TOTAL VALOR AJUSTADO"),
-    "#E6E6E6",
-    BLANK()
+    ISBLANK ( Fecha_3M ),
+    BLANK (),
+    FORMAT ( Fecha_3M, "MMM-yy" )   -- ej: Mar-25
 )
