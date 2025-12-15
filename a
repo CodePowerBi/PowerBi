@@ -1,8 +1,10 @@
-FechaMax_Slicer_Text :=
-VAR F = [FechaMax_Slicer PRUEBA2]   -- o [FechaMax_Slicer], la que uses
+Price_Diff_3M :=
+VAR Price_Act = [Price Slicer]
+VAR Price_3M  = [3m_Price Slicer]
+VAR DiffNum   = Price_Act - Price_3M
 RETURN
-IF (
-    ISBLANK ( F ),
-    BLANK (),
-    FORMAT ( F, "dd/MM/yyyy" )      -- ej: "30/06/2025"
+IF(
+    ISBLANK(Price_Act) || ISBLANK(Price_3M),
+    BLANK(),          -- o "-" si lo quieres como texto
+    DiffNum
 )
