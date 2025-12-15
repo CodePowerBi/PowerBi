@@ -10,12 +10,7 @@ VAR TextoRaw =
     IF (
         ISBLANK ( Fecha_3M ),
         BLANK (),
-        FORMAT ( Fecha_3M, "MMM-yy" )      -- ej: "mar-25"
+        FORMAT ( Fecha_3M, "MMMM yyyy", "en-US" )   -- ej: "March 2024"
     )
 RETURN
-IF (
-    ISBLANK ( TextoRaw ),
-    BLANK (),
-    UPPER ( LEFT ( TextoRaw, 1 ) ) &
-    MID ( TextoRaw, 2, LEN ( TextoRaw ) - 1 )   -- "Mar-25"
-)
+TextoRaw
