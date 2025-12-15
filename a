@@ -1,14 +1,21 @@
 FechaMax_Slicer_Menos3_Text :=
 VAR Fecha = [FechaMax_Slicer]
-VAR Fecha_3M = 
+VAR Fecha_3M =
     IF (
         ISBLANK ( Fecha ),
         BLANK (),
         EDATE ( Fecha, -3 )
     )
+VAR TextoRaw =
+    IF (
+        ISBLANK ( Fecha_3M ),
+        BLANK (),
+        FORMAT ( Fecha_3M, "MMM-yy" )      -- ej: "mar-25"
+    )
 RETURN
 IF (
-    ISBLANK ( Fecha_3M ),
+    ISBLANK ( TextoRaw ),
     BLANK (),
-    FORMAT ( Fecha_3M, "MMM-yy" )   -- ej: Mar-25
+    UPPER ( LEFT ( TextoRaw, 1 ) ) &
+    MID ( TextoRaw, 2, LEN ( TextoRaw ) - 1 )   -- "Mar-25"
 )
