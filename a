@@ -1,14 +1,8 @@
-next_meeting_nueva :=
-VAR MaxYM =
-    [MesMax_Slicer]
-VAR FechaMeeting =
-    CALCULATE (
-        SELECTEDVALUE ( slide_info_vw[next_meeting] ),
-        KEEPFILTERS ( 'A_Dates'[MesAnioOrden] = MaxYM )
-    )
+FechaMax_Slicer_Text :=
+VAR F = [FechaMax_Slicer PRUEBA2]   -- o [FechaMax_Slicer], la que uses
 RETURN
 IF (
-    ISBLANK ( FechaMeeting ),
-    BLANK(),
-    LOWER ( FORMAT ( FechaMeeting, "dd-mmm" ) )   -- ej. 24-jul
+    ISBLANK ( F ),
+    BLANK (),
+    FORMAT ( F, "dd/MM/yyyy" )      -- ej: "30/06/2025"
 )
