@@ -1,10 +1,15 @@
-Price_Diff_3M :=
-VAR Price_Act = [Price Slicer]
-VAR Price_3M  = [3m_Price Slicer]
-VAR DiffNum   = Price_Act - Price_3M
+A. DIFERENCIA_PCT parte 2 :=
+VAR Monthly_Diff = [A. DIFERENCIA MENSUAL (LCR)]
+VAR Daily_Diff   = [A. DIFERENCIA DIARIA]
+VAR Resta        = Daily_Diff - Monthly_Diff
 RETURN
-IF(
-    ISBLANK(Price_Act) || ISBLANK(Price_3M),
-    BLANK(),          -- o "-" si lo quieres como texto
-    DiffNum
+IF (
+    NOT ISBLANK ( Monthly_Diff ) && Monthly_Diff <> 0,
+    VAR Valor = Resta
+    RETURN
+        IF ( Valor > 0,
+            "+" & FORMAT ( Valor, "0.00" ),   -- positivo → “+x.xx”
+            FORMAT ( Valor, "0.00" )          -- cero o negativo → “x.xx”
+        ),
+    BLANK ()
 )
