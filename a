@@ -1,30 +1,36 @@
 Level2_con_TOTAL :=
 VAR _idFila = SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[id_epigrafe] )
 VAR _esTotal = _idFila = 999
-RETURN
-IF (
-    NOT _esTotal,
-    -- Filas normales: deja la medida tal cual
-    [Level2],
 
-    -- Fila TOTAL: sumar solo los epígrafes que estén filtrados por Assets/Liabilities
-    VAR _idsVisibles =
-        FILTER (
-            VALUES ( 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
-            'diccionario_epigrafes_filter_vw'[id_epigrafe] <> 999
-        )
-    RETURN
-        SUMX (
-            _idsVisibles,
-            CALCULATE (
-                [Level2],
-                -- quita el "999" (TOTAL) del contexto de filas
-                REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-                -- aplica el id_epigrafe iterado como si fuera el de la tabla de epígrafes
-                TREATAS (
-                    ROW ( "id_epigrafe", 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
-                    'Dicc_Epigrafes_Total'[id_epigrafe]
-                )
+-- ids que vienen “vivos” por el slicer Assets/Liabilities
+VAR _idsSlicer =
+    FILTER (
+        VALUES ( 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
+        'diccionario_epigrafes_filter_vw'[id_epigrafe] <> 999
+    )
+RETURN
+SWITCH (
+    TRUE (),
+
+    ISBLANK ( _idFila ), BLANK (),
+
+    -- Filas normales: forzamos que el id de la fila filtre el slicer-table
+    NOT _esTotal,
+        CALCULATE (
+            [Level2],
+            TREATAS ( { _idFila }, 'diccionario_epigrafes_filter_vw'[id_epigrafe] )
+        ),
+
+    -- Fila TOTAL: sumamos solo los ids que deja el slicer
+    SUMX (
+        _idsSlicer,
+        CALCULATE (
+            [Level2],
+            REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
+            TREATAS (
+                { 'diccionario_epigrafes_filter_vw'[id_epigrafe] },
+                'Dicc_Epigrafes_Total'[id_epigrafe]
             )
         )
+    )
 )
