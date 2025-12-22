@@ -1,15 +1,12 @@
-A. DIFERENCIA_PCT parte 2 :=
-VAR Monthly_Diff = [A. DIFERENCIA MENSUAL (LCR)]
-VAR Daily_Diff   = [A. DIFERENCIA DIARIA]
-VAR Resta        = Daily_Diff - Monthly_Diff
+Color_Subcategoria_PPT :=
+VAR SubCat =
+    SELECTEDVALUE ( dicc_metrica_back[subcategoria_ppt] )
 RETURN
-IF (
-    NOT ISBLANK ( Monthly_Diff ) && Monthly_Diff <> 0,
-    VAR Valor = Resta
-    RETURN
-        IF ( Valor > 0,
-            "+" & FORMAT ( Valor, "0.00" ),   -- positivo → “+x.xx”
-            FORMAT ( Valor, "0.00" )          -- cero o negativo → “x.xx”
-        ),
-    BLANK ()
+SWITCH (
+    TRUE(),
+    SubCat = "LIQUID ASSETS",   "#FF0000",   -- rojo
+    SubCat = "CASH OUTFLOWS",   "#FF0000",
+    SubCat = "CASH INFLOWS",    "#FF0000",
+    SubCat = "LEVEL 1",         "#FF0000",
+    BLANK()                     -- resto sin color / por defecto
 )
