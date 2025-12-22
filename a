@@ -1,8 +1,8 @@
-Level2_con_TOTAL = -- joajoas
+Level2_con_TOTAL =
 VAR Epig =
     SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[epigrafe_front_total] )
 
--- Selección del filtro Assets/Liabilities, pero sin "TOTAL"
+-- Selección del filtro Assets/Liabilities, sin "TOTAL"
 VAR SelAL_SinTotal =
     EXCEPT (
         VALUES ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
@@ -18,33 +18,40 @@ VAR FiltroEpigrafesTotal =
         'diccionario_epigrafes_filter_vw'[id_epigrafe]
             IN { 3134, 35, 26, 10, 22, 7, 18, 6, 13 }
     )
+
 RETURN
 IF (
     Epig = "TOTAL",
-    CALCULATE (
-        [ - Level2 ],
-
-        -- 1) Filtrar SOLO los epígrafes del TOTAL
-        FiltroEpigrafesTotal,
-
-        -- 2) Ignorar selección {Assets, TOTAL} y reaplicar solo {Assets} o {Liabilities}
-        REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
-        IF (
-            HayAL,
+    IF (
+        HayAL,
+        CALCULATE (
+            [ - Level2 ],
+            FiltroEpigrafesTotal,
+            REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
             TREATAS ( SelAL_SinTotal, 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] )
+        ),
+        CALCULATE (
+            [ - Level2 ],
+            FiltroEpigrafesTotal
         )
     ),
-    CALCULATE (
-        [ - Level2 ],
-        TREATAS (
-            VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-            'diccionario_epigrafes_filter_vw'[id_epigrafe]
-        ),
-
-        REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
-        IF (
-            HayAL,
+    IF (
+        HayAL,
+        CALCULATE (
+            [ - Level2 ],
+            TREATAS (
+                VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
+                'diccionario_epigrafes_filter_vw'[id_epigrafe]
+            ),
+            REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
             TREATAS ( SelAL_SinTotal, 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] )
+        ),
+        CALCULATE (
+            [ - Level2 ],
+            TREATAS (
+                VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
+                'diccionario_epigrafes_filter_vw'[id_epigrafe]
+            )
         )
     )
 )
