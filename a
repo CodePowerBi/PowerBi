@@ -2,35 +2,40 @@ Level2_con_TOTAL :=
 VAR _idFila = SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[id_epigrafe] )
 VAR _esTotal = _idFila = 999
 
--- ids que vienen “vivos” por el slicer Assets/Liabilities
-VAR _idsSlicer =
-    FILTER (
+-- ids permitidos por el slicer Assets/Liabilities
+VAR _idsPorSlicer =
+    CALCULATETABLE (
         VALUES ( 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
-        'diccionario_epigrafes_filter_vw'[id_epigrafe] <> 999
+        REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] )
     )
+
+-- ids finales: los de la dimensión que además estén permitidos por slicer (y sin 999)
+VAR _idsFinales =
+    FILTER (
+        INTERSECT (
+            VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
+            _idsPorSlicer
+        ),
+        'Dicc_Epigrafes_Total'[id_epigrafe] <> 999
+    )
+
 RETURN
 SWITCH (
     TRUE (),
 
     ISBLANK ( _idFila ), BLANK (),
 
-    -- Filas normales: forzamos que el id de la fila filtre el slicer-table
     NOT _esTotal,
-        CALCULATE (
-            [Level2],
-            TREATAS ( { _idFila }, 'diccionario_epigrafes_filter_vw'[id_epigrafe] )
-        ),
+        -- filas normales
+        [Level2],
 
-    -- Fila TOTAL: sumamos solo los ids que deja el slicer
+    -- fila TOTAL: suma de epígrafes finales
     SUMX (
-        _idsSlicer,
+        _idsFinales,
         CALCULATE (
             [Level2],
             REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-            TREATAS (
-                { 'diccionario_epigrafes_filter_vw'[id_epigrafe] },
-                'Dicc_Epigrafes_Total'[id_epigrafe]
-            )
+            TREATAS ( { 'Dicc_Epigrafes_Total'[id_epigrafe] }, 'Dicc_Epigrafes_Total'[id_epigrafe] )
         )
     )
 )
