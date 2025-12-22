@@ -1,57 +1,30 @@
-Level2_con_TOTAL =
-VAR Epig =
-    SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[epigrafe_front_total] )
-
--- Selección del filtro Assets/Liabilities, sin "TOTAL"
-VAR SelAL_SinTotal =
-    EXCEPT (
-        VALUES ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
-        { "TOTAL" }
-    )
-
-VAR HayAL =
-    COUNTROWS ( SelAL_SinTotal ) > 0
-
-VAR FiltroEpigrafesTotal =
-    FILTER (
-        ALL ( 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
-        'diccionario_epigrafes_filter_vw'[id_epigrafe]
-            IN { 3134, 35, 26, 10, 22, 7, 18, 6, 13 }
-    )
-
+Level2_con_TOTAL :=
+VAR _idFila = SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[id_epigrafe] )
+VAR _esTotal = _idFila = 999
 RETURN
 IF (
-    Epig = "TOTAL",
-    IF (
-        HayAL,
-        CALCULATE (
-            [ - Level2 ],
-            FiltroEpigrafesTotal,
-            REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
-            TREATAS ( SelAL_SinTotal, 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] )
-        ),
-        CALCULATE (
-            [ - Level2 ],
-            FiltroEpigrafesTotal
+    NOT _esTotal,
+    -- Filas normales: deja la medida tal cual
+    [Level2],
+
+    -- Fila TOTAL: sumar solo los epígrafes que estén filtrados por Assets/Liabilities
+    VAR _idsVisibles =
+        FILTER (
+            VALUES ( 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
+            'diccionario_epigrafes_filter_vw'[id_epigrafe] <> 999
         )
-    ),
-    IF (
-        HayAL,
-        CALCULATE (
-            [ - Level2 ],
-            TREATAS (
-                VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-                'diccionario_epigrafes_filter_vw'[id_epigrafe]
-            ),
-            REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] ),
-            TREATAS ( SelAL_SinTotal, 'Dicc_Epigrafes_Total'[ASSETS O LIABILITIES] )
-        ),
-        CALCULATE (
-            [ - Level2 ],
-            TREATAS (
-                VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-                'diccionario_epigrafes_filter_vw'[id_epigrafe]
+    RETURN
+        SUMX (
+            _idsVisibles,
+            CALCULATE (
+                [Level2],
+                -- quita el "999" (TOTAL) del contexto de filas
+                REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
+                -- aplica el id_epigrafe iterado como si fuera el de la tabla de epígrafes
+                TREATAS (
+                    ROW ( "id_epigrafe", 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
+                    'Dicc_Epigrafes_Total'[id_epigrafe]
+                )
             )
         )
-    )
 )
