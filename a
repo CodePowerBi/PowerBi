@@ -1,4 +1,4 @@
-Level2_con_TOTAL =
+Level2_con_TOTAL = -- joajoas
 VAR Epig =
     SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[epigrafe_front_total] )
 
