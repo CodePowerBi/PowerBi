@@ -1,23 +1,5 @@
-Hola equipo,
-
-Os dejo el resumen de la llamada con los puntos pendientes que comentamos:
-
-Slide 3: fichero que nos traemos, “lcr_historico”. Preguntar a back.
-
-Slides 13 y 14: dejar en blanco.
-
-Slide 12: el ratio debe mostrarse en formato porcentaje.
-
-Slide 31: añadir el campo “Fecha” (Q).
-
-Slides 16 a 26: se mantiene el cálculo actual, aunque la PPT venga con un formato diferente.
-
-Slide 13: forzar el “+EUR” para que el valor aparezca siempre en positivo, también el número.
-
-Slides 34 a 37: ajustar el tamaño de la tabla.
-
-Si veis algo que no esté alineado o falta algún punto, lo revisamos.
-
-Por último, quería desearos felices fiestas y que estén llenas de tranquilidad, buenos momentos y descanso.
-
-Un saludo.
+Report Period :=
+"Report Period : "
+    & SELECTEDVALUE ( 'Dates'[Year] )
+    & " Q"
+    & SELECTEDVALUE ( 'Dates'[QuarterNo] )
