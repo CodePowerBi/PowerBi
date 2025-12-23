@@ -1,6 +1,18 @@
-Report Period :=
-VAR d = MAX ( 'Dates'[Date] )
-VAR y = YEAR ( d )
-VAR q = ROUNDUP( MONTH ( d ) / 3, 0 )
-RETURN
-"Report Period : " & y & " Q" & q
+Ho ho ho 🎄
+De vacaciones de Navidad. Vuelvo el 7 de enero.
+Para cualquier cosa, podéis contactar con César Miguel Salinas.
+
+___________
+
+Hola,
+
+Ho ho ho 🎄
+Gracias por tu mensaje. Actualmente estoy de vacaciones de Navidad y estaré de vuelta el **7 de enero**.
+
+Durante estos días, para cualquier asunto puedes contactar con **César Miguel Salinas**, que estará al tanto.
+
+Responderé a tu correo lo antes posible a mi vuelta.
+¡Felices fiestas!
+
+Un saludo
+Ignaciana
