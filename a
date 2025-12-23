@@ -1,5 +1,6 @@
 Report Period :=
-"Report Period : "
-    & SELECTEDVALUE ( 'Dates'[Year] )
-    & " Q"
-    & SELECTEDVALUE ( 'Dates'[QuarterNo] )
+VAR d = MAX ( 'Dates'[Date] )
+VAR y = YEAR ( d )
+VAR q = ROUNDUP( MONTH ( d ) / 3, 0 )
+RETURN
+"Report Period : " & y & " Q" & q
