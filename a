@@ -1,41 +1,36 @@
-Level2_con_TOTAL :=
-VAR _idFila = SELECTEDVALUE ( 'Dicc_Epigrafes_Total'[id_epigrafe] )
-VAR _esTotal = _idFila = 999
-
--- ids permitidos por el slicer Assets/Liabilities
-VAR _idsPorSlicer =
-    CALCULATETABLE (
-        VALUES ( 'diccionario_epigrafes_filter_vw'[id_epigrafe] ),
-        REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] )
-    )
-
--- ids finales: los de la dimensión que además estén permitidos por slicer (y sin 999)
-VAR _idsFinales =
-    FILTER (
-        INTERSECT (
-            VALUES ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-            _idsPorSlicer
-        ),
-        'Dicc_Epigrafes_Total'[id_epigrafe] <> 999
-    )
-
-RETURN
-SWITCH (
-    TRUE (),
-
-    ISBLANK ( _idFila ), BLANK (),
-
-    NOT _esTotal,
-        -- filas normales
-        [Level2],
-
-    -- fila TOTAL: suma de epígrafes finales
-    SUMX (
-        _idsFinales,
-        CALCULATE (
-            [Level2],
-            REMOVEFILTERS ( 'Dicc_Epigrafes_Total'[id_epigrafe] ),
-            TREATAS ( { 'Dicc_Epigrafes_Total'[id_epigrafe] }, 'Dicc_Epigrafes_Total'[id_epigrafe] )
-        )
-    )
+Orden_ID =
+SWITCH(
+    TRUE(),
+    [id] = 13, 1,
+    [id] = 40, 2,
+    [id] = 34, 3,
+    [id] = 17, 4,
+    [id] = 15, 5,
+    [id] = 16, 6,
+    [id] = 27, 7,
+    [id] = 19, 8,
+    [id] = 18, 9,
+    [id] = 20, 10,
+    [id] = 26, 11,
+    [id] = 33, 12,
+    [id] = 35, 13,
+    [id] = 36, 14,
+    [id] = 28, 15,
+    [id] = 32, 16,
+    [id] = 31, 17,
+    [id] = 37, 18,
+    [id] = 21, 19,
+    [id] = 29, 20,
+    [id] = 22, 21,
+    [id] = 30, 22,
+    [id] = 11, 23,
+    [id] = 12, 24,
+    [id] = 41, 25,
+    [id] = 25, 26,
+    [id] = 24, 27,
+    [id] = 23, 28,
+    [id] = 38, 29,
+    [id] = 14, 30,
+    [id] = 42, 31,
+    BLANK()
 )
