@@ -2,44 +2,41 @@ UK_12M =
 VAR MesSlicer =
     SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
 
-VAR MesActualCodigo =
-    SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )
-
 VAR MesConvertido =
     IF (
         NOT ISBLANK ( MesSlicer ),
         DATE ( INT ( MesSlicer / 100 ), MOD ( MesSlicer, 100 ), 1 )
     )
 
-VAR MesActualFecha =
-    IF (
-        NOT ISBLANK ( MesActualCodigo ),
-        DATE ( INT ( MesActualCodigo / 100 ), MOD ( MesActualCodigo, 100 ), 1 )
-    )
-
-VAR DentroVentana =
-    NOT ISBLANK ( MesConvertido )
-        && NOT ISBLANK ( MesActualFecha )
-        && MesActualFecha <= MesConvertido
-        && MesActualFecha > EDATE ( MesConvertido, -12 )
-
 RETURN
 IF (
-    NOT DentroVentana,
+    ISBLANK ( MesConvertido ),
     BLANK (),
-    CALCULATE (
-        SUM ( lcr_historico[brazil] ),
+    SUMX (
+        VALUES ( EjeMes_12M[MesAnioOrden] ),
+        VAR MesActualCodigo = EjeMes_12M[MesAnioOrden]
+        VAR MesActualFecha =
+            DATE ( INT ( MesActualCodigo / 100 ), MOD ( MesActualCodigo, 100 ), 1 )
 
-        -- Siempre la última carga por cada 'fecha' (mes)
-        KEEPFILTERS ( lcr_historico[true_effective_date] = TRUE () ),
+        VAR DentroVentana =
+            MesActualFecha <= MesConvertido
+                && MesActualFecha > EDATE ( MesConvertido, -12 )
 
-        -- Aplicamos el mes del eje sobre la columna 'fecha'
-        KEEPFILTERS (
-            FILTER (
-                ALL ( lcr_historico[fecha] ),
-                lcr_historico[fecha] >= MesActualFecha
-                    && lcr_historico[fecha] < EOMONTH ( MesActualFecha, 0 ) + 1
+        VAR TrimActual =
+            LOOKUPVALUE (
+                EjeMes_12M[trim],
+                EjeMes_12M[MesAnioOrden], MesActualCodigo
             )
-        )
+
+        RETURN
+            IF (
+                NOT DentroVentana,
+                BLANK (),
+                CALCULATE (
+                    SUM ( lcr_historico[uk] ),
+                    -- Mes por TRIM (sin tocar effective_date)
+                    KEEPFILTERS ( TREATAS ( { TrimActual }, lcr_historico[trim] ) )
+                )
+            )
     )
 )
