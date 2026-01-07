@@ -1,18 +1,21 @@
-Ho ho ho 🎄
-De vacaciones de Navidad. Vuelvo el 7 de enero.
-Para cualquier cosa, podéis contactar con César Miguel Salinas.
+mrf_lcr_historico =
+VAR MaxFechaLCR =
+    CALCULATE(
+        MAX ( 'lcr_historico'[effective_date] ),
+        ALL ( 'lcr_historico' )
+    )
 
-___________
+VAR FechaDateSeleccionada =
+    MAX ( 'TABLA Effective Date'[Date] )
 
-Hola,
+VAR UltimoMesLCR =
+    EOMONTH ( MaxFechaLCR, 0 )
 
-Ho ho ho 🎄
-Gracias por tu mensaje. Actualmente estoy de vacaciones de Navidad y estaré de vuelta el **7 de enero**.
+VAR UltimoMesDate =
+    EOMONTH ( FechaDateSeleccionada, 0 )
 
-Durante estos días, para cualquier asunto puedes contactar con **César Miguel Salinas**, que estará al tanto.
+VAR FechaFinal =
+    MIN ( UltimoMesLCR, UltimoMesDate )
 
-Responderé a tu correo lo antes posible a mi vuelta.
-¡Felices fiestas!
-
-Un saludo
-Ignaciana
+RETURN
+    EOMONTH ( FechaDateSeleccionada, 0 ) = FechaFinal
