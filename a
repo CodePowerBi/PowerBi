@@ -1,22 +1,25 @@
-mrf_lcr_historico =
-VAR MaxFechaLCR =
+USA_12M :=
+VAR MesActualFecha = MAX ( EjeMes_12M[FechaMes] )   -- o tu MesActualFecha
+VAR InicioMes = MesActualFecha
+VAR FinMes    = EOMONTH ( MesActualFecha, 0 ) + 1
+
+VAR UltimaCargaMes =
     CALCULATE(
-        MAX ( 'lcr_historico'[effective_date] ),
-        ALL ( 'lcr_historico' )
+        MAX ( lcr_historico[effective_date] ),
+        REMOVEFILTERS ( lcr_historico[effective_date] ),
+        FILTER(
+            lcr_historico,
+            lcr_historico[fecha] >= InicioMes &&
+            lcr_historico[fecha] <  FinMes
+        )
     )
-
-VAR MaxFechaDate =
-    MAX ( 'TABLA Effective Date'[Date] )
-
-VAR FechaFinal =
-    EOMONTH(
-        IF(
-            MaxFechaLCR > MaxFechaDate,
-            MaxFechaDate,
-            MaxFechaLCR
-        ),
-        0
-    )
-
 RETURN
-    EOMONTH ( MaxFechaDate, 0 ) = FechaFinal
+CALCULATE(
+    SUM ( lcr_historico[usa] ),
+    FILTER(
+        lcr_historico,
+        lcr_historico[fecha] >= InicioMes &&
+        lcr_historico[fecha] <  FinMes &&
+        lcr_historico[effective_date] = UltimaCargaMes
+    )
+)
