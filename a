@@ -5,17 +5,18 @@ VAR MaxFechaLCR =
         ALL ( 'lcr_historico' )
     )
 
-VAR FechaDateSeleccionada =
+VAR MaxFechaDate =
     MAX ( 'TABLA Effective Date'[Date] )
 
-VAR UltimoMesLCR =
-    EOMONTH ( MaxFechaLCR, 0 )
-
-VAR UltimoMesDate =
-    EOMONTH ( FechaDateSeleccionada, 0 )
-
 VAR FechaFinal =
-    MIN ( UltimoMesLCR, UltimoMesDate )
+    EOMONTH(
+        IF(
+            MaxFechaLCR > MaxFechaDate,
+            MaxFechaDate,
+            MaxFechaLCR
+        ),
+        0
+    )
 
 RETURN
-    EOMONTH ( FechaDateSeleccionada, 0 ) = FechaFinal
+    EOMONTH ( MaxFechaDate, 0 ) = FechaFinal
