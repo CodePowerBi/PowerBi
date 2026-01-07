@@ -23,12 +23,6 @@ VAR DentroVentana =
         && MesActualFecha <= MesConvertido
         && MesActualFecha > EDATE ( MesConvertido, -12 )
 
-VAR MaxEffectiveDate =
-    CALCULATE (
-        MAX ( lcr_historico[effective_date] ),
-        ALL ( lcr_historico )
-    )
-
 RETURN
 IF (
     NOT DentroVentana,
@@ -36,12 +30,13 @@ IF (
     CALCULATE (
         SUM ( lcr_historico[brazil] ),
 
-        -- Forzamos último snapshot
-        lcr_historico[effective_date] = MaxEffectiveDate,
+        -- Siempre la última carga por cada 'fecha' (mes)
+        KEEPFILTERS ( lcr_historico[true_effective_date] = TRUE () ),
 
+        -- Aplicamos el mes del eje sobre la columna 'fecha'
         KEEPFILTERS (
             FILTER (
-                ALL ( lcr_historico ),
+                ALL ( lcr_historico[fecha] ),
                 lcr_historico[fecha] >= MesActualFecha
                     && lcr_historico[fecha] < EOMONTH ( MesActualFecha, 0 ) + 1
             )
