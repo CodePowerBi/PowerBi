@@ -1,25 +1,50 @@
-USA_12M :=
-VAR MesActualFecha = MAX ( EjeMes_12M[FechaMes] )   -- o tu MesActualFecha
-VAR InicioMes = MesActualFecha
-VAR FinMes    = EOMONTH ( MesActualFecha, 0 ) + 1
+UK_12M =
+VAR MesSlicer =
+    SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
 
-VAR UltimaCargaMes =
-    CALCULATE(
-        MAX ( lcr_historico[effective_date] ),
-        REMOVEFILTERS ( lcr_historico[effective_date] ),
-        FILTER(
-            lcr_historico,
-            lcr_historico[fecha] >= InicioMes &&
-            lcr_historico[fecha] <  FinMes
-        )
+VAR MesActualCodigo =
+    SELECTEDVALUE ( EjeMes_12M[MesAnioOrden] )
+
+VAR MesConvertido =
+    IF (
+        NOT ISBLANK ( MesSlicer ),
+        DATE ( INT ( MesSlicer / 100 ), MOD ( MesSlicer, 100 ), 1 )
     )
+
+VAR MesActualFecha =
+    IF (
+        NOT ISBLANK ( MesActualCodigo ),
+        DATE ( INT ( MesActualCodigo / 100 ), MOD ( MesActualCodigo, 100 ), 1 )
+    )
+
+VAR DentroVentana =
+    NOT ISBLANK ( MesConvertido )
+        && NOT ISBLANK ( MesActualFecha )
+        && MesActualFecha <= MesConvertido
+        && MesActualFecha > EDATE ( MesConvertido, -12 )
+
+VAR MaxEffectiveDate =
+    CALCULATE (
+        MAX ( lcr_historico[effective_date] ),
+        ALL ( lcr_historico )
+    )
+
 RETURN
-CALCULATE(
-    SUM ( lcr_historico[usa] ),
-    FILTER(
-        lcr_historico,
-        lcr_historico[fecha] >= InicioMes &&
-        lcr_historico[fecha] <  FinMes &&
-        lcr_historico[effective_date] = UltimaCargaMes
+IF (
+    NOT DentroVentana,
+    BLANK (),
+    CALCULATE (
+        SUM ( lcr_historico[brazil] ),
+
+        -- Forzamos último snapshot
+        lcr_historico[effective_date] = MaxEffectiveDate,
+
+        KEEPFILTERS (
+            FILTER (
+                ALL ( lcr_historico ),
+                lcr_historico[fecha] >= MesActualFecha
+                    && lcr_historico[fecha] < EOMONTH ( MesActualFecha, 0 ) + 1
+            )
+        )
     )
 )
