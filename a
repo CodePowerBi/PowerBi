@@ -14,3 +14,21 @@ SWITCH (
         fusion_vw[id_epigrafe] IN _Ids
     )
 )
+
+
+_______________-
+
+Level2_con_TOTAL =
+SWITCH (
+    TRUE (),
+    SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999,
+        CALCULATE (
+            SUM ( fusion_vw[lvl2] ),
+            fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 },
+            REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
+        ),
+    CALCULATE (
+        SUM ( fusion_vw[lvl2] ),
+        fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 }
+    )
+)
