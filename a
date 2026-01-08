@@ -1,14 +1,16 @@
-Level2_con_TOTAL =
+Level2_con_TOTAL_ASSETS =
+VAR _Ids = { 6, 7, 10, 13 }
+RETURN
 SWITCH (
     TRUE (),
     SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999,
         CALCULATE (
-            SUM ( fusion_vw[lvl2] ),
-            fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 },
+            [• Level2.],
+            fusion_vw[id_epigrafe] IN _Ids,
             REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
         ),
     CALCULATE (
-        SUM ( fusion_vw[lvl2] ),
-        fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 }
+        [• Level2.],
+        fusion_vw[id_epigrafe] IN _Ids
     )
 )
