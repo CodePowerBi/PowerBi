@@ -1,42 +1,14 @@
-UK_12M =
-VAR MesSlicer =
-    SELECTEDVALUE ( 'MesSelector'[MesAnioOrden] )
-
-VAR MesConvertido =
-    IF (
-        NOT ISBLANK ( MesSlicer ),
-        DATE ( INT ( MesSlicer / 100 ), MOD ( MesSlicer, 100 ), 1 )
-    )
-
-RETURN
-IF (
-    ISBLANK ( MesConvertido ),
-    BLANK (),
-    SUMX (
-        VALUES ( EjeMes_12M[MesAnioOrden] ),
-        VAR MesActualCodigo = EjeMes_12M[MesAnioOrden]
-        VAR MesActualFecha =
-            DATE ( INT ( MesActualCodigo / 100 ), MOD ( MesActualCodigo, 100 ), 1 )
-
-        VAR DentroVentana =
-            MesActualFecha <= MesConvertido
-                && MesActualFecha > EDATE ( MesConvertido, -12 )
-
-        VAR TrimActual =
-            LOOKUPVALUE (
-                EjeMes_12M[trim],
-                EjeMes_12M[MesAnioOrden], MesActualCodigo
-            )
-
-        RETURN
-            IF (
-                NOT DentroVentana,
-                BLANK (),
-                CALCULATE (
-                    SUM ( lcr_historico[uk] ),
-                    -- Mes por TRIM (sin tocar effective_date)
-                    KEEPFILTERS ( TREATAS ( { TrimActual }, lcr_historico[trim] ) )
-                )
-            )
+Level2_con_TOTAL =
+SWITCH (
+    TRUE (),
+    SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999,
+        CALCULATE (
+            SUM ( fusion_vw[lvl2] ),
+            fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 },
+            REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
+        ),
+    CALCULATE (
+        SUM ( fusion_vw[lvl2] ),
+        fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 }
     )
 )
