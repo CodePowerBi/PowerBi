@@ -5,12 +5,12 @@ SWITCH (
     TRUE (),
     SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999,
         CALCULATE (
-            [• Level2.],
-            TREATAS ( _Ids, fusion_vw[id_epigrafe] ),
+            [Level2],
+            fusion[id_epigrafe] IN _Ids,
             REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
         ),
     CALCULATE (
-        [• Level2.],
-        TREATAS ( _Ids, fusion_vw[id_epigrafe] )
+        [Level2],
+        fusion[id_epigrafe] IN _Ids
     )
 )
