@@ -1,16 +1,12 @@
-Level2_con_TOTAL_ASSETS =
-VAR _Ids = { 6, 7, 10, 13 }
-RETURN
-SWITCH (
-    TRUE (),
-    SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999,
-        CALCULATE (
-            [Level2],
-            fusion[id_epigrafe] IN _Ids,
-            REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
-        ),
-    CALCULATE (
-        [Level2],
-        fusion[id_epigrafe] IN _Ids
+EsUltimaCalculationDate =
+VAR FechaActual = 'Tabla'[fecha]
+VAR MaxCalcDatePorFecha =
+    CALCULATE(
+        MAX ( 'Tabla'[calculation_date] ),
+        FILTER(
+            'Tabla',
+            'Tabla'[fecha] = FechaActual
+        )
     )
-)
+RETURN
+    'Tabla'[calculation_date] = MaxCalcDatePorFecha
