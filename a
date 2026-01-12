@@ -1,28 +1,21 @@
-AL_Slicer =
-DATATABLE(
-  "AL", STRING,
-  { {"Assets"}, {"Liabilities"} }
-)
-
-________________
-
-Level2_con_TOTAL :=
-VAR SelAL = SELECTEDVALUE( AL_Slicer[AL] )
-
-VAR _Ids = {3134,35,26,10,22,7,18,6,13,-16,999} -- tu lista
+Mostrar_Hasta_Rango_CatMes =
+VAR MaxYM =
+    CALCULATE ( [MesMax_Slicer], ALL ( 'Dicc_epigrafes_total' ) )
+VAR Off =
+    SELECTEDVALUE ( Eje_Meses[Offset], 0 )
+VAR MinYM =
+    MaxYM + Off
+VAR YM =
+    SELECTEDVALUE ( 'A_Dates'[MesAnioOrden] )
+VAR EsTotal999 =
+    SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999
 RETURN
-SWITCH(
-  TRUE(),
-  SELECTEDVALUE(Dicc_Epigrafes_Total[id_epigrafe]) = 999,
-    CALCULATE(
-      [Level2.],
-      fusion_vw[id_epigrafe] IN _Ids,
-      REMOVEFILTERS(Dicc_Epigrafes_Total[id_epigrafe]),
-      TREATAS( {SelAL}, fusion_vw[activo_pasivo] )   -- <-- cambia a tu columna real
-    ),
-  CALCULATE(
-    [Level2.],
-    fusion_vw[id_epigrafe] IN _Ids,
-    TREATAS( {SelAL}, fusion_vw[activo_pasivo] )     -- <-- cambia a tu columna real
-  )
+IF (
+    EsTotal999,
+    1,                                  -- ✅ el TOTAL siempre pasa
+    IF (
+        NOT ISINSCOPE ( 'A_Dates'[Monthly] ),
+        1,                              -- ✅ fila/columna total del visual
+        IF ( YM >= MinYM && YM <= MaxYM, 1, 0 )
+    )
 )
