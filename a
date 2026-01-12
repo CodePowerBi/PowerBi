@@ -1,18 +1,21 @@
-Mostrar_Hasta_Rango_9M := -- pruebita 1
-VAR MaxYM =
-    CALCULATE ( [MesMax_Slicer], ALL ( 'Dicc_epigrafes_total' ) )
-VAR MinYM = MaxYM - 8
-VAR YM = SELECTEDVALUE ( 'A_Dates'[MesAnioOrden] )
-RETURN
-IF (
-    NOT ISINSCOPE ( 'A_Dates'[Monthly] ),   -- estamos en TOTAL/subtotal
-    1,
-    IF (
-        NOT ISBLANK ( MaxYM )
-            && NOT ISBLANK ( YM )
-            && YM >= MinYM
-            && YM <= MaxYM,
-        1,
-        0
+TU_MEDIDA_BASE_ULT10M := pruebita 2
+VAR MesSel =
+    CALCULATE(
+        [MesMax_Slicer],
+        ALL ( 'Dicc_epigrafes_total' )
     )
+VAR FechaSel =
+    CALCULATE(
+        MAX ( 'A_Dates'[Date] ),
+        FILTER( ALL('A_Dates'), 'A_Dates'[MesAnioOrden] = MesSel )
+    )
+VAR FinVentana = EOMONTH( FechaSel, 0 )
+
+-- 9 meses anteriores + el seleccionado = 10 meses
+VAR InicioVentana = EOMONTH( FinVentana, -10 ) + 1
+
+RETURN
+CALCULATE(
+    [TU_MEDIDA_BASE],
+    DATESBETWEEN( 'A_Dates'[Date], InicioVentana, FinVentana )
 )
