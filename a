@@ -1,4 +1,4 @@
-Mostrar_Hasta_Rango_9M :=
+Mostrar_Hasta_Rango_9M := -- pruebita 1
 VAR MaxYM =
     CALCULATE ( [MesMax_Slicer], ALL ( 'Dicc_epigrafes_total' ) )
 VAR MinYM = MaxYM - 8
