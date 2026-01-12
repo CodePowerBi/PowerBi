@@ -1,12 +1,21 @@
-EsUltimaCalculationDate =
-VAR FechaActual = 'Tabla'[fecha]
-VAR MaxCalcDatePorFecha =
-    CALCULATE(
-        MAX ( 'Tabla'[calculation_date] ),
-        FILTER(
-            'Tabla',
-            'Tabla'[fecha] = FechaActual
-        )
+Mes_Visible_10M :=
+VAR MesSel =
+    COALESCE(
+        SELECTEDVALUE ( A_MesSelector[MesAnioOrden] ),
+        CALCULATE ( MAX ( A_Dates[MesAnioOrden] ), ALL ( A_Dates ) )
     )
+
+-- Fecha representativa del mes seleccionado (cogemos una fecha cualquiera de ese mes)
+VAR FechaSel =
+    CALCULATE (
+        MAX ( A_Dates[Date] ),
+        FILTER ( ALL ( A_Dates ), A_Dates[MesAnioOrden] = MesSel )
+    )
+
+VAR FinVentana   = EOMONTH ( FechaSel, 0 )
+VAR InicioVentana = EOMONTH ( FechaSel, -9 ) + 1
+
+-- Mes que está pintando el visual (en el contexto de cada barra/columna)
+VAR FechaCtx = MAX ( A_Dates[Date] )
 RETURN
-    'Tabla'[calculation_date] = MaxCalcDatePorFecha
+    IF ( FechaCtx >= InicioVentana && FechaCtx <= FinVentana, 1, 0 )
