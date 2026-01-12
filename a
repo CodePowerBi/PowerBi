@@ -1,13 +1,22 @@
+Level2_Base :=
+SUM ( fusion_vw[lvl2] )
+
 Level2_con_TOTAL :=
-VAR Id = SELECTEDVALUE ( 'Dicc_epigrafes_total'[id_epigrafe] )
+VAR Id = SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] )
+
+-- tu lista SIN el 999 y quitando 6,7,10,13 como comentas
+VAR IdsTotal =
+    { 3134, 35, 26, 22, 18, -16 }
+
 VAR Res =
     IF (
         Id = 999,
         CALCULATE (
             [Level2_Base],
-            REMOVEFILTERS ( 'Dicc_epigrafes_total'[id_epigrafe] )
+            REMOVEFILTERS ( Dicc_Epigrafes_Total[id_epigrafe] ),  -- clave
+            fusion_vw[id_epigrafe] IN IdsTotal
         ),
-        [Level2_Base]
+        [Level2_Base]   -- aquí respetas el epígrafe del eje
     )
 RETURN
 COALESCE ( Res, 0 )
