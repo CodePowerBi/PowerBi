@@ -1,21 +1,13 @@
-TU_MEDIDA_BASE_ULT10M := pruebita 2
-VAR MesSel =
-    CALCULATE(
-        [MesMax_Slicer],
-        ALL ( 'Dicc_epigrafes_total' )
+Level2_con_TOTAL :=
+VAR Id = SELECTEDVALUE ( 'Dicc_epigrafes_total'[id_epigrafe] )
+VAR Res =
+    IF (
+        Id = 999,
+        CALCULATE (
+            [Level2_Base],
+            REMOVEFILTERS ( 'Dicc_epigrafes_total'[id_epigrafe] )
+        ),
+        [Level2_Base]
     )
-VAR FechaSel =
-    CALCULATE(
-        MAX ( 'A_Dates'[Date] ),
-        FILTER( ALL('A_Dates'), 'A_Dates'[MesAnioOrden] = MesSel )
-    )
-VAR FinVentana = EOMONTH( FechaSel, 0 )
-
--- 9 meses anteriores + el seleccionado = 10 meses
-VAR InicioVentana = EOMONTH( FinVentana, -10 ) + 1
-
 RETURN
-CALCULATE(
-    [TU_MEDIDA_BASE],
-    DATESBETWEEN( 'A_Dates'[Date], InicioVentana, FinVentana )
-)
+COALESCE ( Res, 0 )
