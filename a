@@ -1,21 +1,20 @@
-Mostrar_Hasta_Rango_CatMes =
-VAR MaxYM =
-    CALCULATE ( [MesMax_Slicer], ALL ( 'Dicc_epigrafes_total' ) )
-VAR Off =
-    SELECTEDVALUE ( Eje_Meses[Offset], 0 )
-VAR MinYM =
-    MaxYM + Off
-VAR YM =
-    SELECTEDVALUE ( 'A_Dates'[MesAnioOrden] )
-VAR EsTotal999 =
+Level2_con_TOTAL_ASSETS_CELIA :=
+VAR _Is999 =
     SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999
 RETURN
 IF (
-    EsTotal999,
-    1,                                  -- ✅ el TOTAL siempre pasa
-    IF (
-        NOT ISINSCOPE ( 'A_Dates'[Monthly] ),
-        1,                              -- ✅ fila/columna total del visual
-        IF ( YM >= MinYM && YM <= MaxYM, 1, 0 )
+    _Is999,
+    CALCULATE (
+        [Level2],
+        -- IDs que componen el total
+        KEEPFILTERS ( fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 } ),
+        -- QUITAR el 999 (clave para que no quede en blanco)
+        REMOVEFILTERS ( Dicc_Epigrafes_Total[id_epigrafe] ),
+        -- y si quieres que el total ignore el desglose por epígrafe_front_total:
+        REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
+    ),
+    CALCULATE (
+        [Level2],
+        KEEPFILTERS ( fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 } )
     )
 )
