@@ -1,24 +1,18 @@
-Mes_Visible_10M :=
-VAR MesSel =
-    COALESCE(
-        SELECTEDVALUE ( A_MesSelector[MesAnioOrden] ),
-        CALCULATE ( MAX ( A_Dates[MesAnioOrden] ), ALL ( A_Dates ) )
-    )
-
-VAR FechaSel =
-    CALCULATE (
-        MAX ( A_Dates[Date] ),
-        FILTER ( ALL ( A_Dates ), A_Dates[MesAnioOrden] = MesSel )
-    )
-
-VAR FinVentana     = EOMONTH ( FechaSel, 0 )
-VAR InicioVentana  = EOMONTH ( FechaSel, -9 ) + 1
-
-VAR EnMes = ISINSCOPE ( A_Dates[Monthly] )
-VAR FechaCtx = MAX ( A_Dates[Date] )
+Mostrar_Hasta_Rango_9M :=
+VAR MaxYM =
+    CALCULATE ( [MesMax_Slicer], ALL ( 'Dicc_epigrafes_total' ) )
+VAR MinYM = MaxYM - 8
+VAR YM = SELECTEDVALUE ( 'A_Dates'[MesAnioOrden] )
 RETURN
 IF (
-    NOT EnMes,
-    1,   -- deja pasar el TOTAL
-    IF ( FechaCtx >= InicioVentana && FechaCtx <= FinVentana, 1, 0 )
+    NOT ISINSCOPE ( 'A_Dates'[Monthly] ),   -- estamos en TOTAL/subtotal
+    1,
+    IF (
+        NOT ISBLANK ( MaxYM )
+            && NOT ISBLANK ( YM )
+            && YM >= MinYM
+            && YM <= MaxYM,
+        1,
+        0
+    )
 )
