@@ -1,18 +1,20 @@
-Level2_con_TOTAL :=
-VAR Id = SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] )
-
--- IDs que quieres sumar cuando estás en la fila TOTAL (999)
-VAR IdsTotal = { 3134, 35, 26, 22, 18, -16 }
-
-VAR Res =
-    IF (
-        Id = 999,
-        CALCULATE(
-            [Level2_Base],
-            REMOVEFILTERS ( Dicc_Epigrafes_Total[id_epigrafe] ),
-            fusion_vw[id_epigrafe] IN IdsTotal
-        ),
-        [Level2_Base]
+Mostrar_Hasta_Rango_3M :=
+VAR MaxYM =
+    CALCULATE(
+        [MesMax_Slicer],
+        REMOVEFILTERS( Dicc_Epigrafes_Total ),          -- la tabla que usas en el eje (la del 999)
+        REMOVEFILTERS( fusion_vw[id_epigrafe] )         -- por si el filtro entra vía relación al fact
     )
+VAR MinYM = MaxYM - 3
+VAR YM = SELECTEDVALUE( A_Dates[MesAnioOrden] )
 RETURN
-COALESCE ( Res, 0 )
+IF(
+    NOT ISINSCOPE( A_Dates[Monthly] ),
+    1,
+    IF(
+        NOT ISBLANK(MaxYM) &&
+        NOT ISBLANK(YM) &&
+        YM >= MinYM && YM <= MaxYM,
+        1, 0
+    )
+)
