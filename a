@@ -1,20 +1,13 @@
-Level2_con_TOTAL_ASSETS_CELIA :=
-VAR _Is999 =
-    SELECTEDVALUE ( Dicc_Epigrafes_Total[id_epigrafe] ) = 999
+Orden_Epigrafe =
+VAR t = Dicc_Epigrafes_Total[epigrafe_front_total]
 RETURN
-IF (
-    _Is999,
-    CALCULATE (
-        [Level2],
-        -- IDs que componen el total
-        KEEPFILTERS ( fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 } ),
-        -- QUITAR el 999 (clave para que no quede en blanco)
-        REMOVEFILTERS ( Dicc_Epigrafes_Total[id_epigrafe] ),
-        -- y si quieres que el total ignore el desglose por epígrafe_front_total:
-        REMOVEFILTERS ( Dicc_Epigrafes_Total[epigrafe_front_total] )
-    ),
-    CALCULATE (
-        [Level2],
-        KEEPFILTERS ( fusion_vw[id_epigrafe] IN { 6, 7, 10, 13 } )
-    )
+SWITCH (
+    TRUE(),
+    CONTAINSSTRING ( t, "Central Banks" ), 1,
+    CONTAINSSTRING ( t, "Credit institutions" ), 2,
+    CONTAINSSTRING ( t, "Customers" ), 3,
+    CONTAINSSTRING ( t, "Market debt securities" ), 4,
+    CONTAINSSTRING ( t, "Subliabilities" ) || CONTAINSSTRING ( t, "Sub liabilities" ), 5,
+    CONTAINSSTRING ( t, "Other financial" ), 6,
+    999
 )
