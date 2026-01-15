@@ -1,24 +1,17 @@
-Tabla_Informe;Estado
-Arquetipo;Nueva
-Budget&Variations;Nueva
-FX_KTE_CDG;Nueva
-Medidas;Previa
-Medidas_FIL;Nueva
-Dicc_Fecha;Previa
-Dicc_Fecha_aux_2;Previa
-FX_Visuales;Nueva
-Nivel1;Nueva
-Nivel2;Nueva
-dim_currency;Nueva
-dim_exchange_rate;Previa
-dim_metric;Previa
-dim_metric_index;Previa
-dim_portfolio;Previa
-dim_row_type;Previa
-dim_scenario;Previa
-vw_dim_product_aggr;Previa
-vw_dim_segment_aggr;Previa
-vw_dim_unit_curr;Previa
-vw_fact_exchange_rate;Nueva
-vw_fact_main_sheet_comp_currency;Nueva
-vw_fact_main_sheet_currency;Previa
+3m =
+VAR FechaObjetivo =
+    EDATE ( liq1_ponderada[date], -3 )
+RETURN
+COALESCE (
+    CALCULATE (
+        MAX ( liq1_ponderada[amount] ),
+        FILTER (
+            liq1_ponderada,
+            liq1_ponderada[date] = FechaObjetivo
+                && liq1_ponderada[metrica_eng] = EARLIER ( liq1_ponderada[metrica_eng] )
+                && liq1_ponderada[metrica_esp] = EARLIER ( liq1_ponderada[metrica_esp] )
+                && liq1_ponderada[IMPORTANTE_CALCULATION_DATE] = "Correcto"
+        )
+    ),
+    0
+)
